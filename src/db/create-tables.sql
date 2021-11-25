@@ -16,27 +16,45 @@ CREATE TABLE residencia (
 );
 
 CREATE TABLE imovel (
-  id_residencia  INT,
+  id             INT,
   valor_venda    MONEY   NOT NULL,
   condominio     MONEY,
   aceita_animais BOOLEAN NOT NULL,
 
-  CONSTRAINT pk_imovel PRIMARY KEY(id_residencia),
-  CONSTRAINT fk_residencia FOREIGN KEY(id_residencia)
-                           REFERENCES residencia(id)
-                           ON DELETE CASCADE
+  CONSTRAINT pk_imovel PRIMARY KEY(id),
+  CONSTRAINT fk_imovel_residencia FOREIGN KEY(id)
+                                  REFERENCES residencia(id)
+                                  ON DELETE CASCADE
 );
 
 CREATE TABLE moradia (
-  id_residencia    INT,
+  id               INT,
   n_moradores      INT NOT NULL,
   n_colegas_quarto INT NOT NULL,
   n_animais        INT NOT NULL,
   n_total_vagas    INT NOT NULL,
 
-  CONSTRAINT pk_imovel PRIMARY KEY (id_residencia),
-  CONSTRAINT fk_residencia FOREIGN KEY (id_residencia)
-                           REFERENCES residencia(id)
-                           ON DELETE CASCADE
+  CONSTRAINT pk_moradia PRIMARY KEY (id),
+  CONSTRAINT fk_moradia_residencia FOREIGN KEY (id)
+                                   REFERENCES residencia(id)
+                                   ON DELETE CASCADE
+);
+
+CREATE TABLE festa (
+  id                INT         GENERATED ALWAYS AS IDENTITY,
+  data              DATE        NOT NULL,
+  horario           TIME        NOT NULL,
+  nome              VARCHAR(50) NOT NULL,
+  moradia           INT         NOT NULL,
+  preço             MONEY       NOT NULL,
+  n_ingressos_total INT         NOT NULL,
+  n_disponivel      INT         NOT NULL,  -- was this deleted?
+  open_bar          VARCHAR,
+
+  CONSTRAINT pk_festa PRIMARY KEY(id),
+  CONSTRAINT secondary_key UNIQUE(data, horario, nome, moradia),
+  CONSTRAINT fk_festa_moradia FOREIGN KEY(moradia)
+                              REFERENCES moradia(id)
+                              ON DELETE CASCADE
 );
 
