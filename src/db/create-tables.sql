@@ -12,7 +12,7 @@ CREATE TABLE residencia (
   area_externa     INT,
   infos_adicionais VARCHAR,
 
-  CONSTRAINT pk_residencia PRIMARY KEY (id)
+  CONSTRAINT pk_residencia PRIMARY KEY(id)
 );
 
 CREATE TABLE imovel (
@@ -21,8 +21,8 @@ CREATE TABLE imovel (
   condominio     MONEY,
   aceita_animais BOOLEAN NOT NULL,
 
-  CONSTRAINT pk_imovel PRIMARY KEY (id_residencia)
-  CONSTRAINT fk_residencia FOREIGN KEY (id_residencia)
+  CONSTRAINT pk_imovel PRIMARY KEY(id_residencia),
+  CONSTRAINT fk_residencia FOREIGN KEY(id_residencia)
                            REFERENCES residencia(id)
                            ON DELETE CASCADE
 );
@@ -34,7 +34,7 @@ CREATE TABLE moradia (
   n_animais        INT NOT NULL,
   n_total_vagas    INT NOT NULL,
 
-  CONSTRAINT pk_imovel PRIMARY KEY (id_residencia)
+  CONSTRAINT pk_imovel PRIMARY KEY (id_residencia),
   CONSTRAINT fk_residencia FOREIGN KEY (id_residencia)
                            REFERENCES residencia(id)
                            ON DELETE CASCADE
