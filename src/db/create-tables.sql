@@ -15,3 +15,15 @@ CREATE TABLE residencia (
   CONSTRAINT pk_residencia PRIMARY KEY (id)
 );
 
+CREATE TABLE imovel (
+  id_residencia  INT,
+  valor_venda    MONEY   NOT NULL,
+  condominio     MONEY,
+  aceita_animais BOOLEAN NOT NULL,
+
+  CONSTRAINT pk_imovel PRIMARY KEY (id_residencia)
+  CONSTRAINT fk_residencia FOREIGN KEY (id_residencia)
+                           REFERENCES residencia(id)
+                           ON DELETE CASCADE
+);
+
