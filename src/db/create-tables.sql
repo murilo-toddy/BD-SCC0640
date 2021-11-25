@@ -27,3 +27,16 @@ CREATE TABLE imovel (
                            ON DELETE CASCADE
 );
 
+CREATE TABLE moradia (
+  id_residencia    INT,
+  n_moradores      INT NOT NULL,
+  n_colegas_quarto INT NOT NULL,
+  n_animais        INT NOT NULL,
+  n_total_vagas    INT NOT NULL,
+
+  CONSTRAINT pk_imovel PRIMARY KEY (id_residencia)
+  CONSTRAINT fk_residencia FOREIGN KEY (id_residencia)
+                           REFERENCES residencia(id)
+                           ON DELETE CASCADE
+);
+
