@@ -65,17 +65,17 @@ CREATE TABLE pessoa (
   nome       VARCHAR(75) NOT NULL,
   nascimento DATE        NOT NULL,
 
-  CONSTRAINT CPF_number CHECK(CPF ~ '^\d\+$'),
-  CONSTRAINT RG_number CHECK(RG ~ '^\d\+$'),
   CONSTRAINT pk_pessoa PRIMARY KEY(CPF),
   CONSTRAINT sk_pessoa UNIQUE(CPF),
+  CONSTRAINT CPF_number CHECK(CPF ~ '^\d\+$'),
+  CONSTRAINT RG_number CHECK(RG ~ '^\d\+$'),
 );
 
 CREATE TABLE atuacao (
   CPF     VARCHAR(11),
   atuacao VARCHAR(10),
 
-  CONSTRAINT PRIMARY KEY(CPF, atuacao),
+  CONSTRAINT pk_atuacao PRIMARY KEY(CPF, atuacao),
   CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(CPF)
                                REFERENCES pessoa(CPF)
                                ON DELETE CASCADE
@@ -87,7 +87,7 @@ CREATE TABLE aluno (
   procurando_moradia BOOLEAN,
   procurando_imovel  BOOLEAN,
 
-  CONSTRAINT PRIMARY KEY(CPF),
+  CONSTRAINT pk_aluno PRIMARY KEY(CPF),
   CONSTRAINT fk_aluno_pessoa FOREIGN KEY(CPF)
                                REFERENCES pessoa(CPF)
                                ON DELETE CASCADE
@@ -97,7 +97,7 @@ CREATE TABLE professor (
   CPF          VARCHAR(11),
   area_atuacao VARCHAR,
 
-  CONSTRAINT PRIMARY KEY(CPF),
+  CONSTRAINT pk_professor PRIMARY KEY(CPF),
   CONSTRAINT fk_professor_pessoa FOREIGN KEY(CPF)
                                REFERENCES pessoa(CPF)
                                ON DELETE CASCADE
@@ -107,7 +107,7 @@ CREATE TABLE orienta (
   professor VARCHAR(11),
   aluno     VARCHAR(11),
 
-  CONSTRAINT PRIMARY KEY(professor, aluno),
+  CONSTRAINT pk_orienta PRIMARY KEY(professor, aluno),
   CONSTRAINT fk_orienta_professor FOREIGN KEY(professor)
                                   REFERENCES professor(CPF)
                                   ON DELETE CASCADE,
@@ -132,4 +132,15 @@ CREATE TABLE campus (
   CONSTRAINT sk_campus UNIQUE(CNPJ_universidade, nome_campus, cidade),
   CONSTRAINT CNPJ_universidade_number CHECK(CNPJ_universidade ~ '^\d\+$'),
   CONSTRAINT cep_number CHECK(cep ~ '^\d\+$')
+);
+
+CREATE TABLE oferecimento_curso (
+  campus            INT,
+  nome              VARCHAR(50),
+  area_conhecimento VARCHAR(50),
+
+  CONSTRAINT pk_oferecimento_curso PRIMARY KEY(campus, nome),
+  CONSTRAINT fk_orienta_professor FOREIGN KEY(campus)
+                                  REFERENCES campus(id)
+                                  ON DELETE CASCADE,
 );
