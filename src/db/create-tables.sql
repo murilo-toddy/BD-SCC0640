@@ -79,3 +79,15 @@ CREATE TABLE atuacao (
                                REFERENCES pessoa(CPF)
                                ON DELETE CASCADE
 );
+
+CREATE TABLE aluno (
+  CPF                VARCHAR(11),
+  n_indicacoes       INT,
+  procurando_moradia BOOLEAN,
+  procurando_imovel  BOOLEAN,
+
+  CONSTRAINT PRIMARY KEY(CPF),
+  CONSTRAINT fk_aluno_pessoa FOREIGN KEY(CPF)
+                               REFERENCES pessoa(CPF)
+                               ON DELETE CASCADE
+);
