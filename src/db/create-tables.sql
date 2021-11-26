@@ -159,3 +159,18 @@ CREATE TABLE cursando (
                                REFERENCES campus(campus, nome)
                                ON DELETE CASCADE,
 );
+
+CREATE TABLE trabalho (
+  professor VARCHAR(11),
+  campus    INT,
+  curso     VARCHAR(50),
+
+  CONSTRAINT pk_trabalho PRIMARY KEY(aluno, campus, curso),
+  CONSTRAINT fk_trabalho_professor FOREIGN KEY(professor)
+                                   REFERENCES professor(CPF)
+                                   ON DELETE CASCADE,
+  CONSTRAINT fk_trabalho_curso FOREIGN KEY(campus, curso)
+                               REFERENCES campus(campus, nome)
+                               ON DELETE CASCADE,
+);
+
