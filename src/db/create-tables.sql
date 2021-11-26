@@ -52,9 +52,21 @@ CREATE TABLE festa (
   open_bar          VARCHAR,
 
   CONSTRAINT pk_festa PRIMARY KEY(id),
-  CONSTRAINT secondary_key UNIQUE(data, horario, nome, moradia),
+  CONSTRAINT sk_festa UNIQUE(data, horario, nome, moradia),
   CONSTRAINT fk_festa_moradia FOREIGN KEY(moradia)
                               REFERENCES moradia(id)
                               ON DELETE CASCADE
+);
+
+CREATE TABLE pessoa (
+  CPF        VARCHAR(11),
+  RG         VARCHAR(12) NOT NULL,
+  nome       VARCHAR(75) NOT NULL,
+  nascimento DATE        NOT NULL,
+
+  CONSTRAINT CPF_number CHECK(CPF ~ '^\d\+$'),
+  CONSTRAINT RG_number CHECK(RG ~ '^\d\+$'),
+  CONSTRAINT pk_pessoa PRIMARY KEY(CPF),
+  CONSTRAINT sk_pessoa UNIQUE(CPF),
 );
 
