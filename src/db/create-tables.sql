@@ -4,7 +4,7 @@ CREATE TABLE residencia (
   coletividade     BOOLEAN      NOT NULL,
   estado           VARCHAR(2)   NOT NULL,
   cidade           VARCHAR(50)  NOT NULL,
-  cep              NUMERIC(8,0) NOT NULL,
+  cep              VARCHAR(8)   NOT NULL,
   endereço         VARCHAR(100) NOT NULL,
   n_quartos        INT          NOT NULL,
   n_banheiros      INT          NOT NULL,
@@ -12,7 +12,8 @@ CREATE TABLE residencia (
   area_externa     INT,
   infos_adicionais VARCHAR,
 
-  CONSTRAINT pk_residencia PRIMARY KEY(id)
+  CONSTRAINT pk_residencia PRIMARY KEY(id),
+  CONSTRAINT cep_number CHECK(cep ~ '^\d\+$')
 );
 
 CREATE TABLE imovel (
@@ -113,4 +114,22 @@ CREATE TABLE orienta (
   CONSTRAINT fk_orienta_aluno FOREIGN KEY(aluno)
                               REFERENCES aluno(CPF)
                               ON DELETE CASCADE
+);
+
+CREATE TYPE CATEGORIA_UNIVERSIDADE AS ENUM ('pública', 'privada');
+CREATE TABLE campus (
+  id                     INT          GENERATED ALWAYS AS IDENTITY,
+  CNPJ_universidade      VARCHAR(14)            NOT NULL,
+  nome_campus            VARCHAR(50)            NOT NULL,
+  cidade                 VARCHAR(50)            NOT NULL,
+  nome_universidade      VARCHAR(50)            NOT NULL,
+  categoria_universidade CATEGORIA_UNIVERSIDADE NOT NULL,
+  estado                 VARCHAR(2)             NOT NULL,
+  cep                    VARCHAR(8)             NOT NULL,
+  endereço               VARCHAR(100)           NOT NULL,
+
+  CONSTRAINT pk_campus PRIMARY KEY(id),
+  CONSTRAINT sk_campus UNIQUE(CNPJ_universidade, nome_campus, cidade),
+  CONSTRAINT CNPJ_universidade_number CHECK(CNPJ_universidade ~ '^\d\+$'),
+  CONSTRAINT cep_number CHECK(cep ~ '^\d\+$')
 );
