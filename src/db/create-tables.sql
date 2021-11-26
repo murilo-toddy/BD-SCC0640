@@ -192,3 +192,15 @@ CREATE TABLE palestra (
                                 ON DELETE CASCADE,
 );
 
+CREATE TABLE presenca_marcada (
+  aluno    VARCHAR(11),
+  palestra INT,
+
+  CONSTRAINT pk_presenca PRIMARY KEY(aluno, palestra),
+  CONSTRAINT fk_presenca_aluno FOREIGN KEY(aluno)
+                               REFERENCES aluno(CPF)
+                               ON DELETE CASCADE,
+  CONSTRAINT fk_presenca_curso FOREIGN KEY(palestra)
+                               REFERENCES palestra(id)
+                               ON DELETE CASCADE,
+);
