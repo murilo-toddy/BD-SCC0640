@@ -174,3 +174,21 @@ CREATE TABLE trabalho (
                                ON DELETE CASCADE,
 );
 
+CREATE TABLE palestra (
+  id           INT GENERATED ALWAYS AS IDENTITY,
+  ministrante  VARCHAR(11) NOT NULL,
+  nome         VARCHAR(50) NOT NULL,
+  campus       INT NOT NULL,
+  data_horario TIMESTAMP NOT NULL, -- Data e Horario viraram um campo só!!!!!
+  tema         VARCHAR(50),
+
+  CONSTRAINT pk_palestra PRIMARY KEY(id),
+  CONSTRAINT sk_palestra UNIQUE(nome, campus, data, horario),
+  CONSTRAINT fk_palestra_professor FOREIGN KEY(ministrante)
+                                   REFERENCES professor(CPF)
+                                   ON DELETE CASCADE,
+  CONSTRAINT fk_palestra_campus FOREIGN KEY(campus)
+                                REFERENCES campus(id)
+                                ON DELETE CASCADE,
+);
+
