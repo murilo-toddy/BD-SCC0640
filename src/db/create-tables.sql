@@ -70,3 +70,12 @@ CREATE TABLE pessoa (
   CONSTRAINT sk_pessoa UNIQUE(CPF),
 );
 
+CREATE TABLE atuacao (
+  CPF     VARCHAR(11),
+  atuacao VARCHAR(10),
+
+  CONSTRAINT PRIMARY KEY(CPF, atuacao),
+  CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(CPF)
+                               REFERENCES pessoa(CPF)
+                               ON DELETE CASCADE
+);
