@@ -59,6 +59,19 @@ CREATE TABLE festa (
                               ON DELETE CASCADE
 );
 
+CREATE TABLE ingresso (
+  festa     INT,
+  comprador VARCHAR(11),
+
+  CONSTRAINT pk_presenca PRIMARY KEY(festa, comprador),
+  CONSTRAINT fk_presenca_aluno FOREIGN KEY(festa)
+                               REFERENCES festa(id)
+                               ON DELETE CASCADE,
+  CONSTRAINT fk_presenca_curso FOREIGN KEY(comprador)
+                               REFERENCES pessoa(CPF)
+                               ON DELETE CASCADE,
+);
+
 CREATE TABLE pessoa (
   CPF        VARCHAR(11),
   RG         VARCHAR(12) NOT NULL,
