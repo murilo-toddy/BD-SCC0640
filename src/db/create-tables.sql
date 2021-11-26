@@ -43,8 +43,7 @@ CREATE TABLE moradia (
 
 CREATE TABLE festa (
   id                INT         GENERATED ALWAYS AS IDENTITY,
-  data              DATE        NOT NULL,
-  horario           TIME        NOT NULL,
+  data_horario      TIMESTAMP   NOT NULL, -- Data e Horário viraram um campo só!!!!!
   nome              VARCHAR(50) NOT NULL,
   moradia           INT         NOT NULL,
   preço             MONEY       NOT NULL,
@@ -53,7 +52,7 @@ CREATE TABLE festa (
   open_bar          VARCHAR,
 
   CONSTRAINT pk_festa PRIMARY KEY(id),
-  CONSTRAINT sk_festa UNIQUE(data, horario, nome, moradia),
+  CONSTRAINT sk_festa UNIQUE(data_horario, nome, moradia),
   CONSTRAINT fk_festa_moradia FOREIGN KEY(moradia)
                               REFERENCES moradia(id)
                               ON DELETE CASCADE
@@ -192,11 +191,11 @@ CREATE TABLE palestra (
   ministrante  VARCHAR(11) NOT NULL,
   nome         VARCHAR(50) NOT NULL,
   campus       INT NOT NULL,
-  data_horario TIMESTAMP NOT NULL, -- Data e Horario viraram um campo só!!!!!
+  data_horario TIMESTAMP NOT NULL, -- Data e Horário viraram um campo só!!!!!
   tema         VARCHAR(50),
 
   CONSTRAINT pk_palestra PRIMARY KEY(id),
-  CONSTRAINT sk_palestra UNIQUE(nome, campus, data, horario),
+  CONSTRAINT sk_palestra UNIQUE(nome, campus, data_horario),
   CONSTRAINT fk_palestra_professor FOREIGN KEY(ministrante)
                                    REFERENCES professor(CPF)
                                    ON DELETE CASCADE,
