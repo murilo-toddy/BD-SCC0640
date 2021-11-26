@@ -140,7 +140,22 @@ CREATE TABLE oferecimento_curso (
   area_conhecimento VARCHAR(50),
 
   CONSTRAINT pk_oferecimento_curso PRIMARY KEY(campus, nome),
-  CONSTRAINT fk_orienta_professor FOREIGN KEY(campus)
-                                  REFERENCES campus(id)
-                                  ON DELETE CASCADE,
+  CONSTRAINT fk_oferecimento_curso_campus FOREIGN KEY(campus)
+                                          REFERENCES campus(id)
+                                          ON DELETE CASCADE,
+);
+
+CREATE TABLE cursando (
+  aluno        VARCHAR(11),
+  campus       INT,
+  curso        VARCHAR(50),
+  ano_ingresso DATE,
+
+  CONSTRAINT pk_cursando PRIMARY KEY(aluno, campus, curso),
+  CONSTRAINT fk_cursando_aluno FOREIGN KEY(aluno)
+                               REFERENCES aluno(CPF)
+                               ON DELETE CASCADE,
+  CONSTRAINT fk_cursando_curso FOREIGN KEY(campus, curso)
+                               REFERENCES campus(campus, nome)
+                               ON DELETE CASCADE,
 );
