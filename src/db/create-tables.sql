@@ -91,3 +91,13 @@ CREATE TABLE aluno (
                                REFERENCES pessoa(CPF)
                                ON DELETE CASCADE
 );
+
+CREATE TABLE professor (
+  CPF          VARCHAR(11),
+  area_atuacao VARCHAR,
+
+  CONSTRAINT PRIMARY KEY(CPF),
+  CONSTRAINT fk_professor_pessoa FOREIGN KEY(CPF)
+                               REFERENCES pessoa(CPF)
+                               ON DELETE CASCADE
+);
