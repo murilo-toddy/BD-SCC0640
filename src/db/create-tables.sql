@@ -101,3 +101,16 @@ CREATE TABLE professor (
                                REFERENCES pessoa(CPF)
                                ON DELETE CASCADE
 );
+
+CREATE TABLE orienta (
+  professor VARCHAR(11),
+  aluno     VARCHAR(11),
+
+  CONSTRAINT PRIMARY KEY(professor, aluno),
+  CONSTRAINT fk_orienta_professor FOREIGN KEY(professor)
+                                  REFERENCES professor(CPF)
+                                  ON DELETE CASCADE,
+  CONSTRAINT fk_orienta_aluno FOREIGN KEY(aluno)
+                              REFERENCES aluno(CPF)
+                              ON DELETE CASCADE
+);
