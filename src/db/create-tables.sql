@@ -90,9 +90,10 @@ CREATE TABLE pessoa (
   CONSTRAINT RG_number CHECK(RG ~ '^\d{12}$'),
 );
 
+CREATE TYPE ATUACAO_PESSOA AS ENUM ('aluno,' 'professor', 'responsavel');
 CREATE TABLE atuacao (
   CPF     CHAR(11),
-  atuacao VARCHAR(10),
+  atuacao ATUACAO_PESSOA,
 
   CONSTRAINT pk_atuacao PRIMARY KEY(CPF, atuacao),
   CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(CPF)
