@@ -10,3 +10,12 @@ services:
       POSTGRES_PASSWORD: 'admin'
     # volumes: # data persistance
     #   - ./db-data/:/var/lib/postgresql/data/
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
