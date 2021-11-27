@@ -65,7 +65,9 @@ CREATE TABLE pessoa (
   nascimento DATE        NOT NULL,
 
   CONSTRAINT pk_pessoa PRIMARY KEY(CPF),
-  CONSTRAINT sk_pessoa UNIQUE(RG)
+  CONSTRAINT sk_pessoa UNIQUE(RG),
+  CONSTRAINT CPF_number CHECK(CPF ~ '^\d\+$'),
+  CONSTRAINT RG_number CHECK(RG ~ '^\d\+$')
 );
 
 CREATE TABLE ingresso (
