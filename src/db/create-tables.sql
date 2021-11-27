@@ -2,7 +2,7 @@ CREATE TYPE BR_STATE AS ENUM (
   'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF',
   'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA',
   'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS',
-  'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
+  'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
 );
 
 CREATE TABLE residencia (
@@ -65,6 +65,18 @@ CREATE TABLE festa (
                               ON DELETE CASCADE
 );
 
+CREATE TABLE pessoa (
+  CPF        CHAR(11),
+  RG         CHAR(12)    NOT NULL,
+  nome       VARCHAR(75) NOT NULL,
+  nascimento DATE        NOT NULL,
+
+  CONSTRAINT pk_pessoa PRIMARY KEY(CPF),
+  CONSTRAINT sk_pessoa UNIQUE(CPF),
+  CONSTRAINT CPF_number CHECK(CPF ~ '^\d{11}$'),
+  CONSTRAINT RG_number CHECK(RG ~ '^\d{12}$')
+);
+
 CREATE TABLE ingresso (
   festa     INT,
   comprador CHAR(11),
@@ -75,22 +87,10 @@ CREATE TABLE ingresso (
                                ON DELETE CASCADE,
   CONSTRAINT fk_presenca_curso FOREIGN KEY(comprador)
                                REFERENCES pessoa(CPF)
-                               ON DELETE CASCADE,
+                               ON DELETE CASCADE
 );
 
-CREATE TABLE pessoa (
-  CPF        CHAR(11),
-  RG         CHAR(12)    NOT NULL,
-  nome       VARCHAR(75) NOT NULL,
-  nascimento DATE        NOT NULL,
-
-  CONSTRAINT pk_pessoa PRIMARY KEY(CPF),
-  CONSTRAINT sk_pessoa UNIQUE(CPF),
-  CONSTRAINT CPF_number CHECK(CPF ~ '^\d{11}$'),
-  CONSTRAINT RG_number CHECK(RG ~ '^\d{12}$'),
-);
-
-CREATE TYPE ATUACAO_PESSOA AS ENUM ('aluno,' 'professor', 'responsavel');
+CREATE TYPE ATUACAO_PESSOA AS ENUM ('aluno', 'professor', 'responsavel');
 CREATE TABLE atuacao (
   CPF     CHAR(11),
   atuacao ATUACAO_PESSOA,
@@ -171,7 +171,7 @@ CREATE TABLE oferecimento_curso (
   CONSTRAINT pk_oferecimento_curso PRIMARY KEY(campus, nome),
   CONSTRAINT fk_oferecimento_curso_campus FOREIGN KEY(campus)
                                           REFERENCES campus(id)
-                                          ON DELETE CASCADE,
+                                          ON DELETE CASCADE
 );
 
 CREATE TABLE cursando (
@@ -185,8 +185,8 @@ CREATE TABLE cursando (
                                REFERENCES aluno(CPF)
                                ON DELETE CASCADE,
   CONSTRAINT fk_cursando_curso FOREIGN KEY(campus, curso)
-                               REFERENCES campus(campus, nome)
-                               ON DELETE CASCADE,
+                               REFERENCES oferecimento_curso(campus, nome)
+                               ON DELETE CASCADE
 );
 
 CREATE TABLE trabalho (
@@ -194,13 +194,13 @@ CREATE TABLE trabalho (
   campus    INT,
   curso     VARCHAR(50),
 
-  CONSTRAINT pk_trabalho PRIMARY KEY(aluno, campus, curso),
+  CONSTRAINT pk_trabalho PRIMARY KEY(professor, campus, curso),
   CONSTRAINT fk_trabalho_professor FOREIGN KEY(professor)
                                    REFERENCES professor(CPF)
                                    ON DELETE CASCADE,
   CONSTRAINT fk_trabalho_curso FOREIGN KEY(campus, curso)
-                               REFERENCES campus(campus, nome)
-                               ON DELETE CASCADE,
+                               REFERENCES oferecimento_curso(campus, nome)
+                               ON DELETE CASCADE
 );
 
 CREATE TABLE palestra (
@@ -218,7 +218,7 @@ CREATE TABLE palestra (
                                    ON DELETE CASCADE,
   CONSTRAINT fk_palestra_campus FOREIGN KEY(campus)
                                 REFERENCES campus(id)
-                                ON DELETE CASCADE,
+                                ON DELETE CASCADE
 );
 
 CREATE TABLE presenca_marcada (
@@ -231,5 +231,5 @@ CREATE TABLE presenca_marcada (
                                ON DELETE CASCADE,
   CONSTRAINT fk_presenca_curso FOREIGN KEY(palestra)
                                REFERENCES palestra(id)
-                               ON DELETE CASCADE,
+                               ON DELETE CASCADE
 );
