@@ -100,6 +100,15 @@ CREATE TABLE atuacao (
                                ON DELETE CASCADE
 );
 
+CREATE TABLE responsavel (
+  CPF CHAR(11),
+
+  CONSTRAINT pk_responsavel PRIMARY KEY(CPF),
+  CONSTRAINT fk_responsavel_pessoa FOREIGN KEY(CPF)
+                                   REFERENCES pessoa(CPF)
+                                   ON DELETE CASCADE
+);
+
 CREATE TABLE aluno (
   CPF                CHAR(11),
   n_indicacoes       INT,
