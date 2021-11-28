@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Union
+from typing import Union
 
 from enums import PersonRole
 from utils import regexes, remove_symbols
@@ -12,7 +12,7 @@ class Person:
         rg: str,
         name: str,
         birthdate: Union[datetime, str],
-        roles: Union[List[PersonRole], PersonRole],
+        roles: Union[list[PersonRole], PersonRole],
     ):
         if isinstance(roles, list) and len(
             [role for role in roles if isinstance(role, PersonRole)]
@@ -52,5 +52,5 @@ class Person:
     def get_birthdate_str(self) -> str:
         return self.__birthdate.strftime("%d/%m/%Y")
 
-    def get_roles(self) -> List[PersonRole]:
+    def get_roles(self) -> list[PersonRole]:
         return self.__roles
