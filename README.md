@@ -2,11 +2,6 @@
 
 Repositório para o desenvolvimento do projeto da disciplina SCC0640
 
-Antes de inicializar o programa, é necessário criar um arquivo `.env` na raiz do projeto e setar a variável `POSTGRES_PASSWORD`. Por exemplo:
-```bash
-POSTGRES_PASSWORD="Z*T5L&!#N38%Q5P%w#R9LV55j5L#PxHSqcx"
-```
-
 Para iniciar o *Postgres* dentro do *Docker container* basta executar:
 ```bash
 docker-compose up
@@ -28,19 +23,20 @@ Caso não exista, criar um servidor genérico e em seguida um database com nome 
 
 Para executar arquivos `.sql` pelo docker, é necessário criar uma cópia do arquivo para o ambiente
 
-```sudo docker cp ./dir/filename.sql bd-scc0640_db_1:/dir/filename.sql```
+```bash
+docker cp ./dir/filename.sql bd-scc0640_db_1:/dir/filename.sql
+```
 
 Vale ressaltar que o endereço do arquivo no docker não precisa ser o mesmo que o local
 
-Em seguida, pode-se executar o arquivo iniciando o `psql`
+Em seguida, pode-se executar o arquivo iniciando o `psql` (o endereço deve corresponder ao endereço do docker)
 
-```sudo docker exec -it bd-scc0640_db_1 psql -U postgres -d scc0640 -f /dir/filename.sql```
+```bash
+docker exec -it bd-scc0640_db_1 psql -U postgres -d scc0640 -f /dir/filename.sql
+```
 
-O endereço neste caso deve ser o endereço no docker.
+ou pela própria linha de comando `psql`, através de:
 
-O arquivo também pode ser executado pelo próprio *psql* utilizando:
-
-```\i dir/filename.sql```
-
-
-
+```bash
+\i dir/filename.sql
+```

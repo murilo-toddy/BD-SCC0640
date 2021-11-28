@@ -7,7 +7,7 @@ services:
       - 5432:5432
     restart: always
     environment:
-      POSTGRES_PASSWORD: '$POSTGRES_PASSWORD'
+      POSTGRES_PASSWORD: 'admin'
     # volumes: # data persistance
     #   - ./db-data/:/var/lib/postgresql/data/
   pgadmin:
