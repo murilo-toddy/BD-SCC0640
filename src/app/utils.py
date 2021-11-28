@@ -8,4 +8,8 @@ class regexes:
 
 
 def remove_symbols(string: str) -> str:
-    return re.sub(r"[^a-zA-Z0-9]", '', string)
+    """
+    Removes everything that's not a letter nor a number from the given string.
+    """
+
+    return re.sub(r"[^a-zA-Z0-9]", "", string)

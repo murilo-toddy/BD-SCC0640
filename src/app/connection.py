@@ -4,10 +4,32 @@ import psycopg2
 
 
 class Connection:
+    """
+    Sets up a connection to the Postgres database.
+
+    ...
+    Attributes
+    ----------
+    connection : psycopg2._psycopg.connection
+    cursor : psycopg2._psycopg.cursor
+    ...
+    """
+
     def __init__(self):
         self.connection, self.cursor = self.connect()
 
-    def __config(self, filename="database.ini", section="postgresql"):
+    def __config(self, filename="database.ini", section="postgresql") -> dict[str, str]:
+        """
+        Gets config info for a `.ini` file.
+
+        ...
+        Parameters
+        ----------
+        filename : str
+        section : str
+        ...
+        """
+
         parser = ConfigParser()
         parser.read(filename)
 
@@ -19,7 +41,11 @@ class Connection:
 
         return dict(parser.items(section))
 
-    def connect(self):
+    def connect(self) -> tuple[psycopg2._psycopg.connection, psycopg2._psycopg.cursor]:
+        """
+        Connects to the database.
+        """
+
         params = self.__config()
 
         # connects to the database
@@ -37,7 +63,11 @@ class Connection:
 
         return connection, cursor
 
-    def disconnect(self):
+    def disconnect(self) -> None:
+        """
+        Connects from the database.
+        """
+
         if self.connection:
             self.connection.close()
             print("Connection closed")
