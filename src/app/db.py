@@ -10,6 +10,9 @@ class Database:
     def __init__(self, connection=Connection()):
         self.__connection: Connection = connection
 
+    def disconnect(self):
+        self.__connection.disconnect()
+
     def __execute_and_commit(self, command):
         """
         Executes an SQL command and commits it.
@@ -28,7 +31,7 @@ class Database:
         name = person.get_name()
         birthdate = person.get_birthdate_str()
 
-        sql_cmd = f"INSERT INTO pessoa(CPF, RG, nome, nascimento) \
-            VALUES({cpf}, {rg}, {name}, TO_DATE({birthdate}, 'DD/MM/YYYY'));"
+        sql_cmd = f"INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(\
+        '{cpf}', '{rg}', '{name}', TO_DATE('{birthdate}', 'DD/MM/YYYY'));"
 
         self.__execute_and_commit(sql_cmd)

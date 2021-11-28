@@ -1,4 +1,3 @@
-from connection import Connection
 from entities.people import Person
 from enums import PersonRole
 
@@ -17,4 +16,4 @@ if __name__ == "__main__":
 
     db.insert_person(person)
 
-    Connection.disconnect()
+    db.disconnect()
