@@ -4,6 +4,11 @@ from typing import Union
 from enums import PersonRole
 from utils import regexes, remove_symbols
 
+# TODO: use classes for Professor, Student and Responsible instead of an enum
+# it should have their properties as well as a `__value` attribute with the
+# table's name. when inserting a new person, one should loop through their
+# roles and insert each of them as well.
+
 
 class Person:
     def __init__(

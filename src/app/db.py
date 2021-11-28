@@ -30,8 +30,14 @@ class Database:
         rg = person.get_rg()
         name = person.get_name()
         birthdate = person.get_birthdate_str()
+        roles = person.get_roles()
 
         # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(%s, %s,\
             %s, TO_DATE(%s, 'DD/MM/YYYY'));"
         self.__execute_and_commit(query, cpf, rg, name, birthdate)
+
+        # inserts each role
+        role_query = "INSERT INTO atuacao(pessoa, atuacao) VALUES(%s, %s);"
+        for role in roles:
+            self.__execute_and_commit(role_query, cpf, role)
