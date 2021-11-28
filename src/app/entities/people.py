@@ -6,9 +6,6 @@ from utils import regexes, remove_symbols
 
 
 class Person:
-    def __init__():
-        pass
-
     def __init__(
         self,
         cpf: str,
@@ -17,24 +14,25 @@ class Person:
         birthdate: Union[datetime, str],
         roles: Union[List[PersonRole], PersonRole],
     ):
-        if type(roles) == list and len(
-            [el for el in roles if type(el) != PersonRole]
+        if isinstance(roles, list) and len(
+            [role for role in roles if isinstance(role, PersonRole)]
         ):
             raise ValueError("'roles' must be a PersonRole.")
         elif not regexes.cpf.match(cpf):
             raise ValueError("'cpf' is invalid.")
         elif not regexes.rg.match(rg):
             raise ValueError("'rg' is invalid.")
-        elif type(birthdate) != datetime and type(birthdate) != str:
+        elif not (isinstance(birthdate, datetime) or isinstance(birthdate, str)):
             raise ValueError("'birthdate' must be a datetime or date-like string.")
 
-        if type(roles) == PersonRole:
+        if isinstance(roles, PersonRole):
             roles = [roles]
-        elif type(birthdate) == str:
-            birthdate = datetime.strptime(birthdate, '%d/%m/%Y')
+
+        if isinstance(birthdate, str):
+            birthdate = datetime.strptime(birthdate, "%d/%m/%Y")
 
         self.__cpf = remove_symbols(cpf)
-        self.__rg = remove_symbols(rg)
+        self.__rg = remove_symbols(rg.upper())
         self.__name = name
         self.__birthdate = birthdate
         self.__roles = roles
