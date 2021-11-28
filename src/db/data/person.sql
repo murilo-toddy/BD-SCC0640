@@ -65,7 +65,7 @@ VALUES(
 
 INSERT INTO pessoa(CPF, RG, nome, nascimento)
 VALUES(
-    '8873294030',
+    '88732940302',
     '299690519',
     'Caio Theo Breno Castro',
     TO_DATE('21/01/1968', 'DD/MM/YYYY')
@@ -73,7 +73,7 @@ VALUES(
 
 INSERT INTO pessoa(CPF, RG, nome, nascimento)
 VALUES(
-    '7421401059',
+    '74214010591',
     '459538044',
     'Aurora Brenda Cláudia Santos',
     TO_DATE('19/09/1999', 'DD/MM/YYYY')
@@ -161,37 +161,37 @@ VALUES(
 
 -- Inserção ATUAÇÃO
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('89738378001', 'Aluno');
+VALUES('89738378001', 'aluno');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('61520188030', 'Professor');
+VALUES('61520188030', 'professor');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('98975082016', 'Aluno');
+VALUES('98975082016', 'aluno');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('98826700087', 'Aluno');
+VALUES('98826700087', 'aluno');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('23830223064', 'Aluno');
+VALUES('23830223064', 'aluno');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('7421401059', 'Aluno');
+VALUES('74214010591', 'aluno');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('7421401059', 'Professor');
+VALUES('74214010591', 'professor');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('31000160840', 'Aluno');
+VALUES('31000160840', 'aluno');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('72262491119', 'Aluno');
+VALUES('72262491119', 'aluno');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('65671541522', 'Professor');
+VALUES('65671541522', 'professor');
 
 INSERT INTO atuacao(CPF, atuacao)
-VALUES('65671541522', 'Aluno');
+VALUES('65671541522', 'aluno');
 
 -- Inserção ALUNO
 INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
@@ -207,7 +207,7 @@ INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
 VALUES('23830223064', 0, TRUE,  FALSE);
 
 INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
-VALUES('7421401059', 1, FALSE, FALSE);
+VALUES('74214010591', 1, FALSE, FALSE);
 
 INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
 VALUES('31000160840', 0, TRUE, FALSE);
@@ -223,7 +223,7 @@ INSERT INTO professor(CPF, area_atuacao)
 VALUES('61520188030', 'Exatas');
 
 INSERT INTO professor(CPF, area_atuacao)
-VALUES('7421401059', 'Exatas');
+VALUES('74214010591', 'Exatas');
 
 INSERT INTO professor(CPF, area_atuacao)
 VALUES('65671541522', 'Humanas');
