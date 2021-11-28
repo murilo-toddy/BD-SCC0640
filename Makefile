@@ -1,8 +1,11 @@
-start:
-	sudo docker-compose up
+start_db:
+	docker-compose up
 
 psql:
-	sudo docker exec -it bd-scc0640_db_1 psql -U postgres
+	docker exec -it bd-projeto-db psql -U postgres
 
-update:
-	sudo docker cp ./src/db bd-scc0640_db_1:/db
+setup_db:
+	docker exec -it bd-projeto-db psql -U postgres -d postgres -f /db-scripts/setup-tables.sql
+
+start_app:
+	cd src/app && python3 main.py

@@ -2,14 +2,16 @@ version: '3.1'
 
 services:
   db:
+    container_name: bd-projeto-db
     image: postgres
     ports:
       - 5432:5432
     restart: always
     environment:
       POSTGRES_PASSWORD: 'admin'
-    # volumes: # data persistance
-    #   - ./db-data/:/var/lib/postgresql/data/
+    volumes: # data persistance
+      - ./src/db/:/db-scripts/
+      # - ./db-data/:/var/lib/postgresql/data/
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
@@ -18,4 +20,4 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "5050:80"
+      - 5050:80
