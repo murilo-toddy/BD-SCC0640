@@ -92,11 +92,11 @@ CREATE TABLE ingresso (
 
 CREATE TYPE ATUACAO_PESSOA AS ENUM ('aluno', 'professor', 'responsavel');
 CREATE TABLE atuacao (
-    CPF     CHAR(11),
+    pessoa  CHAR(11),
     atuacao ATUACAO_PESSOA,
 
-    CONSTRAINT pk_atuacao PRIMARY KEY(CPF, atuacao),
-    CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(CPF)
+    CONSTRAINT pk_atuacao PRIMARY KEY(pessoa, atuacao),
+    CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(pessoa)
                                  REFERENCES pessoa(CPF)
                                  ON DELETE CASCADE
 );
