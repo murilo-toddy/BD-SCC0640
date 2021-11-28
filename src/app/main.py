@@ -1,29 +1,20 @@
 from connection import Connection
+from entities.people import Person
+from enums import PersonRole
 
-
-def insert_person(connection, person):
-    # Insere uma nova pessoa
-    sql = """INSERT INTO pessoa(CPF,RG,nome,nascimento)
-             VALUES(%s, %s, %s, TO_DATE(%s, 'DD/MM/YYYY'));"""
-
-    # execute the INSERT statement
-    connection.cursor.execute(
-        sql, (person["cpf"], person["rg"], person["nome"], person["nascimento"])
-    )
-    connection.connection.commit()
-
+from db import Database
 
 if __name__ == "__main__":
-    connection = Connection()
+    db = Database()
 
-    person = {
-        "cpf": "11471634990",
-        "rg": "137229919",
-        "nome": "tod",
-        "nascimento": "27/08/2001",
-        "att": "Professor",
-    }
+    person = Person(
+        cpf="11471634990",
+        rg="137229919",
+        name="tod",
+        birthdate="27/08/2001",
+        roles=PersonRole.Professor,
+    )
 
-    insert_person(Connection, person)
+    db.insert_person(person)
 
     Connection.disconnect()
