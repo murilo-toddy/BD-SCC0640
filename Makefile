@@ -1,6 +1,9 @@
 start_db:
 	docker-compose up
 
+stop_db:
+	docker-compose down
+
 psql:
 	docker exec -it bd-projeto-db psql -U postgres
 
