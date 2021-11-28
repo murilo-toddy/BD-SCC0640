@@ -31,7 +31,7 @@ class Database:
         name = person.get_name()
         birthdate = person.get_birthdate_str()
 
-        sql_cmd = f"INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(\
-        '{cpf}', '{rg}', '{name}', TO_DATE('{birthdate}', 'DD/MM/YYYY'));"
-
-        self.__execute_and_commit(sql_cmd)
+        # psycopg2'll sanitize the inputs (prevents SQL Injection)
+        query = "INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(%s, %s,\
+            %s, TO_DATE(%s, 'DD/MM/YYYY'));"
+        self.__execute_and_commit(query, cpf, rg, name, birthdate)
