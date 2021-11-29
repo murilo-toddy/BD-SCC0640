@@ -7,6 +7,9 @@
 \i db/db/data/party.sql
 \i db/db/data/talk.sql
 
+ANALYZE; --Atualização de estatísticas
+
+
 -- INFORMAÇÕES RESTANTES:
 -- Tabela CURSANDO
 -- Informações Adicionais RESIDENCIA
