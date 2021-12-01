@@ -1,42 +1,42 @@
-# BD-SCC0640
+# SCC0640 --- Bases de Dados
 
-Repositório para o desenvolvimento do projeto da disciplina SCC0640
+Repositório para o desenvolvimento do projeto da disciplina SCC0640, ministrada pela professora Elaine Parros.
 
-Para iniciar o *Postgres* dentro do *Docker container* basta executar:
-```bash
-docker-compose up
-```
-e, para encerrá-lo:
-```bash
-docker-compose down
-```
+## Makefile
 
-Para abrir o console interativo do Postgres dentro do container, execute:
-```bash
-docker exec -it bd-scc0640_db_1 psql -U postgres
-```
-([fonte](https://stackoverflow.com/questions/37099564/docker-how-can-run-the-psql-command-in-the-postgres-container))
+### `start_db`
 
-Para acessar a interface gráfica do *Postgres* (pgadmin), basta entrar entrar no endereço `http://localhost:5050/browser/` e autenticar com as informações do docker-compose.
+Inicia o *Postgres* dentro do *Docker container*.
 
-Caso não exista, criar um servidor genérico e em seguida um database com nome `scc0640`. As tabelas criadas podem ser encontradas em `scc0640/Schemas/public/Tables`
+### `stop_db`
 
-Para executar arquivos `.sql` pelo docker, é necessário criar uma cópia do arquivo para o ambiente
+Encerra o *Docker container* que está rodando o *Postgres*.
 
-```bash
-docker cp ./dir/filename.sql bd-scc0640_db_1:/dir/filename.sql
-```
+### `psql`
 
-Vale ressaltar que o endereço do arquivo no docker não precisa ser o mesmo que o local
+Abre o console interativo do Postgres dentro do container.
 
-Em seguida, pode-se executar o arquivo iniciando o `psql` (o endereço deve corresponder ao endereço do docker)
+### `setup_db`
 
-```bash
-docker exec -it bd-scc0640_db_1 psql -U postgres -d scc0640 -f /dir/filename.sql
-```
+Reseta todas as tabelas do banco e as cria de novo.
 
-ou pela própria linha de comando `psql`, através de:
+### `start_app`
 
+Executa a aplicação.
+
+## PG Admin
+
+Para acessar a interface gráfica do *Postgres* (pgadmin), basta entrar entrar no endereço [http://localhost:5050/browser/](http://localhost:5050/browser/). Par a autenticação, utilize:
+
+- *Email*: admin@admin.com
+- *Password*: root
+
+Conecte ao banco de dados usando:
+
+- *Host*: localhost
+- *Database*: postgres
+- *User*: postgres
+- *Password*: admin
 ```bash
 \i dir/filename.sql
 ```
