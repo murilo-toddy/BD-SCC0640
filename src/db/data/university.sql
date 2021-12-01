@@ -111,7 +111,37 @@ FROM campus WHERE nome_campus = 'Franca';
 
 
 -- Inserção CURSANDO
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '89738378001', id, 'Ciência de Computação', '2019'
+FROM campus WHERE nome_campus = 'EESC';
 
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '98975082016', id, 'Ciência de Computação', '2018'
+FROM campus WHERE nome_campus = 'EESC';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '98826700087', id, 'Ciência de Computação', '2018'
+FROM campus WHERE nome_campus = 'EESC';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '23830223064', id, 'Engenharia Mecatrônica', '2020'
+FROM campus WHERE nome_campus = 'EESC';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '74214010591', id, 'Engenharia Mecatrônica', '2021'
+FROM campus WHERE nome_campus = 'EESC';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '31000160840', id, 'Relações Internacionais', '2019'
+FROM campus WHERE nome_campus = 'Franca';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '72262491119', id, 'Biomedicina', '2020'
+FROM campus WHERE nome_campus = 'Catuai';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '31000160840', id, 'Biomedicina', '2018'
+FROM campus WHERE nome_campus = 'Catuai';
 
 
 -- Inserção ORIENTA

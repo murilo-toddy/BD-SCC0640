@@ -2,17 +2,17 @@
 -- TODO Verificar se n_disponivel vai continuar no banco, talvez de pra remover!!
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, n_disponivel, open_bar)
 SELECT TO_TIMESTAMP('30/04/2020 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
-       id, 50, 40, 49, ''
+       id, 50, 40, 49, 'Vodka, Skol Beats'
 FROM residencia WHERE cep = '13571370';
 
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, n_disponivel, open_bar)
 SELECT TO_TIMESTAMP('04/09/2020 17:00', 'DD/MM/YYYY HH24:MI'), 'Wired',
-       id, 30, 25, 26, ''
+       id, 30, 25, 26, 'Corote'
 FROM residencia WHERE cep = '13565403';
 
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, n_disponivel, open_bar)
 SELECT TO_TIMESTAMP('17/06/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Festa Sync',
-       id, 25, 35, 24, ''
+       id, 25, 35, 24, NULL
 FROM residencia WHERE cep = '13565403';
 
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, n_disponivel, open_bar)
