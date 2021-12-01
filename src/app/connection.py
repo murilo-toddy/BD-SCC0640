@@ -81,9 +81,9 @@ class Connection:
             self.connection.close()
             print("Connection closed")
 
-    def exec_commit(self, command):
+    def exec_commit(self, command, *args):
         """
         Executes an SQL command and commits it.
         """
-        self.cursor.execute(command)
+        self.cursor.execute(command, args)
         self.connection.commit()
