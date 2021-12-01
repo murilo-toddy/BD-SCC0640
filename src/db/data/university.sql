@@ -81,67 +81,111 @@ VALUES (
 -- Inserção OFERECIMENTO DE CURSO
 INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
 SELECT id, 'Ciência de Computação', 'exatas'
-FROM campus WHERE nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
 SELECT id, 'Engenharia Mecatrônica', 'exatas'
-FROM campus WHERE nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
 SELECT id, 'Relações Internacionais', 'humanas'
-FROM campus WHERE nome_campus = 'Franca';
+FROM campus WHERE nome_universidade = 'UNESP' AND nome_campus = 'Franca';
 
 INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
 SELECT id, 'Biomedicina', 'biológicas'
-FROM campus WHERE nome_campus = 'Catuai';
+FROM campus WHERE nome_universidade = 'Pitágoras' AND nome_campus = 'Catuai';
+
+INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
+SELECT id, 'Matemática', 'exatas'
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'Politécnica';
+
+INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
+SELECT id, 'Direito', 'humanas'
+FROM campus WHERE nome_universidade = 'UFPR' AND nome_campus = 'Curitiba';
+
+INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
+SELECT id, 'Engenharia Elétrica', 'exatas'
+FROM campus WHERE nome_universidade = 'UNICAMP' AND nome_campus = 'Campinas';
 
 
 -- Inserção TRABALHO
 INSERT INTO trabalho (professor, campus, curso)
 SELECT '61520188030', id, 'Ciência de Computação'
-FROM campus WHERE nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO trabalho (professor, campus, curso)
 SELECT '74214010591', id, 'Engenharia Mecatrônica'
-FROM campus WHERE nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO trabalho (professor, campus, curso)
 SELECT '65671541522', id, 'Relações Internacionais'
-FROM campus WHERE nome_campus = 'Franca';
+FROM campus WHERE nome_universidade = 'UNESP' AND nome_campus = 'Franca';
+
+INSERT INTO trabalho (professor, campus, curso)
+SELECT '65671541522', id, 'Biomedicina'
+FROM campus WHERE nome_universidade = 'Pitágoras' AND nome_campus = 'Catuai';
+
+INSERT INTO trabalho (professor, campus, curso)
+SELECT '65671541522', id, 'Direito'
+FROM campus WHERE nome_universidade = 'UFPR' AND nome_campus = 'Curitiba';
+
+INSERT INTO trabalho (professor, campus, curso)
+SELECT '65671541522', id, 'Matemática'
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'Politécnica';
+
+INSERT INTO trabalho (professor, campus, curso)
+SELECT '65671541522', id, 'Engenharia Elétrica'
+FROM campus WHERE nome_universidade = 'UNICAMP' AND nome_campus = 'Campinas';
 
 
 -- Inserção CURSANDO
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '89738378001', id, 'Ciência de Computação', '2019'
-FROM campus WHERE nome_campus = 'EESC';
+SELECT '89738378001', id, 'Ciência de Computação', TO_DATE('2019', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '98975082016', id, 'Ciência de Computação', '2018'
-FROM campus WHERE nome_campus = 'EESC';
+SELECT '98975082016', id, 'Ciência de Computação', TO_DATE('2018', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '98826700087', id, 'Ciência de Computação', '2018'
-FROM campus WHERE nome_campus = 'EESC';
+SELECT '98826700087', id, 'Ciência de Computação', TO_DATE('2018', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '23830223064', id, 'Engenharia Mecatrônica', '2020'
-FROM campus WHERE nome_campus = 'EESC';
+SELECT '23830223064', id, 'Engenharia Mecatrônica', TO_DATE('2020', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '74214010591', id, 'Engenharia Mecatrônica', '2021'
-FROM campus WHERE nome_campus = 'EESC';
+SELECT '74214010591', id, 'Engenharia Mecatrônica', TO_DATE('2021', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '31000160840', id, 'Relações Internacionais', '2019'
-FROM campus WHERE nome_campus = 'Franca';
+SELECT '31000160840', id, 'Relações Internacionais', TO_DATE('2019', 'YYYY')
+FROM campus WHERE nome_universidade = 'UNESP' AND nome_campus = 'Franca';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '72262491119', id, 'Biomedicina', '2020'
-FROM campus WHERE nome_campus = 'Catuai';
+SELECT '72262491119', id, 'Biomedicina', TO_DATE('2020', 'YYYY')
+FROM campus WHERE nome_universidade = 'Pitágoras' AND nome_campus = 'Catuai';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '31000160840', id, 'Biomedicina', '2018'
-FROM campus WHERE nome_campus = 'Catuai';
+SELECT '65671541522', id, 'Biomedicina', TO_DATE('2018', 'YYYY')
+FROM campus WHERE nome_universidade = 'Pitágoras' AND nome_campus = 'Catuai';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '18667659061', id, 'Engenharia Mecatrônica', TO_DATE('2018', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '93622146010', id, 'Engenharia Mecatrônica', TO_DATE('2018', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '88732940302', id, 'Relações Internacionais', TO_DATE('2018', 'YYYY')
+FROM campus WHERE nome_universidade = 'UNESP' AND nome_campus = 'Franca';
+
+INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
+SELECT '83353310061', id, 'Matemática', TO_DATE('2018', 'YYYY')
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'Politécnica';
 
 
 -- Inserção ORIENTA

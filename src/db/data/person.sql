@@ -160,38 +160,78 @@ VALUES(
 );
 
 -- Inserção ATUAÇÃO
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('89738378001', 'aluno');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('61520188030', 'professor');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('98975082016', 'aluno');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('98826700087', 'aluno');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('23830223064', 'aluno');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('74214010591', 'aluno');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('74214010591', 'professor');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('31000160840', 'aluno');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('72262491119', 'aluno');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('65671541522', 'professor');
 
-INSERT INTO atuacao(CPF, atuacao)
+INSERT INTO atuacao(pessoa, atuacao)
 VALUES('65671541522', 'aluno');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('45446434064', 'responsavel');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('61520188030', 'responsavel');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('74214010591', 'responsavel');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('93078701018', 'responsavel');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('35017890092', 'responsavel');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('18667659061', 'aluno');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('93622146010', 'aluno');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('88732940302', 'aluno');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('83353310061', 'aluno');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('90283056029', 'professor');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('15101159514', 'professor');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('99812465227', 'professor');
+
+INSERT INTO atuacao(pessoa, atuacao)
+VALUES('54904342607', 'professor');
+
 
 -- Inserção ALUNO
 INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
@@ -218,6 +258,19 @@ VALUES('72262491119', 8, TRUE, FALSE);
 INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
 VALUES('65671541522', 4, TRUE, TRUE);
 
+INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
+VALUES('18667659061', 5, TRUE, FALSE);
+
+INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
+VALUES('93622146010', 7, TRUE, TRUE);
+
+INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
+VALUES('88732940302', 1, FALSE, FALSE);
+
+INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, procurando_imovel)
+VALUES('83353310061', 10, TRUE, TRUE);
+
+
 -- Inserção PROFESSOR
 INSERT INTO professor(CPF, area_atuacao)
 VALUES('61520188030', 'Exatas');
@@ -227,3 +280,32 @@ VALUES('74214010591', 'Exatas');
 
 INSERT INTO professor(CPF, area_atuacao)
 VALUES('65671541522', 'Humanas');
+
+INSERT INTO professor(CPF, area_atuacao)
+VALUES('15101159514', 'Biológicas');
+
+INSERT INTO professor(CPF, area_atuacao)
+VALUES('99812465227', 'Humanas');
+
+INSERT INTO professor(CPF, area_atuacao)
+VALUES('54904342607', 'Exatas');
+
+INSERT INTO professor(CPF, area_atuacao)
+VALUES('90283056029', 'Exatas');
+
+
+-- Inserção RESPONSÁVEL
+INSERT INTO responsavel(CPF)
+VALUES('45446434064');
+
+INSERT INTO responsavel(CPF)
+VALUES('61520188030');
+
+INSERT INTO responsavel(CPF)
+VALUES('74214010591');
+
+INSERT INTO responsavel(CPF)
+VALUES('93078701018');
+
+INSERT INTO responsavel(CPF)
+VALUES('35017890092');
