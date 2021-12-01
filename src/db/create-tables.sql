@@ -136,7 +136,7 @@ CREATE TABLE responsabilidade (
   responsavel CHAR(11),
   permissao_venda BOOLEAN,
 
-  CONSTRAINT pk_responsabilidade(residencia, responsavel),
+  CONSTRAINT pk_responsabilidade PRIMARY KEY(residencia, responsavel),
   CONSTRAINT fk_responsabilidade_residencia FOREIGN KEY(residencia)
                                             REFERENCES residencia(ID)
                                             ON DELETE CASCADE,
@@ -162,7 +162,7 @@ CREATE TABLE contrato_aluguel (
   CONSTRAINT fk_contrato_aluguel_pessoa FOREIGN KEY(locatario)
                                         REFERENCES pessoa(CPF)
                                         ON DELETE SET NULL,
-  CONSTRAINT contrato_aluguel_inicio_before_fim CHECK fim >= inicio,
+  CONSTRAINT contrato_aluguel_inicio_before_fim CHECK(fim >= inicio)
 );
 
 CREATE TABLE venda (
@@ -179,7 +179,7 @@ CREATE TABLE venda (
                                        ON DELETE SET NULL,
   CONSTRAINT fk_venda_pessoa FOREIGN KEY(comprador)
                                      REFERENCES pessoa(CPF)
-                                     ON DELETE SET NULL,
+                                     ON DELETE SET NULL
 );
 
 CREATE TABLE orienta (
