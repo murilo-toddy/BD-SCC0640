@@ -5,7 +5,7 @@ import psycopg2
 
 class Connection:
     """
-    Sets up a connection to the Postgres database.
+    Singleton that sets up one connection to the Postgres database.
 
     ...
     Attributes
@@ -15,8 +15,15 @@ class Connection:
     ...
     """
 
+    # Guarantees the Connection class is a Singleton
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(Connection, cls).__new__(cls)
+
+        return cls.instance
+
     def __init__(self):
-        self.connection, self.cursor = self.connect()
+        self.connection, self.cursor = self.__connect()
 
     def __config(self, filename="database.ini", section="postgresql") -> dict[str, str]:
         """
@@ -41,7 +48,9 @@ class Connection:
 
         return dict(parser.items(section))
 
-    def connect(self) -> tuple[psycopg2._psycopg.connection, psycopg2._psycopg.cursor]:
+    def __connect(
+        self,
+    ) -> tuple[psycopg2._psycopg.connection, psycopg2._psycopg.cursor]:
         """
         Connects to the database.
         """
@@ -71,3 +80,10 @@ class Connection:
         if self.connection:
             self.connection.close()
             print("Connection closed")
+
+    def exec_commit(self, command):
+        """
+        Executes an SQL command and commits it.
+        """
+        self.cursor.execute(command)
+        self.connection.commit()

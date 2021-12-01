@@ -13,13 +13,6 @@ class Database:
     def disconnect(self):
         self.__connection.disconnect()
 
-    def __execute_and_commit(self, command):
-        """
-        Executes an SQL command and commits it.
-        """
-        self.__connection.cursor.execute(command)
-        self.__connection.connection.commit()
-
     def insert_person(self, person: Person):
         """
         Inserts a person's data in the DB, considering all necessary tables:
@@ -35,9 +28,9 @@ class Database:
         # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(%s, %s,\
             %s, TO_DATE(%s, 'DD/MM/YYYY'));"
-        self.__execute_and_commit(query, cpf, rg, name, birthdate)
+        self.__connection.exec_commit(query, cpf, rg, name, birthdate)
 
         # inserts each role
         role_query = "INSERT INTO atuacao(pessoa, atuacao) VALUES(%s, %s);"
         for role in roles:
-            self.__execute_and_commit(role_query, cpf, role)
+            self.__connection.exec_commit(role_query, cpf, role)
