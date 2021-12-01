@@ -81,9 +81,26 @@ class Connection:
             self.connection.close()
             print("Connection closed")
 
-    def exec_commit(self, command, *args):
+    def exec_commit(self, command: str, *args, cb: callable = None) -> any:
         """
         Executes an SQL command and commits it.
+
+        Parameters
+        ----------
+        command : str
+            SQL command to be executed.
+        args : tuple[any]
+            Parameters to `command`.
+        cb : function = None
+            Function that'll be called before the commit. The cursor'll be
+            passed to it as argument.
+
+        Returns
+        -------
+        any : the return value of `cb` or `None`.
         """
         self.cursor.execute(command, args)
+        return_value = cb(self.cursor) if cb else None
         self.connection.commit()
+
+        return return_value
