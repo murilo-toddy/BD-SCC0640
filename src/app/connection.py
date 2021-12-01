@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 
 import psycopg2
+import psycopg2.extras
 
 
 class Connection:
@@ -22,7 +23,8 @@ class Connection:
 
         return cls.instance
 
-    def __init__(self):
+    def __init__(self, debug=False):
+        self.__debug = debug
         self.connection, self.cursor = self.__connect()
 
     def __config(self, filename="database.ini", section="postgresql") -> dict[str, str]:
@@ -50,7 +52,7 @@ class Connection:
 
     def __connect(
         self,
-    ) -> tuple[psycopg2._psycopg.connection, psycopg2._psycopg.cursor]:
+    ) -> tuple[psycopg2._psycopg.connection, psycopg2.extras.DictCursor]:
         """
         Connects to the database.
         """
@@ -58,17 +60,18 @@ class Connection:
         params = self.__config()
 
         # connects to the database
-        print("Connecting to the PostgreSQL database...")
+        if self.__debug:
+            print("Connecting to the PostgreSQL database...")
         connection = psycopg2.connect(**params)
 
         # create a cursor
-        cursor = connection.cursor()
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-        # TODO: remove this after development
         # displays the db server's version
-        print("PostgreSQL database version:")
-        cursor.execute("SELECT version()")
-        print(cursor.fetchone())
+        if self.__debug:
+            print("PostgreSQL database version:")
+            cursor.execute("SELECT version()")
+            print(cursor.fetchone())
 
         return connection, cursor
 
@@ -79,7 +82,8 @@ class Connection:
 
         if self.connection:
             self.connection.close()
-            print("Connection closed")
+            if self.__debug:
+                print("Connection closed")
 
     def exec_commit(self, command: str, *args, cb: callable = None) -> any:
         """
