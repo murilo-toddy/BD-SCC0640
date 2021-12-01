@@ -50,12 +50,11 @@ CREATE TABLE moradia (
 
 CREATE TABLE festa (
     id                INT         GENERATED ALWAYS AS IDENTITY,
-    data_horario      TIMESTAMP   NOT NULL, -- Data e Horário viraram um campo só!!!!!
+    data_horario      TIMESTAMP   NOT NULL,
     nome              VARCHAR(50) NOT NULL,
     moradia           INT         NOT NULL,
     preço             MONEY       NOT NULL,
     n_ingressos_total INT         NOT NULL,
-    n_disponivel      INT         NOT NULL,  -- was this deleted?
     open_bar          VARCHAR,
 
     CONSTRAINT pk_festa PRIMARY KEY(id),
@@ -92,11 +91,11 @@ CREATE TABLE ingresso (
 
 CREATE TYPE ATUACAO_PESSOA AS ENUM ('aluno', 'professor', 'responsavel');
 CREATE TABLE atuacao (
-    CPF     CHAR(11),
+    pessoa  CHAR(11),
     atuacao ATUACAO_PESSOA,
 
-    CONSTRAINT pk_atuacao PRIMARY KEY(CPF, atuacao),
-    CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(CPF)
+    CONSTRAINT pk_atuacao PRIMARY KEY(pessoa, atuacao),
+    CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(pessoa)
                                  REFERENCES pessoa(CPF)
                                  ON DELETE CASCADE
 );
@@ -130,6 +129,57 @@ CREATE TABLE professor (
     CONSTRAINT fk_professor_pessoa FOREIGN KEY(CPF)
                                  REFERENCES pessoa(CPF)
                                  ON DELETE CASCADE
+);
+
+CREATE TABLE responsabilidade (
+  residencia INT,
+  responsavel CHAR(11),
+  permissao_venda BOOLEAN,
+
+  CONSTRAINT pk_responsabilidade(residencia, responsavel),
+  CONSTRAINT fk_responsabilidade_residencia FOREIGN KEY(residencia)
+                                            REFERENCES residencia(ID)
+                                            ON DELETE CASCADE,
+  CONSTRAINT fk_responsabilidade_pessoa FOREIGN KEY(responsavel)
+                                        REFERENCES pessoa(CPF)
+                                        ON DELETE CASCADE
+);
+
+CREATE TABLE contrato_aluguel (
+  inicio      DATE,
+  residencia  INT,
+  responsavel CHAR(11),
+  locatario   CHAR(11),
+  fim         DATE  NOT NULL,
+  aluguel     MONEY NOT NULL,
+  multa       MONEY NOT NULL,
+  desconto    MONEY NOT NULL,
+
+  CONSTRAINT pk_contrato_aluguel PRIMARY KEY(inicio, residencia, responsavel, locatario),
+  CONSTRAINT fk_contrato_aluguel_responsabilidade FOREIGN KEY(residencia, responsavel)
+                                                  REFERENCES responsabilidade(residencia, responsavel)
+                                                  ON DELETE SET NULL,
+  CONSTRAINT fk_contrato_aluguel_pessoa FOREIGN KEY(locatario)
+                                        REFERENCES pessoa(CPF)
+                                        ON DELETE SET NULL,
+  CONSTRAINT contrato_aluguel_inicio_before_fim CHECK fim >= inicio,
+);
+
+CREATE TABLE venda (
+  residencia  INT,
+  responsavel CHAR(11),
+  comprador   CHAR(11),
+  data        DATE  NOT NULL,
+  valor       MONEY NOT NULL,
+  desconto    MONEY NOT NULL,
+
+  CONSTRAINT pk_venda PRIMARY KEY(residencia, responsavel, comprador),
+  CONSTRAINT fk_venda_responsabilidade FOREIGN KEY(residencia, responsavel)
+                                       REFERENCES responsabilidade(residencia, responsavel)
+                                       ON DELETE SET NULL,
+  CONSTRAINT fk_venda_pessoa FOREIGN KEY(comprador)
+                                     REFERENCES pessoa(CPF)
+                                     ON DELETE SET NULL,
 );
 
 CREATE TABLE orienta (
@@ -208,7 +258,7 @@ CREATE TABLE palestra (
     ministrante  CHAR(11) NOT NULL,
     nome         VARCHAR(50) NOT NULL,
     campus       INT NOT NULL,
-    data_horario TIMESTAMP NOT NULL, -- Data e Horário viraram um campo só!!!!!
+    data_horario TIMESTAMP NOT NULL,
     tema         VARCHAR(50),
 
     CONSTRAINT pk_palestra PRIMARY KEY(id),
