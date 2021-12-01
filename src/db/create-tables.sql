@@ -132,54 +132,54 @@ CREATE TABLE professor (
 );
 
 CREATE TABLE responsabilidade (
-  residencia INT,
-  responsavel CHAR(11),
-  permissao_venda BOOLEAN,
+    residencia INT,
+    responsavel CHAR(11),
+    permissao_venda BOOLEAN,
 
-  CONSTRAINT pk_responsabilidade PRIMARY KEY(residencia, responsavel),
-  CONSTRAINT fk_responsabilidade_residencia FOREIGN KEY(residencia)
-                                            REFERENCES residencia(ID)
-                                            ON DELETE CASCADE,
-  CONSTRAINT fk_responsabilidade_pessoa FOREIGN KEY(responsavel)
-                                        REFERENCES pessoa(CPF)
-                                        ON DELETE CASCADE
+    CONSTRAINT pk_responsabilidade PRIMARY KEY(residencia, responsavel),
+    CONSTRAINT fk_responsabilidade_residencia FOREIGN KEY(residencia)
+                                                REFERENCES residencia(ID)
+                                                ON DELETE CASCADE,
+    CONSTRAINT fk_responsabilidade_pessoa FOREIGN KEY(responsavel)
+                                            REFERENCES pessoa(CPF)
+                                            ON DELETE CASCADE
 );
 
 CREATE TABLE contrato_aluguel (
-  inicio      DATE,
-  residencia  INT,
-  responsavel CHAR(11),
-  locatario   CHAR(11),
-  fim         DATE  NOT NULL,
-  aluguel     MONEY NOT NULL,
-  multa       MONEY NOT NULL,
-  desconto    MONEY NOT NULL,
+    inicio      DATE,
+    residencia  INT,
+    responsavel CHAR(11),
+    locatario   CHAR(11),
+    fim         DATE  NOT NULL,
+    aluguel     MONEY NOT NULL,
+    multa       MONEY NOT NULL,
+    desconto    MONEY NOT NULL,
 
-  CONSTRAINT pk_contrato_aluguel PRIMARY KEY(inicio, residencia, responsavel, locatario),
-  CONSTRAINT fk_contrato_aluguel_responsabilidade FOREIGN KEY(residencia, responsavel)
-                                                  REFERENCES responsabilidade(residencia, responsavel)
-                                                  ON DELETE SET NULL,
-  CONSTRAINT fk_contrato_aluguel_pessoa FOREIGN KEY(locatario)
-                                        REFERENCES pessoa(CPF)
-                                        ON DELETE SET NULL,
-  CONSTRAINT contrato_aluguel_inicio_before_fim CHECK(fim >= inicio)
+    CONSTRAINT pk_contrato_aluguel PRIMARY KEY(inicio, residencia, responsavel, locatario),
+    CONSTRAINT fk_contrato_aluguel_responsabilidade FOREIGN KEY(residencia, responsavel)
+                                                    REFERENCES responsabilidade(residencia, responsavel)
+                                                    ON DELETE SET NULL,
+    CONSTRAINT fk_contrato_aluguel_pessoa FOREIGN KEY(locatario)
+                                            REFERENCES pessoa(CPF)
+                                            ON DELETE SET NULL,
+    CONSTRAINT contrato_aluguel_inicio_before_fim CHECK(fim >= inicio)
 );
 
 CREATE TABLE venda (
-  residencia  INT,
-  responsavel CHAR(11),
-  comprador   CHAR(11),
-  data        DATE  NOT NULL,
-  valor       MONEY NOT NULL,
-  desconto    MONEY NOT NULL,
+    residencia  INT,
+    responsavel CHAR(11),
+    comprador   CHAR(11),
+    data        DATE  NOT NULL,
+    valor       MONEY NOT NULL,
+    desconto    MONEY NOT NULL,
 
-  CONSTRAINT pk_venda PRIMARY KEY(residencia, responsavel, comprador),
-  CONSTRAINT fk_venda_responsabilidade FOREIGN KEY(residencia, responsavel)
-                                       REFERENCES responsabilidade(residencia, responsavel)
-                                       ON DELETE SET NULL,
-  CONSTRAINT fk_venda_pessoa FOREIGN KEY(comprador)
-                                     REFERENCES pessoa(CPF)
-                                     ON DELETE SET NULL
+    CONSTRAINT pk_venda PRIMARY KEY(residencia, responsavel, comprador),
+    CONSTRAINT fk_venda_responsabilidade FOREIGN KEY(residencia, responsavel)
+                                        REFERENCES responsabilidade(residencia, responsavel)
+                                        ON DELETE SET NULL,
+    CONSTRAINT fk_venda_pessoa FOREIGN KEY(comprador)
+                                        REFERENCES pessoa(CPF)
+                                        ON DELETE SET NULL
 );
 
 CREATE TABLE orienta (
