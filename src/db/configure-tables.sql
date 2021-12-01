@@ -7,9 +7,6 @@
 ANALYZE; --Atualização de estatísticas
 
 
--- INFORMAÇÕES RESTANTES:
--- Relacionamentos de RESPONSABILIDADE, ALUGUEL e VENDA
-
 -- TABELAS
 --     residencia               OK
 --     imovel                   OK
@@ -21,9 +18,9 @@ ANALYZE; --Atualização de estatísticas
 --     responsavel              OK
 --     aluno                    OK
 --     professor                OK
---     responsabilidade         
---     contrato_aluguel         
---     venda                    
+--     responsabilidade         OK
+--     contrato_aluguel         OK
+--     venda                    OK
 --     orienta                  OK
 --     campus                   OK
 --     oferecimento_curso       OK

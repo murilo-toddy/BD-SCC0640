@@ -122,3 +122,45 @@ FROM residencia WHERE cep = '13568776';
 INSERT INTO moradia (id, n_moradores, n_colegas_quarto, n_animais, n_total_vagas)
 SELECT id, 12, 2, 2, 13
 FROM residencia WHERE cep = '13574701';
+
+
+-- Inserção RESPONSABILIDADE
+INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
+VALUES ('2', '45446434064', TRUE);
+
+INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
+VALUES ('1', '61520188030', FALSE);
+
+INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
+VALUES ('5', '74214010591', FALSE);
+
+INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
+VALUES ('6', '74214010591', TRUE);
+
+INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
+VALUES ('7', '93078701018', TRUE);
+
+INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
+VALUES ('10', '35017890092', FALSE);
+
+
+-- Inserção CONTRATO_ALUGUEL
+INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
+VALUES (TO_DATE('12/03/2019', 'dd/mm/yyyy'), 6, '74214010591', '89738378001', TO_DATE('12/03/2020', 'dd/mm/yyyy'),
+        '370', '0', '10');
+
+INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
+VALUES (TO_DATE('01/05/2020', 'dd/mm/yyyy'), 7, '93078701018', '31000160840', TO_DATE('01/11/2020', 'dd/mm/yyyy'),
+        '500', '0', '0');
+
+INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
+VALUES (TO_DATE('05/04/2018', 'dd/mm/yyyy'), 5, '74214010591', '65671541522', TO_DATE('05/04/2020', 'dd/mm/yyyy'),
+        '440', '40', '0');
+
+
+-- Inserção VENDAS
+INSERT INTO venda (residencia, responsavel, comprador, data, valor, desconto)
+VALUES (2, '45446434064', '83353310061', TO_DATE('05/07/2021', 'dd/mm/yyyy'), '36850', '150');
+
+INSERT INTO venda (residencia, responsavel, comprador, data, valor, desconto)
+VALUES (7, '93078701018', '23830223064', TO_DATE('23/11/2021', 'dd/mm/yyyy'), '50000', '0');
