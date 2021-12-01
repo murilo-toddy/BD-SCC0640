@@ -45,3 +45,26 @@ ou pela própria linha de comando `psql`, através de:
 ```\i
 dir/filename.sql
 ```
+
+## Queries
+
+1. Quais são as pessoas de cada curso que vão mais em festas
+    a. Apenas as pessoas com maior quantidade de festas
+    b. Últimos 6 meses
+    c. Contexto: imobiliária quer saber quais as pessoas mais populares/sociáveis pra contratar como influenciadores
+2. Todos os alunos e, caso eles sejam orientados por algum professor, os dados do professor.
+    a. Junção externa
+    b. Contexto: um professor do instituto de Sociologia da USP está empreendendo uma pesquisa **revolucionária** para descobrir a relação entre um aluno estar sendo orientado por um professor e estar ou não procurando moradia/imóvel.
+3. Dada uma festa, verificar quantos moradores existem em uma moradia na data da festa.
+4. Quais são os campus com maior probabilidade de ter animais passeando neles
+    a. Provavelmente, consulta aninhada correlacionada e agrupamento
+    b. Pegar a cidade dos campus, varrer a tabela de moradia e verificar quais tem "Quantidade de animais"
+5. Quais são os alunos que estão há mais tempo na faculdade e estão há procurar de moradia ou imóvel?
+    a. Consulta aninhada não-correlacionada
+6. Quais são todas as pessoas que já moraram em uma moradia e nunca foram a uma festa?
+    a. Verificar se nunca comprou ingresso e se as moradias que já morou nunca deram festa
+    b. Contexto: a seção de bem-estar da USP busca entender quais pessoas podem estar deslocadas
+7. Quais são os alunos que foram em todas as palestras de um determinado professor e não são orientados por nenhum ainda?
+    a. Divisão
+    b. Palestras no último ano
+    c. Contexto: o professor está procurando um orientando e quer um aluno bem engajado e interessado
