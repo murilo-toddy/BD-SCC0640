@@ -18,7 +18,7 @@ def assert_regex(string: str, regex: re.Pattern, name: str = "") -> None:
     Parameters
     ----------
     string : str
-        The string to tested.
+        The string to be tested.
     regex : re.Pattern
         The pattern to test `string` against.
     name : str (default '')
@@ -26,6 +26,38 @@ def assert_regex(string: str, regex: re.Pattern, name: str = "") -> None:
     """
     if not regex.match(string):
         raise ValueError(f"'{name or string}' is invalid.")
+
+
+def assert_instance(variable: any, _class: object, name: str = "") -> None:
+    """
+    Raises an error if a given variable isn't an instance of a given class.
+
+    Parameters
+    ----------
+    variable : any
+        The variable to be tested.
+    _class : object
+        The class that `variable` should be an instance of.
+    name : str (default '')
+        The variable's name to be specified in the error message.
+    """
+    if not isinstance(variable, _class):
+        raise ValueError(f"'{name or variable}' has an invalid type.")
+
+
+def assert_value(a: any, b: any, name: str = "") -> None:
+    """
+    Raises an error if a given variable isn't equal to another.
+
+    Parameters
+    ----------
+    a, b : any
+        The variables to be compared.
+    name : str (default '')
+        `a`'s name to be specified in the error message.
+    """
+    if a != b:
+        raise ValueError(f"'{name}' is invalid ({a} doesn't match {b}).")
 
 
 def remove_symbols(string: str) -> str:

@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Union
 
 from connection import Connection
-from utils import assert_regex, regexes, remove_symbols
+from utils import assert_instance, assert_value, assert_regex, regexes, remove_symbols
 
 
 class PersonRole(ABC):
@@ -16,7 +16,7 @@ class PersonRole(ABC):
         pass
 
     @abstractmethod
-    def insert_db(self):
+    def insert_db(self) -> None:
         pass
 
 
@@ -47,7 +47,7 @@ class Student(PersonRole):
     def is_searching_property(self) -> bool:
         return self.__searching_property
 
-    def insert_db(self):
+    def insert_db(self) -> None:
         """
         Inserts the student's data in the DB.
         """
@@ -83,7 +83,7 @@ class Professor(PersonRole):
     def get_occupation_area(self) -> int:
         return self.__no_indications
 
-    def insert_db(self):
+    def insert_db(self) -> None:
         """
         Inserts the professor's data in the DB.
         """
@@ -91,6 +91,9 @@ class Professor(PersonRole):
         # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO professor(CPF, area_atuacao) VALUES(%s, %s);"
         self.__connection.exec_commit(query, self.__cpf, self.__occupation_area)
+
+    def fetch_own_rents(self):
+        pass
 
 
 class Responsible(PersonRole):
@@ -108,7 +111,7 @@ class Responsible(PersonRole):
     def get_cpf(self) -> str:
         return self.__cpf
 
-    def insert_db(self):
+    def insert_db(self) -> None:
         """
         Inserts the responsible's data in the DB.
         """
@@ -127,26 +130,21 @@ class Person:
         birthdate: Union[datetime, str],
         roles: Union[list[PersonRole], PersonRole],
     ):
-        if isinstance(roles, list) and not all(
-            [isinstance(role, PersonRole) for role in roles]
-        ):
-            raise ValueError("'roles' must be a PersonRole.")
-        elif not regexes.cpf.match(cpf):
-            raise ValueError("'cpf' is invalid.")
-        elif not regexes.rg.match(rg):
-            raise ValueError("'rg' is invalid.")
-        elif not (isinstance(birthdate, datetime) or isinstance(birthdate, str)):
-            raise ValueError("'birthdate' must be a datetime or date-like string.")
-        elif any([role.get_cpf() != remove_symbols(cpf) for role in roles]):
-            raise ValueError(
-                f"{name}'s roles have invalid CPF (doesn't match with {cpf})."
-            )
+        if isinstance(birthdate, str):
+            birthdate = datetime.strptime(birthdate, "%d/%m/%Y")
+
+        assert_regex(cpf, regexes.cpf)
+        assert_regex(rg, regexes.rg)
+        assert_instance(birthdate, datetime)
 
         if isinstance(roles, PersonRole):
             roles = [roles]
 
-        if isinstance(birthdate, str):
-            birthdate = datetime.strptime(birthdate, "%d/%m/%Y")
+        assert_instance(roles, list)
+
+        for role in roles:
+            assert_instance(role, PersonRole)
+            assert_value(role.get_cpf(), remove_symbols(cpf))
 
         self.__connection = Connection()
         self.__cpf = remove_symbols(cpf)
@@ -173,7 +171,7 @@ class Person:
     def get_roles(self) -> list[PersonRole]:
         return self.__roles
 
-    def insert_db(self):
+    def insert_db(self) -> None:
         """
         Inserts the person's data in the DB, including all of it's roles in the
         necessary tables: 'pessoa', 'atuacao', 'aluno', 'professor' and
