@@ -1,8 +1,49 @@
 from abc import ABC, abstractmethod
 
 from connection import Connection
+from entities.people import Person
 from models import Address
-from utils import assert_instance
+from utils import assert_instance, assert_regex, regexes, remove_symbols
+
+
+class Responsability:
+    def __init__(self, responsible: str, residence: int = None, can_sell: bool = None):
+        assert_regex(responsible, regexes.cpf)
+
+        self.responsible = remove_symbols(responsible)
+        self.residence = residence
+        self.can_sell = can_sell
+        self.__connection = Connection()
+
+        # checks if the responsible exists
+        responsible_exists = Person.query_by_cpf(self.responsible)
+        if not responsible_exists:
+            responsible = None
+
+    def set_residence(self, residence_id: int, can_sell: bool):
+        if not self.responsible:
+            return False, "O responsável passado para essa residência não existe."
+        elif self.residence:
+            return
+        self.residence = residence_id
+        self.can_sell = can_sell
+
+    def insert_db(self):
+        if not self.responsible:
+            return False, "O responsável passado para essa residência não existe."
+        elif not self.residence:
+            return False, "Nenhuma residência foi fornecida."
+
+        query = "INSERT INTO responsabilidade(residencia, responsavel, \
+                permissao_venda) VALUES(%s, %s, %s);"
+        try:
+            self.__connection.exec_commit(
+                query, self.residence, self.responsible, self.can_sell
+            )
+        except Exception as error:
+            return False, error
+        else:
+            return True, None
 
 
 class ResidenceSpecialization(ABC):
@@ -39,7 +80,7 @@ class Home(ResidenceSpecialization):
         """
 
         if self.inserted:
-            return
+            return False, "Essa moradia já foi inserida."
 
         query = "INSERT INTO moradia(id, n_moradores, n_colegas_quarto, \
                 n_animais, n_total_vagas) VALUES(%s, %s, %s, %s, %s);"
@@ -79,7 +120,7 @@ class Property(ResidenceSpecialization):
         """
 
         if self.id is None or self.inserted:
-            return
+            return False, "Esse imóvel já foi inserido."
 
         query = "INSERT INTO imovel(id, valor_venda, condominio, \
                 aceita_animais) VALUES(%s, %s, %s, %s);"
@@ -104,8 +145,10 @@ class Residence:
         n_bathrooms: int,
         inner_area: int,
         outer_area: int,
+        responsible: str,
         extra_info: str = None,
     ):
+        assert_regex(responsible, regexes.cpf)
         assert_instance(address, Address)
         assert_instance(specialization, ResidenceSpecialization)
 
@@ -122,6 +165,7 @@ class Residence:
         self.outer_area = outer_area
         self.extra_info = extra_info
         self.inserted = False
+        self.responsible = responsible
         self.__connection = Connection()
 
     def insert_db(self) -> tuple[bool, Exception]:
@@ -130,13 +174,18 @@ class Residence:
         """
 
         if self.inserted:
-            return
+            return False, "Essa residência já foi inserida."
 
-        # psycopg2'll sanitize the inputs (prevents SQL Injection)
+        # makes sure the passed responsible exists
+        responsability = Responsability(self.responsible)
+        if not responsability.responsible:
+            return False, "O responsável passado para essa residência não existe."
+
         query = "INSERT INTO residencia(aluguel, coletividade, estado, cidade, \
                 cep, endereço, n_quartos, n_banheiros, area_interna, \
                 area_externa, infos_adicionais) VALUES(%s, %s, %s, %s, %s, %s, \
                 %s, %s, %s, %s, %s) RETURNING id;"
+        # insert the residence
         try:
             id = self.__connection.exec_commit(
                 query,
@@ -158,5 +207,12 @@ class Residence:
         else:
             self.inserted = True
 
+            # inserts the responsability relationship
+            responsability.set_residence(id, True)
+            ok, error = responsability.insert_db()
+            if not ok:
+                return False, error
+
+            # insert it's specialization
             self.specialization.set_id(id)
             return self.specialization.insert_db()

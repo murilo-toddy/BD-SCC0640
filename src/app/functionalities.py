@@ -206,6 +206,7 @@ def register_new_residence():
     residence["extra_info"] = prompt("Informações adicionais:")
 
     residence["address"] = Address(**residence["address"])
+    residence["responsible"] = CURRENT_CPF
 
     type = prompt(
         "Tipo de residência (moradia x imóvel):",

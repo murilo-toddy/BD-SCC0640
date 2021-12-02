@@ -181,6 +181,18 @@ class Person:
 
         return person
 
+    @staticmethod
+    def query_by_cpf(cpf: str):
+        assert_regex(cpf, regexes.cpf, "cpf")
+
+        cpf = remove_symbols(cpf)
+        connection = Connection()
+
+        query = "SELECT CPF, RG, nome, nascimento FROM pessoa WHERE CPF = %s"
+        person = connection.exec_commit(query, cpf, cb=lambda cur: cur.fetchone())
+
+        return person
+
     def __init__(
         self,
         cpf: str,
