@@ -176,3 +176,27 @@ def fetch_sales_responsible():
             print(f" - Valor: {format(d['valor'])}")
 
             prompt_continue()
+
+
+def fetch_responsible_residences():
+    pass
+
+
+def register_new_residence():
+    pass
+
+
+def manage_students():
+    pass
+
+
+def fetch_own_talks():
+    pass
+
+
+def buy_ticket_to_party():
+    pass
+
+
+def fetch_own_tickets():
+    pass

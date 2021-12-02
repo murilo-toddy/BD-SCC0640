@@ -10,10 +10,6 @@ print(f"Olá, {name}! Tudo bem? Seja bem vind@ ao Sistema de Monitoramento da \
 Vida Universitária.\n")
 
 
-def _pass():
-    pass
-
-
 menu_leading_text = (
     "Infelizmente, nem todas as funcionalidades estão disponíveis no momento,"
     + " devido ao sistema ainda estar em desenvolvimento. Quando ele for "
@@ -24,7 +20,7 @@ menu_options = [
     "Cadastrar um novo aluno.",
     "Visualizar os contratos e residências que você já alugou.",
     "Visualizar os contratos e imóveis que você já comprou.",
-    "Visualizar todas as festas em sua cidade.",
+    "Comprar ingresso para uma festa em sua cidade.",
     "Visualizar todas as festas para  as quais você comprou ingresso.",
     "Cadastrar uma nova residência pela qual você é responsável.",
     "Visualizar os contratos e residências pelos quais você já foi responsável.",
@@ -38,14 +34,14 @@ menu_functions = [
     functionalities.register_student,
     functionalities.fetch_rents_tenant,
     functionalities.fetch_sales_buyer,
-    _pass,
-    _pass,
-    _pass,
+    functionalities.buy_ticket_to_party,
+    functionalities.fetch_own_tickets,
+    functionalities.register_new_residence,
     functionalities.fetch_rents_responsible,
     functionalities.fetch_sales_responsible,
-    _pass,
-    _pass,
-    _pass,
+    functionalities.fetch_responsible_residences,
+    functionalities.manage_students,
+    functionalities.fetch_own_talks,
 ]
 
 while True:
