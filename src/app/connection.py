@@ -65,7 +65,7 @@ class Connection:
         connection = psycopg2.connect(**params)
 
         # create a cursor
-        cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
         # displays the db server's version
         if self.__debug:

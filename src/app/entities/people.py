@@ -1,18 +1,15 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+from itertools import chain
 from typing import Union
 
 from connection import Connection
-from utils import assert_instance, assert_value, assert_regex, regexes, remove_symbols
+from utils import assert_instance, assert_regex, assert_value, regexes, remove_symbols
 
 
 class PersonRole(ABC):
     @abstractmethod
-    def __str__(self):
-        pass
-
-    @abstractmethod
-    def get_cpf(self):
+    def get_cpf(self) -> str:
         pass
 
     @abstractmethod
@@ -32,8 +29,9 @@ class Student(PersonRole):
         self.__no_indications = 0
         self.__connection = Connection()
 
-    def __str__(self) -> str:
-        return self.__value
+    @staticmethod
+    def __str__() -> str:
+        return Student.__value
 
     def get_cpf(self) -> str:
         return self.__cpf
@@ -79,8 +77,9 @@ class Professor(PersonRole):
         self.__occupation_area = occupation_area
         self.__connection = Connection()
 
-    def __str__(self) -> str:
-        return self.__value
+    @staticmethod
+    def __str__() -> str:
+        return Professor.__value
 
     def get_cpf(self) -> str:
         return self.__cpf
@@ -115,8 +114,9 @@ class Responsible(PersonRole):
         self.__cpf = remove_symbols(cpf)
         self.__connection = Connection()
 
-    def __str__(self) -> str:
-        return self.__value
+    @staticmethod
+    def __str__() -> str:
+        return Responsible.__value
 
     def get_cpf(self) -> str:
         return self.__cpf
@@ -137,6 +137,47 @@ class Responsible(PersonRole):
 
 
 class Person:
+    @staticmethod
+    def query_by_cpf_join_specializations(cpf: str):
+        assert_regex(cpf, regexes.cpf, "cpf")
+
+        cpf = remove_symbols(cpf)
+        connection = Connection()
+
+        query = "SELECT atuacao from atuacao WHERE pessoa = %s"
+        rows = connection.exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
+        roles = [row["atuacao"] for row in rows]
+
+        # list of columns per row
+        columns = {
+            Student.__str__(): ["n_indicacoes"],
+            Professor.__str__(): ["area_atuacao"],
+            Responsible.__str__(): [],
+        }
+
+        # create comma-separated list for all selected
+        # columns for the person's roles
+        columns = ", ".join(
+            f"{table}.{col}"
+            for table, col in chain(*[[(k, c) for c in v] for k, v in columns.items()])
+            if table in roles
+        )
+        if columns:
+            columns = ", " + columns
+
+        join_expressions = "\n".join(
+            f"INNER JOIN {role} ON {role}.CPF = %s" for role in roles
+        )
+
+        query = f"""
+            SELECT P.CPF, RG, nome, nascimento {columns} FROM pessoa as P
+            {join_expressions}
+            WHERE P.CPF = %s
+        """
+        args = [cpf] * (len(roles) + 1)
+
+        return connection.exec_commit(query, *args, cb=lambda cur: cur.fetchone()), roles
+
     def __init__(
         self,
         cpf: str,
