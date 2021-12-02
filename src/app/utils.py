@@ -15,7 +15,7 @@ class regexes:
     cep = re.compile(r"^(\d{5})-?(\d{3})$")
     cpf = re.compile(r"^(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})$")
     date = re.compile(r"\d{2}/\d{2}/19\d{2}|\d{2}/\d{2}/20\d{2}")
-    name = re.compile(r'^\w{2,}\s\w{2,}[a-zA-Z ]*$')
+    name = re.compile(r"^\w{2,}\s\w{2,}[\w\s]*$")
     rg = re.compile(r"^(\d{1,2})\.?(\d{3})\.?(\d{3})-?(\d{1}|X|x)$")
 
 
@@ -106,7 +106,7 @@ def prompt(text: str, validate: callable = None) -> str:
     return r
 
 
-def prompt_continue(leading: str = '\n') -> None:
+def prompt_continue(leading: str = "\n") -> None:
     """
     Prompts user to press Enter to continue.
     """
@@ -168,7 +168,7 @@ def format(target: any, type: str = "") -> str:
         return f"{day}/{month}/{target.year}"
 
     if isinstance(target, list):
-        return ", ".join(target) if target else '-'
+        return ", ".join(target) if target else "-"
 
     if target in State:
         return State[target].value
@@ -176,7 +176,7 @@ def format(target: any, type: str = "") -> str:
     if isinstance(target, State):
         return target.value
 
-    if isinstance(target, str) and target.startswith('$'):
+    if isinstance(target, str) and target.startswith("$"):
         return f"R{target.replace(',','<DOT>').replace('.', ',').replace('<DOT>','.')}"
 
     cpf = regexes.cpf.match(target)
@@ -222,3 +222,11 @@ def parse_bool(boolean: str) -> bool:
 
     elif boolean.lower() in NEGATIVE_RESPONSES:
         return False
+
+
+def validate_float(number: str) -> bool:
+    return number.replace(".", "", 1).isdigit() or number.replace(",", "", 1).isdigit()
+
+
+def parse_float(number: str) -> float:
+    return float(number.replace(",", "."))

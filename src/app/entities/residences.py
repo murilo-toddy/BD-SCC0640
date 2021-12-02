@@ -90,9 +90,8 @@ class Property(ResidenceSpecialization):
         except Exception as error:
             return False, error
         else:
+            self.inserted = True
             return True, None
-
-        self.inserted = True
 
 
 class Residence:
@@ -152,7 +151,7 @@ class Residence:
                 self.inner_area,
                 self.outer_area,
                 self.extra_info,
-                cb=lambda cur: cur.fetchone()[0],
+                cb=lambda cur: cur.fetchone()["id"],
             )
         except Exception as error:
             return False, error

@@ -1,14 +1,19 @@
 from entities.people import Person, Professor, Student
+from entities.residences import Home, Property, Residence
 from entities.transactions import RentContract, SaleContract
+from enums import State
+from models import Address
 from state import CURRENT_CPF, get_current_user_data
 from utils import (
     format,
     parse_bool,
+    parse_float,
     prompt,
     prompt_continue,
     regexes,
     validate_bool,
     validate_date,
+    validate_float,
 )
 
 
@@ -183,7 +188,61 @@ def fetch_responsible_residences():
 
 
 def register_new_residence():
-    pass
+    residence = {"address": {}}
+    specialization = {}
+
+    print("\n\nSobre as informações da residência, responda:")
+
+    residence["address"]["address"] = prompt("Logradouro:", regexes.name.match)
+    residence["address"]["address"] += f", {prompt('Número:', lambda x: x.isdigit())}"
+    residence["address"]["city"] = prompt("Cidade:", lambda x: x)
+    residence["address"]["state"] = prompt("Estado (sigla):", lambda x: x in State)
+    residence["address"]["cep"] = prompt("CEP:", regexes.cep.match)
+    residence["rent"] = parse_float(prompt("Aluguel: R$", validate_float))
+    residence["n_rooms"] = prompt("Número de quartos:", lambda x: x.isdigit())
+    residence["n_bathrooms"] = prompt("Número de banheiros:", lambda x: x.isdigit())
+    residence["inner_area"] = prompt("Área interna (m²):", lambda x: x.isdigit())
+    residence["outer_area"] = prompt("Área externa (m²):", lambda x: x.isdigit())
+    residence["extra_info"] = prompt("Informações adicionais:")
+
+    residence["address"] = Address(**residence["address"])
+
+    type = prompt(
+        "Tipo de residência (moradia x imóvel):",
+        lambda x: x.lower() in ["moradia", "imóvel", "imovel"],
+    )
+    coletivity = type.lower() == "moradia"
+
+    if coletivity:
+        specialization["n_residents"] = prompt(
+            "Número de moradores:", lambda x: x.isdigit()
+        )
+        specialization["n_pets"] = prompt("Número de pets:", lambda x: x.isdigit())
+        specialization["total_capacity"] = prompt(
+            "Número total de vagas:", lambda x: x.isdigit()
+        )
+        residence["specialization"] = Home(**specialization)
+    else:
+        specialization["value"] = parse_float(
+            prompt("Valor de Venda: R$", validate_float)
+        )
+        specialization["condominium"] = parse_float(
+            prompt("Condomínio: R$", validate_float)
+        )
+        specialization["allow_pets"] = parse_bool(
+            prompt("O condomínio permite pets? (s/n)", validate_bool)
+        )
+        residence["specialization"] = Property(**specialization)
+
+    ok, error = Residence(**residence).insert_db()
+
+    if ok:
+        print("\nA residência foi cadastrada com sucesso!")
+    else:
+        print("\nHouve um erro no cadastro da residência:")
+        print(error)
+
+    prompt_continue()
 
 
 def manage_students():
