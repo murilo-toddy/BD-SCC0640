@@ -1,18 +1,19 @@
+from abc import ABC, abstractmethod
 from connection import Connection
 from utils import assert_regex, regexes
 
 
-class RentContract:
-    @staticmethod
-    def query_by_tenant(cpf: str):
-        assert_regex(cpf, regexes.cpf, "cpf")
+class Contract(ABC):
+    @abstractmethod
+    def query_by_tenant_join_residence(cpf: str):
+        pass
 
-        query = """
-            SELECT inicio, residencia, fim, aluguel FROM contrato_aluguel
-            WHERE locatario = %s
-        """
-        return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
+    @abstractmethod
+    def query_by_responsible_join_residence(cpf: str):
+        pass
 
+
+class RentContract(Contract):
     @staticmethod
     def query_by_tenant_join_residence(cpf: str):
         assert_regex(cpf, regexes.cpf, "cpf")
@@ -38,5 +39,31 @@ class RentContract:
             INNER JOIN residencia as R on C.residencia = R.id
             LEFT JOIN imovel as I ON R.id = I.id
             WHERE C.responsavel = %s
+        """
+        return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
+
+
+class SaleContract(Contract):
+    @staticmethod
+    def query_by_tenant_join_residence(cpf: str):
+        assert_regex(cpf, regexes.cpf, "cpf")
+
+        query = """
+            SELECT endereço, cidade, estado, data, valor, condominio
+            FROM venda as V, residencia as R, imovel as I
+            WHERE V.comprador = %s AND R.coletividade = false AND
+                  V.residencia = R.id AND R.id = I.id
+        """
+        return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
+
+    @staticmethod
+    def query_by_responsible_join_residence(cpf: str):
+        assert_regex(cpf, regexes.cpf, "cpf")
+
+        query = """
+            SELECT endereço, cidade, estado, data, valor, condominio
+            FROM venda as V, residencia as R, imovel as I
+            WHERE V.responsavel = %s AND R.coletividade = false AND
+                  V.residencia = R.id AND R.id = I.id
         """
         return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
