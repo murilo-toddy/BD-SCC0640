@@ -1,43 +1,43 @@
-from pprint import pp
-
 from connection import Connection
-from entities.people import Person, Professor, Responsible
-from entities.residences import Property, Residence
-from entities.transactions import RentContract, SaleContract
-from enums import State
-from models import Address
+from functionalities import register_student
+from utils import prompt_menu
 
-try:
-    Person(
-        cpf="11471634990",
-        rg="137229919",
-        name="Murilo Todão",
-        birthdate="27/08/2001",
-        roles=[
-            Professor("11471634990", "Bases de Dados"),
-            Responsible("11471634990"),
-        ],
-    ).insert_db()
 
-    Residence(
-        rent=45234.526,
-        address=Address(State["SP"], "São Carlos", "13561130", "Teste"),
-        specialization=Property(240000, 380, True),
-        n_rooms=2,
-        n_bathrooms=2,
-        inner_area=70,
-        outer_area=10,
-    ).insert_db()
-except Exception:
+def _pass():
     pass
 
-res = [
-    RentContract.query_by_tenant_join_residence("89738378001"),
-    RentContract.query_by_responsible_join_residence("93078701018"),
-    SaleContract.query_by_tenant_join_residence("83353310061"),
-    SaleContract.query_by_responsible_join_residence("45446434064"),
+
+menu_leading_text = (
+    "Infelizmente, nem todas as funcionalidades estão disponíveis no momento,"
+    + " devido ao sistema ainda estar em desenvolvimento. Quando ele for "
+    + "concluído, mais funcionalidade serão disponibilizadas.\n"
+)
+menu_options = [
+    "Cadastrar um novo aluno.",
+    "Visualizar os contratos e residências que você já alugou.",
+    "Visualizar os contratos e imóveis que você já comprou.",
+    "Visualizar todas as festas em sua cidade.",
+    "Visualizar todas as festas para  as quais você comprou ingresso.",
+    "Cadastrar uma nova residência pela qual você é responsável.",
+    "Visualizar todas as residências pelas quais você é responsável.",
+    "Gerenciar os alunos que orienta.",
+    "Visualizar as suas palestras.",
 ]
-for r in res:
-    pp(r)
+menu_functions = [
+    register_student,
+    _pass,
+    _pass,
+    _pass,
+    _pass,
+    _pass,
+    _pass,
+    _pass,
+    _pass,
+]
+
+while True:
+    print("\n\n---------------------------------------------------\n")
+    i = prompt_menu(menu_options, menu_leading_text)
+    menu_functions[i]()
 
 Connection().disconnect()

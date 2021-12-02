@@ -16,7 +16,7 @@ class PersonRole(ABC):
         pass
 
     @abstractmethod
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         pass
 
 
@@ -47,7 +47,7 @@ class Student(PersonRole):
     def is_searching_property(self) -> bool:
         return self.__searching_property
 
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         """
         Inserts the student's data in the DB.
         """
@@ -59,9 +59,14 @@ class Student(PersonRole):
         # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, \
             procurando_imovel) VALUES(%s, %s, %s, %s);"
-        self.__connection.exec_commit(
-            query, self.__cpf, no_indications, searching_home, searching_property
-        )
+        try:
+            self.__connection.exec_commit(
+                query, self.__cpf, no_indications, searching_home, searching_property
+            )
+        except Exception as error:
+            return False, error
+        else:
+            return True, None
 
 
 class Professor(PersonRole):
@@ -83,14 +88,19 @@ class Professor(PersonRole):
     def get_occupation_area(self) -> int:
         return self.__no_indications
 
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         """
         Inserts the professor's data in the DB.
         """
 
         # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO professor(CPF, area_atuacao) VALUES(%s, %s);"
-        self.__connection.exec_commit(query, self.__cpf, self.__occupation_area)
+        try:
+            self.__connection.exec_commit(query, self.__cpf, self.__occupation_area)
+        except Exception as error:
+            return False, error
+        else:
+            return True, None
 
     def fetch_own_rents(self):
         pass
@@ -111,14 +121,19 @@ class Responsible(PersonRole):
     def get_cpf(self) -> str:
         return self.__cpf
 
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         """
         Inserts the responsible's data in the DB.
         """
 
         # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO responsavel(CPF) VALUES(%s);"
-        self.__connection.exec_commit(query, self.__cpf)
+        try:
+            self.__connection.exec_commit(query, self.__cpf)
+        except Exception as error:
+            return False, error
+        else:
+            return True, None
 
 
 class Person:
@@ -133,6 +148,7 @@ class Person:
         if isinstance(birthdate, str):
             birthdate = datetime.strptime(birthdate, "%d/%m/%Y")
 
+        assert_regex(name, regexes.name)
         assert_regex(cpf, regexes.cpf)
         assert_regex(rg, regexes.rg)
         assert_instance(birthdate, datetime)
@@ -149,7 +165,7 @@ class Person:
         self.__connection = Connection()
         self.__cpf = remove_symbols(cpf)
         self.__rg = remove_symbols(rg.upper())
-        self.__name = name
+        self.__name = name.title().strip()
         self.__birthdate = birthdate
         self.__roles = roles
 
@@ -171,7 +187,7 @@ class Person:
     def get_roles(self) -> list[PersonRole]:
         return self.__roles
 
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         """
         Inserts the person's data in the DB, including all of it's roles in the
         necessary tables: 'pessoa', 'atuacao', 'aluno', 'professor' and
@@ -183,13 +199,21 @@ class Person:
         name = self.__name
         birthdate = self.get_birthdate_str()
 
-        # psycopg2'll sanitize the inputs (prevents SQL Injection)
-        query = "INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(%s, %s,\
-            %s, TO_DATE(%s, 'DD/MM/YYYY'));"
-        self.__connection.exec_commit(query, cpf, rg, name, birthdate)
+        try:
+            # psycopg2'll sanitize the inputs (prevents SQL Injection)
+            query = "INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(%s, %s,\
+                %s, TO_DATE(%s, 'DD/MM/YYYY'));"
+            self.__connection.exec_commit(query, cpf, rg, name, birthdate)
+        except Exception as error:
+            return False, error
+        else:
+            # inserts each role
+            query = "INSERT INTO atuacao(pessoa, atuacao) VALUES(%s, %s);"
+            for role in self.__roles:
+                self.__connection.exec_commit(query, cpf, str(role))
+                ok, error = role.insert_db()
 
-        # inserts each role
-        query = "INSERT INTO atuacao(pessoa, atuacao) VALUES(%s, %s);"
-        for role in self.__roles:
-            self.__connection.exec_commit(query, cpf, str(role))
-            role.insert_db()
+                if not ok:
+                    return False, error
+
+            return True, None

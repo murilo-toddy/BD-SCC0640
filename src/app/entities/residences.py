@@ -14,7 +14,7 @@ class ResidenceSpecialization(ABC):
         pass
 
     @abstractmethod
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         pass
 
 
@@ -33,7 +33,7 @@ class Home(ResidenceSpecialization):
     def is_coletive(self) -> bool:
         return True
 
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         """
         Inserts the home's data in the DB.
         """
@@ -43,14 +43,20 @@ class Home(ResidenceSpecialization):
 
         query = "INSERT INTO moradia(id, n_moradores, n_colegas_quarto, \
                 n_animais, n_total_vagas) VALUES(%s, %s, %s, %s, %s);"
-        self.__connection.exec_commit(
-            query,
-            self.id,
-            self.n_residents,
-            self.n_roomates,
-            self.n_pets,
-            self.total_capacity,
-        )
+
+        try:
+            self.__connection.exec_commit(
+                query,
+                self.id,
+                self.n_residents,
+                self.n_roomates,
+                self.n_pets,
+                self.total_capacity,
+            )
+        except Exception as error:
+            return False, error
+        else:
+            return True, None
 
         self.inserted = True
 
@@ -67,7 +73,7 @@ class Property(ResidenceSpecialization):
     def is_coletive(self) -> bool:
         return False
 
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         """
         Inserts the property's data in the DB.
         """
@@ -77,9 +83,14 @@ class Property(ResidenceSpecialization):
 
         query = "INSERT INTO imovel(id, valor_venda, condominio, \
                 aceita_animais) VALUES(%s, %s, %s, %s);"
-        self.__connection.exec_commit(
-            query, self.id, self.value, self.condominium, self.allow_pets
-        )
+        try:
+            self.__connection.exec_commit(
+                query, self.id, self.value, self.condominium, self.allow_pets
+            )
+        except Exception as error:
+            return False, error
+        else:
+            return True, None
 
         self.inserted = True
 
@@ -114,7 +125,7 @@ class Residence:
         self.inserted = False
         self.__connection = Connection()
 
-    def insert_db(self) -> None:
+    def insert_db(self) -> tuple[bool, Exception]:
         """
         Inserts the residence's data in the DB, including it's specialization.
         """
@@ -127,23 +138,26 @@ class Residence:
                 cep, endereço, n_quartos, n_banheiros, area_interna, \
                 area_externa, infos_adicionais) VALUES(%s, %s, %s, %s, %s, %s, \
                 %s, %s, %s, %s, %s) RETURNING id;"
-        id = self.__connection.exec_commit(
-            query,
-            self.rent,
-            self.coletivity,
-            self.state.name,
-            self.city,
-            self.cep,
-            self.address,
-            self.n_rooms,
-            self.n_bathrooms,
-            self.inner_area,
-            self.outer_area,
-            self.extra_info,
-            cb=lambda cur: cur.fetchone()[0],
-        )
+        try:
+            id = self.__connection.exec_commit(
+                query,
+                self.rent,
+                self.coletivity,
+                self.state.name,
+                self.city,
+                self.cep,
+                self.address,
+                self.n_rooms,
+                self.n_bathrooms,
+                self.inner_area,
+                self.outer_area,
+                self.extra_info,
+                cb=lambda cur: cur.fetchone()[0],
+            )
+        except Exception as error:
+            return False, error
+        else:
+            self.inserted = True
 
-        self.inserted = True
-
-        self.specialization.set_id(id)
-        self.specialization.insert_db()
+            self.specialization.set_id(id)
+            return self.specialization.insert_db()

@@ -3,15 +3,20 @@ import re
 
 from enums import State
 
+AFFIRMATIVE_RESPONSES = ["true", "y", "yes", "s", "sim"]
+NEGATIVE_RESPONSES = ["false", "n", "no", "não", "nao"]
+
 
 class regexes:
     """
     Various utilities regexes to validate data.
     """
 
-    cpf = re.compile(r"^(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})$")
-    rg = re.compile(r"^(\d{1,2})\.?(\d{3})\.?(\d{3})-?(\d{1}|X|x)$")
     cep = re.compile(r"^(\d{5})-?(\d{3})$")
+    cpf = re.compile(r"^(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})$")
+    date = re.compile(r"\d{2}/\d{2}/19\d{2}|\d{2}/\d{2}/20\d{2}")
+    name = re.compile(r'^\w{2,}\s\w{2,}[a-zA-Z ]*$')
+    rg = re.compile(r"^(\d{1,2})\.?(\d{3})\.?(\d{3})-?(\d{1}|X|x)$")
 
 
 def assert_regex(string: str, regex: re.Pattern, name: str = "") -> None:
@@ -88,8 +93,10 @@ def prompt(text: str, validate: callable = None) -> str:
     str : the user's validated input.
     """
 
-    r = input(text)
+    if not text.endswith("\n"):
+        text += " "
 
+    r = input(text)
     if validate:
         is_valid = validate(r)
         while not is_valid:
@@ -134,7 +141,7 @@ def prompt_menu(options: list[str], leading_text: str = "") -> int:
         + (" " if leading_text and not leading_text.endswith("\n") else "")
         + "Selecione uma das opções do menu a seguir para continuar.\n\n"
         + options
-        + "\n\nPara selecionar, insira apenas o número da opção. Input: "
+        + "\n\nPara selecionar, insira apenas o número da opção. Input:"
     )
 
     def validate(option: str):
@@ -150,12 +157,11 @@ def prompt_menu(options: list[str], leading_text: str = "") -> int:
     return int(r.replace(".", "")) - 1
 
 
-def format(target: any, type: str = ""):
+def format(target: any, type: str = "") -> str:
     """
     Formats the input according to the specified type (only required for CEP and
     RG).
     """
-
     if isinstance(target, datetime.date):
         return f"{target.day}/{target.month}/{target.year}"
 
@@ -181,3 +187,30 @@ def format(target: any, type: str = ""):
         return f"{_1}.{_2}.{_3}-{_4}"
 
     return target
+
+
+def validate_date(date: str) -> bool:
+    if not regexes.date.match(date):
+        return False
+
+    day, month, year = [int(string) for string in date.split("/")]
+    if not (day and month and year) or day > 31 or month > 12:
+        return False
+
+    current_year = datetime.date.today().year
+    if year >= current_year:
+        return False
+
+    return True
+
+
+def validate_bool(boolean: str) -> bool:
+    return boolean in AFFIRMATIVE_RESPONSES + NEGATIVE_RESPONSES
+
+
+def parse_bool(boolean: str) -> bool:
+    if boolean.lower() in AFFIRMATIVE_RESPONSES:
+        return True
+
+    elif boolean.lower() in NEGATIVE_RESPONSES:
+        return False
