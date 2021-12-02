@@ -163,16 +163,21 @@ def format(target: any, type: str = "") -> str:
     RG).
     """
     if isinstance(target, datetime.date):
-        return f"{target.day}/{target.month}/{target.year}"
+        day = str(target.day).zfill(2)
+        month = str(target.month).zfill(2)
+        return f"{day}/{month}/{target.year}"
 
     if isinstance(target, list):
-        return ", ".join(target)
+        return ", ".join(target) if target else '-'
 
     if target in State:
         return State[target].value
 
     if isinstance(target, State):
         return target.value
+
+    if isinstance(target, str) and target.startswith('$'):
+        return f"R{target.replace('.', ',')}"
 
     cpf = regexes.cpf.match(target)
     if cpf:

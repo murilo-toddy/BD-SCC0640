@@ -20,9 +20,10 @@ class RentContract(Contract):
 
         query = """
             SELECT endereço, cidade, estado, inicio, fim, C.aluguel, condominio,
-            coletividade
+            coletividade, responsavel AS responsavel_cpf, P.nome AS responsavel_nome
             FROM contrato_aluguel as C
             INNER JOIN residencia as R on C.residencia = R.id
+            INNER JOIN pessoa as P on C.responsavel = P.CPF
             LEFT JOIN imovel as I ON R.id = I.id
             WHERE C.locatario = %s
         """
@@ -34,9 +35,10 @@ class RentContract(Contract):
 
         query = """
             SELECT endereço, cidade, estado, inicio, fim, C.aluguel, condominio,
-            coletividade
+            coletividade, locatario AS locatario_cpf, P.nome AS locatario_nome
             FROM contrato_aluguel as C
             INNER JOIN residencia as R on C.residencia = R.id
+            INNER JOIN pessoa as P on C.locatario = P.CPF
             LEFT JOIN imovel as I ON R.id = I.id
             WHERE C.responsavel = %s
         """
@@ -45,7 +47,7 @@ class RentContract(Contract):
 
 class SaleContract(Contract):
     @staticmethod
-    def query_by_tenant_join_residence(cpf: str):
+    def query_by_buyer_join_residence(cpf: str):
         assert_regex(cpf, regexes.cpf, "cpf")
 
         query = """
