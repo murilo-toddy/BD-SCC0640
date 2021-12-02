@@ -1,20 +1,21 @@
+from pprint import pp
+
 from connection import Connection
-from entities.people import Person, Professor, Responsible, Student
+from entities.people import Person, Professor, Responsible
 from entities.residences import Property, Residence
 from entities.transactions import RentContract, SaleContract
-from models import Address, State
-from pprint import pp
+from models import Address
+from enums import State
 
 if __name__ == "__main__":
     try:
         Person(
             cpf="11471634990",
             rg="137229919",
-            name="tod",
+            name="Murilo Todão",
             birthdate="27/08/2001",
             roles=[
-                Student("11471634990", True, False),
-                Professor("11471634990", "Sistemas de Recomendação"),
+                Professor("11471634990", "Bases de Dados"),
                 Responsible("11471634990"),
             ],
         ).insert_db()
