@@ -1,15 +1,13 @@
 from connection import Connection
-from functionalities import register_student
+import functionalities
 from utils import prompt_menu
-from entities.people import Person
+from state import get_current_user_data
 
 
-CURRENT_CPF = '61520188030'
+name = get_current_user_data()['nome'].split(' ')[0]
 
-user, roles = Person.query_by_cpf_join_specializations(CURRENT_CPF)
-user['roles'] = roles
-
-print(f"Olá, {user['nome'].split(' ')[0]}! Tudo bem?")
+print(f"Olá, {name}! Tudo bem? Seja bem vind@ ao Sistema de Monitoramento da \
+Vida Universitária.\n")
 
 
 def _pass():
@@ -34,8 +32,8 @@ menu_options = [
     "Visualizar as suas palestras.",
 ]
 menu_functions = [
-    _pass,
-    register_student,
+    functionalities.fetch_own_data,
+    functionalities.register_student,
     _pass,
     _pass,
     _pass,
@@ -46,9 +44,9 @@ menu_functions = [
     _pass,
 ]
 
-# while True:
-#     print("\n\n---------------------------------------------------\n")
-#     i = prompt_menu(menu_options, menu_leading_text)
-#     menu_functions[i]()
+while True:
+    print("\n\n---------------------------------------------------\n")
+    i = prompt_menu(menu_options, menu_leading_text)
+    menu_functions[i]()
 
 Connection().disconnect()

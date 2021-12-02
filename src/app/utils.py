@@ -106,12 +106,12 @@ def prompt(text: str, validate: callable = None) -> str:
     return r
 
 
-def prompt_continue() -> None:
+def prompt_continue(leading: str = '\n') -> None:
     """
     Prompts user to press Enter to continue.
     """
 
-    input("Aperte ENTER para continuar. ")
+    input(leading + "Aperte ENTER para continuar. ")
 
 
 def prompt_menu(options: list[str], leading_text: str = "") -> int:
@@ -164,6 +164,9 @@ def format(target: any, type: str = "") -> str:
     """
     if isinstance(target, datetime.date):
         return f"{target.day}/{target.month}/{target.year}"
+
+    if isinstance(target, list):
+        return ", ".join(target)
 
     if target in State:
         return State[target].value

@@ -176,7 +176,10 @@ class Person:
         """
         args = [cpf] * (len(roles) + 1)
 
-        return connection.exec_commit(query, *args, cb=lambda cur: cur.fetchone()), roles
+        person = connection.exec_commit(query, *args, cb=lambda cur: cur.fetchone())
+        person['atuacao'] = roles
+
+        return person
 
     def __init__(
         self,
