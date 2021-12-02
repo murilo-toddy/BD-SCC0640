@@ -51,10 +51,12 @@ class SaleContract(Contract):
         assert_regex(cpf, regexes.cpf, "cpf")
 
         query = """
-            SELECT endereço, cidade, estado, data, valor, condominio
-            FROM venda as V, residencia as R, imovel as I
+            SELECT endereço, cidade, estado, data, valor, condominio,
+            P.nome AS responsavel_nome, V.responsavel as responsavel_cpf
+            FROM venda as V, residencia as R, imovel as I, pessoa as P
             WHERE V.comprador = %s AND R.coletividade = false AND
-                  V.residencia = R.id AND R.id = I.id
+                  V.residencia = R.id AND R.id = I.id AND
+                  V.responsavel = P.CPF
         """
         return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
 
@@ -63,9 +65,11 @@ class SaleContract(Contract):
         assert_regex(cpf, regexes.cpf, "cpf")
 
         query = """
-            SELECT endereço, cidade, estado, data, valor, condominio
-            FROM venda as V, residencia as R, imovel as I
+            SELECT endereço, cidade, estado, data, valor, condominio,
+            P.nome AS comprador_nome, V.comprador as comprador_cpf
+            FROM venda as V, residencia as R, imovel as I, pessoa as P
             WHERE V.responsavel = %s AND R.coletividade = false AND
-                  V.residencia = R.id AND R.id = I.id
+                  V.residencia = R.id AND R.id = I.id AND
+                  V.comprador = P.CPF
         """
         return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())

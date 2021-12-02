@@ -79,6 +79,7 @@ def fetch_rents_tenant():
             print(f" - Logradouro e número: {d['endereço']}")
             print(f" - Cidade: {d['cidade']}")
             print(f" - Estado: {format(d['estado'])}")
+            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
             print()
             print(f"Dados do contrato de aluguel {i + 1}:")
             print(f" - Responsável (nome): {d['responsavel_nome']}")
@@ -86,14 +87,36 @@ def fetch_rents_tenant():
             print(f" - Data de início: {format(d['inicio'])}")
             print(f" - Data de fim: {format(d['fim'])}")
             print(f" - Aluguel: {format(d['aluguel'])}")
-            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
 
             prompt_continue()
 
 
 def fetch_sales_buyer():
     data = SaleContract.query_by_buyer_join_residence(CURRENT_CPF)
-    print(data)
+
+    if not data:
+        print("\nNenhum resultado encontrado.")
+    else:
+        print(
+            "\nNo momento ainda não é possível ver as informações de cada "
+            + "contrato com mais detalhes, mas essa funcionalidade está em "
+            + "desenvolvimento!"
+        )
+
+        for i, d in enumerate(data):
+            print(f"\nDados do imóvel {i + 1}:")
+            print(f" - Logradouro e número: {d['endereço']}")
+            print(f" - Cidade: {d['cidade']}")
+            print(f" - Estado: {format(d['estado'])}")
+            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
+            print()
+            print(f"Dados do contrato de venda {i + 1}:")
+            print(f" - Responsável (nome): {d['responsavel_nome']}")
+            print(f" - Responsável (CPF): {format(d['responsavel_cpf'])}")
+            print(f" - Data da venda: {format(d['data'])}")
+            print(f" - Valor: {format(d['valor'])}")
+
+            prompt_continue()
 
 
 def fetch_rents_responsible():
@@ -116,6 +139,7 @@ def fetch_rents_responsible():
             print(f" - Logradouro e número: {d['endereço']}")
             print(f" - Cidade: {d['cidade']}")
             print(f" - Estado: {format(d['estado'])}")
+            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
             print()
             print(f"Dados do contrato de aluguel {i + 1}:")
             print(f" - Locatário (nome): {d['locatario_nome']}")
@@ -123,11 +147,32 @@ def fetch_rents_responsible():
             print(f" - Data de início: {format(d['inicio'])}")
             print(f" - Data de fim: {format(d['fim'])}")
             print(f" - Aluguel: {format(d['aluguel'])}")
-            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
 
             prompt_continue()
 
 
 def fetch_sales_responsible():
     data = SaleContract.query_by_responsible_join_residence(CURRENT_CPF)
-    print(data)
+
+    if not data:
+        print("\nNenhum resultado encontrado.")
+    else:
+        print(
+            "\nNo momento ainda não é possível ver as informações de cada "
+            + "contrato com mais detalhes, mas essa funcionalidade está em "
+            + "desenvolvimento!"
+        )
+
+        for i, d in enumerate(data):
+            print(f"\nDados do imóvel {i + 1}:")
+            print(f" - Logradouro e número: {d['endereço']}")
+            print(f" - Cidade: {d['cidade']}")
+            print(f" - Estado: {format(d['estado'])}")
+            print()
+            print(f"Dados do contrato de venda {i + 1}:")
+            print(f" - Responsável (nome): {d['comprador_nome']}")
+            print(f" - Responsável (CPF): {format(d['comprador_cpf'])}")
+            print(f" - Data da venda: {format(d['data'])}")
+            print(f" - Valor: {format(d['valor'])}")
+
+            prompt_continue()

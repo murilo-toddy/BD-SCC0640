@@ -177,7 +177,7 @@ def format(target: any, type: str = "") -> str:
         return target.value
 
     if isinstance(target, str) and target.startswith('$'):
-        return f"R{target.replace('.', ',')}"
+        return f"R{target.replace(',','<DOT>').replace('.', ',').replace('<DOT>','.')}"
 
     cpf = regexes.cpf.match(target)
     if cpf:
