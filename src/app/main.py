@@ -1,19 +1,21 @@
-from connection import Connection
 import functionalities
-from utils import prompt_menu
+from connection import Connection
 from state import get_current_user_data
+from utils import prompt_menu
 
+name = get_current_user_data()["nome"].split(" ")[0]
 
-name = get_current_user_data()['nome'].split(' ')[0]
-
-print(f"Olá, {name}! Tudo bem? Seja bem vind@ ao Sistema de Monitoramento da \
-Vida Universitária.\n")
+print(
+    f"Olá, {name}! Tudo bem? Seja bem vind@ ao Sistema de Monitoramento da \
+Vida Universitária.\n"
+)
 
 
 menu_leading_text = (
-    "Infelizmente, nem todas as funcionalidades estão disponíveis no momento,"
-    + " devido ao sistema ainda estar em desenvolvimento. Quando ele for "
+    "Infelizmente, nem todas as funcionalidades estão disponíveis no momento, "
+    + "devido ao sistema ainda estar em desenvolvimento. Quando ele for "
     + "concluído, mais funcionalidade serão disponibilizadas.\n"
+    + "Selecione uma das opções do menu a seguir para continuar."
 )
 menu_options = [
     "Visualizar um resumo dos seus dados.",

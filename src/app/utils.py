@@ -114,7 +114,11 @@ def prompt_continue(leading: str = "\n") -> None:
     input(leading + "Aperte ENTER para continuar. ")
 
 
-def prompt_menu(options: list[str], leading_text: str = "") -> int:
+def prompt_menu(
+    options: list[str],
+    leading_text: str = "Selecione uma das opções do menu a seguir para continuar.\n\n",
+    trailing_text: str = "\n\nPara selecionar, insira apenas o número da opção. Input:"
+) -> int:
     """
     Prompts user to choose an option from the menu and returns the option's
     index.
@@ -124,6 +128,10 @@ def prompt_menu(options: list[str], leading_text: str = "") -> int:
     options : list[str]
         Menu optons in order. Indexing them (e.g. "1. Options ...") is not
         necessary and will be done automatically.
+    leading_text : str
+        Text that'll precede the list of options.
+    trailint_text : str
+        Text that'll proceed the list of options an precede the user's input.
 
     Returns:
     --------
@@ -138,10 +146,9 @@ def prompt_menu(options: list[str], leading_text: str = "") -> int:
 
     text = (
         leading_text
-        + (" " if leading_text and not leading_text.endswith("\n") else "")
-        + "Selecione uma das opções do menu a seguir para continuar.\n\n"
+        + ("\n" if leading_text and not leading_text.endswith("\n") else "")
         + options
-        + "\n\nPara selecionar, insira apenas o número da opção. Input:"
+        + trailing_text
     )
 
     def validate(option: str):
