@@ -1,6 +1,7 @@
-from enums import State
 import datetime
 import re
+
+from enums import State
 
 
 class regexes:
@@ -92,10 +93,61 @@ def prompt(text: str, validate: callable = None) -> str:
     if validate:
         is_valid = validate(r)
         while not is_valid:
-            r = input("Input inválido, tente novamente. " + text)
+            r = input("\nInput inválido, tente novamente. " + text)
             is_valid = validate(r)
 
     return r
+
+
+def prompt_continue() -> None:
+    """
+    Prompts user to press Enter to continue.
+    """
+
+    input("Aperte ENTER para continuar. ")
+
+
+def prompt_menu(options: list[str], leading_text: str = "") -> int:
+    """
+    Prompts user to choose an option from the menu and returns the option's
+    index.
+
+    Parameters:
+    -----------
+    options : list[str]
+        Menu optons in order. Indexing them (e.g. "1. Options ...") is not
+        necessary and will be done automatically.
+
+    Returns:
+    --------
+    int : the chosen option's index (`0, ..., len(options)`).
+    """
+
+    if not (options and isinstance(options, list)):
+        return None
+
+    n_options = len(options)
+    options = "\n".join([f"{i+1}. {o}" for i, o in enumerate(options)])
+
+    text = (
+        leading_text
+        + (" " if leading_text and not leading_text.endswith("\n") else "")
+        + "Selecione uma das opções do menu a seguir para continuar.\n\n"
+        + options
+        + "\n\nPara selecionar, insira apenas o número da opção. Input: "
+    )
+
+    def validate(option: str):
+        """
+        Validates the user input for the menu.
+        """
+        if option.endswith("."):
+            option = option[:-1]
+        return option.isnumeric() and int(option) <= n_options
+
+    r = prompt(text, validate)
+
+    return int(r.replace(".", "")) - 1
 
 
 def format(target: any, type: str = ""):
@@ -119,12 +171,12 @@ def format(target: any, type: str = ""):
         return f"{_1}.{_2}.{_3}-{_4}"
 
     cep = regexes.cep.match(target)
-    if cep and type.upper() == 'CEP':
+    if cep and type.upper() == "CEP":
         _1, _2 = cep.groups()
         return f"{_1}-{_2}"
 
     rg = regexes.rg.match(target)
-    if rg and type.upper() == 'RG':
+    if rg and type.upper() == "RG":
         _1, _2, _3, _4 = rg.groups()
         return f"{_1}.{_2}.{_3}-{_4}"
 
