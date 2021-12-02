@@ -1,5 +1,5 @@
 from entities.people import Person, Professor, Student
-from entities.residences import Home, Property, Residence
+from entities.residences import Home, Property, Residence, Responsability
 from entities.transactions import RentContract, SaleContract
 from enums import State
 from models import Address
@@ -184,7 +184,35 @@ def fetch_sales_responsible():
 
 
 def fetch_responsible_residences():
-    pass
+    data = Responsability.query_by_responsible_join_residence(CURRENT_CPF)
+
+    if not data:
+        print("\nNenhum resultado encontrado.")
+    else:
+        print(
+            "\nNo momento ainda não é possível ver as informações de cada "
+            + "contrato com mais detalhes, mas essa funcionalidade está em "
+            + "desenvolvimento!"
+        )
+
+        for i, d in enumerate(data):
+            type = "moradia coletiva" if d["coletividade"] else "imóvel particular"
+
+            print(f"\nDados da residência {i + 1}:")
+            print(f" - Tipo: {type}")
+            print(f" - Logradouro e número: {d['endereço']}")
+            print(f" - Cidade: {d['cidade']}")
+            print(f" - Estado: {format(d['estado'])}")
+            print(f" - Aluguel: {format(d['aluguel'])}")
+
+            if d["coletividade"]:
+                print(f" - Número de moradores: {d['n_moradores']}")
+            else:
+                print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
+                if d['permissao_venda']:
+                    print(f" - Valor de venda: {format(d['valor_venda'])}")
+
+            prompt_continue()
 
 
 def register_new_residence():

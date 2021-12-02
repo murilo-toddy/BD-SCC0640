@@ -24,7 +24,7 @@ class RentContract(Contract):
             FROM contrato_aluguel as C
             INNER JOIN residencia as R on C.residencia = R.id
             INNER JOIN pessoa as P on C.responsavel = P.CPF
-            LEFT JOIN imovel as I ON R.id = I.id
+            LEFT JOIN imovel as I ON R.id = I.id AND R.coletividade = false
             WHERE C.locatario = %s
         """
         return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
@@ -39,7 +39,7 @@ class RentContract(Contract):
             FROM contrato_aluguel as C
             INNER JOIN residencia as R on C.residencia = R.id
             INNER JOIN pessoa as P on C.locatario = P.CPF
-            LEFT JOIN imovel as I ON R.id = I.id
+            LEFT JOIN imovel as I ON R.id = I.id AND R.coletividade = false
             WHERE C.responsavel = %s
         """
         return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())

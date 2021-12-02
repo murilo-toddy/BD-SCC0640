@@ -7,6 +7,23 @@ from utils import assert_instance, assert_regex, regexes, remove_symbols
 
 
 class Responsability:
+    @staticmethod
+    def query_by_responsible_join_residence(cpf: str):
+        assert_regex(cpf, regexes.cpf, "cpf")
+
+        query = """
+            SELECT endereço, cidade, estado, condominio, coletividade,
+            permissao_venda, aluguel, valor_venda, n_moradores
+            FROM responsabilidade as P
+            INNER JOIN residencia as R on P.residencia = R.id
+            LEFT JOIN imovel as I ON R.id = I.id AND R.coletividade = false
+            LEFT JOIN moradia as M ON R.id = M.id AND R.coletividade = true
+            WHERE P.responsavel = %s AND
+            (P.residencia, P.responsavel) NOT IN
+            (SELECT residencia, responsavel FROM venda);
+        """
+        return Connection().exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
+
     def __init__(self, responsible: str, residence: int = None, can_sell: bool = None):
         assert_regex(responsible, regexes.cpf)
 
