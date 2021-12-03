@@ -1,7 +1,8 @@
-from entities.parties import Party, Ticket
+from entities.parties import Ticket
 from entities.people import Person, Professor, Student
 from entities.residences import Home, Property, Residence, Responsability
 from entities.transactions import RentContract, SaleContract
+from entities.university import Talks
 from enums import State
 from models import Address
 from state import CURRENT_CPF, get_current_user_data
@@ -275,16 +276,27 @@ def register_new_residence():
     prompt_continue()
 
 
-def manage_students():
-    pass
-
-
 def fetch_own_talks():
-    pass
+    data = Talks.fetch_by_professor_join_campus(CURRENT_CPF)
 
+    if not data:
+        print("\nNenhum resultado encontrado.")
+    else:
+        print(
+            "\nNo momento ainda não é possível ver as informações de cada "
+            + "palestra com mais detalhes, mas essa funcionalidade está em "
+            + "desenvolvimento!"
+        )
 
-def buy_ticket_to_party():
-    pass
+        for i, d in enumerate(data):
+            print(f"\nDados da palestra {i + 1}:")
+            print(f" - Título: {d['nome']}")
+            print(f" - Tema: {d['tema']}")
+            print(f" - Data/Horário: {format(d['data_horario'], 'data_horario')}")
+            print(f" - Campus: {d['campus']} - {d['universidade']}")
+            print(f" - Cidade: {d['cidade']} - {d['estado']}")
+
+            prompt_continue()
 
 
 def fetch_own_tickets():
@@ -302,7 +314,7 @@ def fetch_own_tickets():
         for i, d in enumerate(data):
             print(f"\nDados do ingresso/festa {i + 1}:")
             print(f" - Nome da festa: {d['nome']}")
-            print(f" - Data/Horário: {format(d['data_horario'])}")
+            print(f" - Data/Horário: {format(d['data_horario'], 'data_horario')}")
             print(f" - Cidade: {d['cidade']} - {d['estado']}")
             print(f" - Preço: {format(d['preço'])}")
 

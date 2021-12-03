@@ -24,6 +24,7 @@ class Ticket:
             SELECT data_horario, nome, preço, cidade, estado
             FROM ingresso as I, festa as F, residencia as R
             WHERE I.festa = F.id AND I.comprador = %s AND F.moradia = R.id
+            ORDER BY data_horario DESC;
         """
         return Connection().exec_commit(query, buyer, cb=lambda cur: cur.fetchall())
 
@@ -38,7 +39,8 @@ class Party:
             FROM festa as F, residencia as R
             WHERE F.data_horario < NOW() AND R.cidade = %s AND R.estado = %s
             AND F.n_ingressos_total >
-            (SELECT COUNT(I.festa) FROM ingresso as I WHERE I.festa = F.id);
+            (SELECT COUNT(I.festa) FROM ingresso as I WHERE I.festa = F.id)
+            ORDER BY data_horario ASC;
         """
         return Connection().exec_commit(
             query, city.city, city.state.name, cb=lambda cur: cur.fetchall()

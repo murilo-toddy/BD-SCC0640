@@ -22,13 +22,11 @@ menu_options = [
     "Cadastrar um novo aluno.",
     "Visualizar os contratos e residências que você já alugou.",
     "Visualizar os contratos e imóveis que você já comprou.",
-    "Comprar ingresso para uma festa em sua cidade.",
     "Visualizar todas as festas para  as quais você comprou ingresso.",
     "Cadastrar uma nova residência pela qual você é responsável.",
     "Visualizar os contratos e residências pelos quais você já foi responsável.",
     "Visualizar os contratos e imóveis pelos quais você já foi responsável.",
     "Visualizar todas as residências pelas quais você é responsável.",
-    "Gerenciar os alunos que orienta.",
     "Visualizar as suas palestras.",
 ]
 menu_functions = [
@@ -36,13 +34,11 @@ menu_functions = [
     functionalities.register_student,
     functionalities.fetch_rents_tenant,
     functionalities.fetch_sales_buyer,
-    functionalities.buy_ticket_to_party,
     functionalities.fetch_own_tickets,
     functionalities.register_new_residence,
     functionalities.fetch_rents_responsible,
     functionalities.fetch_sales_responsible,
     functionalities.fetch_responsible_residences,
-    functionalities.manage_students,
     functionalities.fetch_own_talks,
 ]
 

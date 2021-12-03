@@ -170,10 +170,9 @@ def format(target: any, type: str = "") -> str:
     RG).
     """
     if isinstance(target, datetime.date):
-        return target.strftime("%d/%m/%Y")
-
-    if isinstance(target, datetime.datetime):
-        return target.strftime("%d/%m/%Y, %Hh%M")
+        return target.strftime(
+            "%d/%m/%Y" + (", %Hh%M" if type == "data_horario" else "")
+        )
 
     if isinstance(target, list):
         return ", ".join(target) if target else "-"
