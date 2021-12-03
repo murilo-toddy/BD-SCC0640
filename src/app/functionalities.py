@@ -319,3 +319,8 @@ def fetch_own_tickets():
             print(f" - Preço: {format(d['preço'])}")
 
             prompt_continue()
+
+
+def quit():
+    print("\n\nAté logo!\n")
+    exit()

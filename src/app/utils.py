@@ -118,6 +118,7 @@ def prompt_menu(
     options: list[str],
     leading_text: str = "Selecione uma das opções do menu a seguir para continuar.\n\n",
     trailing_text: str = "\n\nPara selecionar, insira apenas o número da opção. Input:",
+    accept_negative_1: bool = False,
 ) -> int:
     """
     Prompts user to choose an option from the menu and returns the option's
@@ -146,7 +147,7 @@ def prompt_menu(
 
     text = (
         leading_text
-        + ("\n" if leading_text and not leading_text.endswith("\n") else "")
+        + ("\n\n" if leading_text and not leading_text.endswith("\n") else "")
         + options
         + trailing_text
     )
@@ -157,11 +158,12 @@ def prompt_menu(
         """
         if option.endswith("."):
             option = option[:-1]
-        return option.isnumeric() and int(option) <= n_options
+        return option == "-1" or option.isdigit() and int(option) <= n_options
 
     r = prompt(text, validate)
+    r = int(r.replace(".", ""))
 
-    return int(r.replace(".", "")) - 1
+    return (r if r > 0 else 0) - 1
 
 
 def format(target: any, type: str = "") -> str:
