@@ -3,4 +3,5 @@
 
 \i /db-scripts/insert-data.sql
 
+SET TIMEZONE = 'Brazil/East';
 ANALYZE; -- refresh statistics
