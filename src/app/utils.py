@@ -117,7 +117,7 @@ def prompt_continue(leading: str = "\n") -> None:
 def prompt_menu(
     options: list[str],
     leading_text: str = "Selecione uma das opções do menu a seguir para continuar.\n\n",
-    trailing_text: str = "\n\nPara selecionar, insira apenas o número da opção. Input:"
+    trailing_text: str = "\n\nPara selecionar, insira apenas o número da opção. Input:",
 ) -> int:
     """
     Prompts user to choose an option from the menu and returns the option's
@@ -170,9 +170,10 @@ def format(target: any, type: str = "") -> str:
     RG).
     """
     if isinstance(target, datetime.date):
-        day = str(target.day).zfill(2)
-        month = str(target.month).zfill(2)
-        return f"{day}/{month}/{target.year}"
+        return target.strftime("%d/%m/%Y")
+
+    if isinstance(target, datetime.datetime):
+        return target.strftime("%d/%m/%Y, %Hh%M")
 
     if isinstance(target, list):
         return ", ".join(target) if target else "-"

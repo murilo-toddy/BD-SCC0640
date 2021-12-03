@@ -17,13 +17,13 @@ class Ticket:
             return True, None
 
     @staticmethod
-    def fetch_by_buyer_join_party(buyer: id):
+    def fetch_by_buyer_join_party_city(buyer: id):
         assert_regex(buyer, regexes.cpf, "cpf")
 
         query = """
-            SELECT F.id, data_horario, nome, preço,
-            FROM ingresso as I, festa as F
-            WHERE I.festa = I.id AND I.comprador = %s
+            SELECT data_horario, nome, preço, cidade, estado
+            FROM ingresso as I, festa as F, residencia as R
+            WHERE I.festa = F.id AND I.comprador = %s AND F.moradia = R.id
         """
         return Connection().exec_commit(query, buyer, cb=lambda cur: cur.fetchall())
 

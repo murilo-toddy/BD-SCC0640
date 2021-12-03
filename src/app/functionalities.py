@@ -1,3 +1,4 @@
+from entities.parties import Party, Ticket
 from entities.people import Person, Professor, Student
 from entities.residences import Home, Property, Residence, Responsability
 from entities.transactions import RentContract, SaleContract
@@ -209,7 +210,7 @@ def fetch_responsible_residences():
                 print(f" - Número de moradores: {d['n_moradores']}")
             else:
                 print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
-                if d['permissao_venda']:
+                if d["permissao_venda"]:
                     print(f" - Valor de venda: {format(d['valor_venda'])}")
 
             prompt_continue()
@@ -287,4 +288,22 @@ def buy_ticket_to_party():
 
 
 def fetch_own_tickets():
-    pass
+    data = Ticket.fetch_by_buyer_join_party_city(CURRENT_CPF)
+
+    if not data:
+        print("\nNenhum resultado encontrado.")
+    else:
+        print(
+            "\nNo momento ainda não é possível ver as informações de cada "
+            + "ingresso com mais detalhes, mas essa funcionalidade está em "
+            + "desenvolvimento!"
+        )
+
+        for i, d in enumerate(data):
+            print(f"\nDados do ingresso/festa {i + 1}:")
+            print(f" - Nome da festa: {d['nome']}")
+            print(f" - Data/Horário: {format(d['data_horario'])}")
+            print(f" - Cidade: {d['cidade']} - {d['estado']}")
+            print(f" - Preço: {format(d['preço'])}")
+
+            prompt_continue()
