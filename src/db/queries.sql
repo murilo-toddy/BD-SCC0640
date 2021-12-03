@@ -11,8 +11,7 @@ ON a.cpf = o.aluno WHERE o.aluno IS NULL;
 
 -- Para pegar todas as palestras dadas por um professor
 SELECT id FROM palestra WHERE ministrante = '74214010591'
-
--- Para pegar todos os 
+ 
 
 -- Para pegar todos os alunos que participaram de todas as palestras de um professor
 SELECT CPF FROM aluno a WHERE 
