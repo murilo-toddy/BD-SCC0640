@@ -71,6 +71,7 @@ def fetch_rents_tenant():
 
     if not data:
         print("\nNenhum resultado encontrado.")
+        prompt_continue()
     else:
         print(
             "\nNo momento ainda não é possível ver as informações de cada "
@@ -103,6 +104,7 @@ def fetch_sales_buyer():
 
     if not data:
         print("\nNenhum resultado encontrado.")
+        prompt_continue()
     else:
         print(
             "\nNo momento ainda não é possível ver as informações de cada "
@@ -131,6 +133,7 @@ def fetch_rents_responsible():
 
     if not data:
         print("\nNenhum resultado encontrado.")
+        prompt_continue()
     else:
         print(
             "\nNo momento ainda não é possível ver as informações de cada "
@@ -163,6 +166,7 @@ def fetch_sales_responsible():
 
     if not data:
         print("\nNenhum resultado encontrado.")
+        prompt_continue()
     else:
         print(
             "\nNo momento ainda não é possível ver as informações de cada "
@@ -190,6 +194,7 @@ def fetch_responsible_residences():
 
     if not data:
         print("\nNenhum resultado encontrado.")
+        prompt_continue()
     else:
         print(
             "\nNo momento ainda não é possível ver as informações de cada "
@@ -248,6 +253,9 @@ def register_new_residence():
         specialization["n_residents"] = prompt(
             "Número de moradores:", lambda x: x.isdigit()
         )
+        specialization["n_roomates"] = prompt(
+            "Número de colegas de quarto:", lambda x: x.isdigit()
+        )
         specialization["n_pets"] = prompt("Número de pets:", lambda x: x.isdigit())
         specialization["total_capacity"] = prompt(
             "Número total de vagas:", lambda x: x.isdigit()
@@ -281,6 +289,7 @@ def fetch_own_talks():
 
     if not data:
         print("\nNenhum resultado encontrado.")
+        prompt_continue()
     else:
         print(
             "\nNo momento ainda não é possível ver as informações de cada "
@@ -304,6 +313,7 @@ def fetch_own_tickets():
 
     if not data:
         print("\nNenhum resultado encontrado.")
+        prompt_continue()
     else:
         print(
             "\nNo momento ainda não é possível ver as informações de cada "
