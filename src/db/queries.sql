@@ -1,3 +1,9 @@
+-- QUERY 2
+-- Obter todos os alunos e, caso eles sejam orientados por algum professor, também mostrar os dados do professor.
+
+SELECT a.cpf, a.procurando_moradia, o.professor
+FROM aluno a LEFT JOIN orienta o
+ON a.cpf = o.aluno;
 
 -- QUERY 3
 -- Dada uma festa, verificar quantos moradores existem em uma moradia na data da festa.
@@ -21,14 +27,7 @@ AND f.nome = 'Indy Festa';
 
 
 -- QUERY 4
-SELECT C.id C.nome_campus C.cidade Q.AnimaisPorCidade
-FROM campus C JOIN
-SELECT R1.Cidade, SUM(M1.QuantidadeAnimais) as AnimaisPorCidade
-FROM Residência R1 JOIN Moradia M1
-ON R.Residência = M.Residência
-GROUP BY R1.Cidade
-ORDER BY AnimaisPorCidade Q
-ON C.Cidade = Q.Cidade
+
 
 
 -- QUERY 7
