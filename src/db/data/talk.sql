@@ -38,7 +38,7 @@ SELECT '98826700087', id
 FROM palestra WHERE nome = 'Inteligência Financeira';
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '74214010591', id
+SELECT '89738378001', id
 FROM palestra WHERE nome = 'Saúde e Vida';
 
 INSERT INTO presenca_marcada (aluno, palestra)
@@ -46,12 +46,8 @@ SELECT '72262491119', id
 FROM palestra WHERE nome = 'Saúde e Vida';
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '74214010591', id
+SELECT '89738378001', id
 FROM palestra WHERE nome = 'Depressão não é frescura';
-
-INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '98975082016', id
-FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
 
 INSERT INTO presenca_marcada (aluno, palestra)
 SELECT '98826700087', id
@@ -63,4 +59,28 @@ FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
 
 INSERT INTO presenca_marcada (aluno, palestra)
 SELECT '65671541522', id
+FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
+
+INSERT INTO presenca_marcada (aluno, palestra)
+SELECT '23830223064', id
+FROM palestra WHERE nome = 'Saúde e Vida';
+
+INSERT INTO presenca_marcada (aluno, palestra)
+SELECT '23830223064', id
+FROM palestra WHERE nome = 'Depressão não é frescura';
+
+INSERT INTO presenca_marcada (aluno, palestra)
+SELECT '23830223064', id
+FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
+
+INSERT INTO presenca_marcada (aluno, palestra)
+SELECT '98975082016', id
+FROM palestra WHERE nome = 'Saúde e Vida';
+
+INSERT INTO presenca_marcada (aluno, palestra)
+SELECT '98975082016', id
+FROM palestra WHERE nome = 'Depressão não é frescura';
+
+INSERT INTO presenca_marcada (aluno, palestra)
+SELECT '98975082016', id
 FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';

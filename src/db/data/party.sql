@@ -57,5 +57,8 @@ INSERT INTO ingresso (festa, comprador)
 SELECT id, '23830223064'
 FROM festa WHERE nome = 'Westside';
 
+INSERT INTO ingresso (festa, comprador)
+SELECT id, '61520188030'
+FROM festa WHERE nome = 'Westside';
 
 
