@@ -1,5 +1,5 @@
-\i db/db/data/person.sql
-\i db/db/data/university.sql
-\i db/db/data/residence.sql
-\i db/db/data/party.sql
-\i db/db/data/talk.sql
+\i /db-scripts/data/person.sql
+\i /db-scripts/data/university.sql
+\i /db-scripts/data/residence.sql
+\i /db-scripts/data/party.sql
+\i /db-scripts/data/talk.sql
