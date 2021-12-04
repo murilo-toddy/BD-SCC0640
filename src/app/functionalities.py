@@ -56,6 +56,7 @@ def register_student():
     student["searching_property"] = parse_bool(
         prompt("Ele está procurando um imóvel? (s/n)", validate_bool)
     )
+    student["indicator"] = current_user.get_cpf()
 
     person["roles"] = Student(**student)
     ok, error = Person(**person).insert_db()
@@ -354,7 +355,7 @@ def login(new: bool = True) -> CurrentUser:
     cpf = prompt(
         "\nPara continuar, for favor, forneça o seu CPF:",
         validate_login,
-        "O CPF é inválido ou o usuário não existe."
+        "O CPF é inválido ou o usuário não existe.",
     )
 
     current_user = CurrentUser(cpf)

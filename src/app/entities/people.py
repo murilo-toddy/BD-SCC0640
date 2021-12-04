@@ -22,13 +22,42 @@ class PersonRole(ABC):
 class Student(PersonRole):
     __permission: PersonPermissions = PersonPermissions.Student
 
-    def __init__(self, cpf: str, searching_home: bool, searching_property: bool):
+    @staticmethod
+    def increment_indicatins_by_cpf(cpf: str) -> tuple[bool, Exception]:
+        assert_regex(cpf, regexes.cpf, "cpf")
+
+        cpf = remove_symbols(cpf)
+
+        permissions = Person.query_permissions_by_cpf(cpf)
+
+        if PersonPermissions.Student.value not in permissions:
+            return True, None
+
+        connection = Connection()
+        query = "UPDATE aluno SET n_indicacoes = n_indicacoes + 1 \
+                WHERE CPF = %s"
+
+        try:
+            connection.exec_commit(query, cpf)
+        except Exception as error:
+            return False, error
+        else:
+            return True, None
+
+    def __init__(
+        self,
+        cpf: str,
+        searching_home: bool,
+        searching_property: bool,
+        indicator: str = None,
+    ):
         assert_regex(cpf, regexes.cpf, "cpf")
 
         self.__cpf = remove_symbols(cpf)
         self.__searching_home = searching_home
         self.__searching_property = searching_property
         self.__no_indications = 0
+        self.__indicator = indicator
         self.__connection = Connection()
 
     @staticmethod
@@ -63,7 +92,7 @@ class Student(PersonRole):
         except Exception as error:
             return False, error
         else:
-            return True, None
+            return Student.increment_indicatins_by_cpf(self.__indicator)
 
 
 class Professor(PersonRole):
