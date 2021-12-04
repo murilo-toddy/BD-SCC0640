@@ -40,9 +40,6 @@ class Connection:
         if not parser.has_section(section):
             raise Exception(f"Section {section} not found in {filename}.")
 
-        # params = parser.items(section)
-        # # return {param[0]: param[1] for param in params}
-
         return dict(parser.items(section))
 
     def __connect(
@@ -83,7 +80,9 @@ class Connection:
         command: str
             SQL command to be executed.
         args: tuple[any]
-            Parameters to `command`.
+            Parameters to `command`. Passing the parameters like this instead
+            of formatting directly into the string is safer, because `psycopg2`
+            will sanitize them, which prevents SQL Injection.
         cb: function = None
             Function that'll be called before the commit. The cursor'll be
             passed to it as argument.

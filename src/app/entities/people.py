@@ -67,7 +67,6 @@ class Student(PersonRole):
 
     def insert_db(self) -> tuple[bool, Exception]:
         """Insert the student's data in the DB."""
-        # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO aluno(CPF, n_indicacoes, procurando_moradia, \
             procurando_imovel) VALUES(%s, %s, %s, %s);"
         try:
@@ -141,35 +140,44 @@ class Person:
         cpf = remove_symbols(cpf)
         connection = Connection()
 
+        # gets the user's roles
         query = "SELECT atuacao from atuacao WHERE pessoa = %s"
         rows = connection.exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
         roles = [row["atuacao"] for row in rows]
 
-        # list of columns per row
+        # list of desired columns for each role
         columns = {
             PersonPermissions.Student.value: ["n_indicacoes"],
             PersonPermissions.Professor.value: ["area_atuacao"],
             PersonPermissions.Responsible.value: [],
         }
 
+        # roles that we want at least one column from
+        derised_roles = [role for role in roles if columns[role]]
+
         # create comma-separated list for all selected
-        # columns for the person's roles
+        # columns for the person's roles.
+        # chain(*[...]) is used to flatten the list, so
+        # we'll have [(<role-name>, <desired-column>)]
         columns_expr = ", ".join(
             f"{table}.{col}"
             for table, col in chain(*[[(k, c) for c in v] for k, v in columns.items()])
             if table in roles
         )
-        if columns_expr:
-            columns_expr = ", " + columns_expr
 
-        join_expr = "\n".join(f"INNER JOIN {role} ON {role}.CPF = %s" for role in roles)
+        # expressions for joining with the necessary role
+        # tables (if we want at least one column from them)
+        join_expr = "\n".join(
+            f"INNER JOIN {role} ON {role}.CPF = %s" for role in derised_roles
+        )
 
+        # build the query
         query = f"""
-            SELECT P.CPF, RG, nome, nascimento {columns_expr} FROM pessoa as P
+            SELECT {columns_expr} P.CPF, RG, nome, nascimento FROM pessoa as P
             {join_expr}
             WHERE P.CPF = %s
         """
-        args = [cpf] * (len(roles) + 1)
+        args = [cpf] * (len(derised_roles) + 1)
 
         person = connection.exec_commit(query, *args, cb=lambda cur: cur.fetchone())
         person["atuacao"] = roles
@@ -221,12 +229,13 @@ class Person:
 
         assert_instance(roles, list)
 
+        self.cpf = remove_symbols(cpf)
+
         for role in roles:
             assert_instance(role, PersonRole)
-            assert_value(role.cpf, remove_symbols(cpf))
+            assert_value(role.cpf, self.cpf)  # the key must match
 
         self.__connection = Connection()
-        self.cpf = remove_symbols(cpf)
         self.rg = remove_symbols(rg.upper())
         self.name = name.title().strip()
         self.birthdate = birthdate
@@ -236,6 +245,7 @@ class Person:
         return [role.get_permissions() for role in self.roles]
 
     def get_birthdate_str(self) -> str:
+        """Convert the Persn's birthdate as a string in format DD/MM/YYYY."""
         return self.birthdate.strftime("%d/%m/%Y")
 
     def insert_db(self) -> tuple[bool, Exception]:
@@ -248,7 +258,6 @@ class Person:
         birthdate = self.get_birthdate_str()
 
         try:
-            # psycopg2'll sanitize the inputs (prevents SQL Injection)
             query = "INSERT INTO pessoa(CPF, RG, nome, nascimento) VALUES(%s, %s,\
                 %s, TO_DATE(%s, 'DD/MM/YYYY'));"
             self.__connection.exec_commit(query, self.cpf, self.rg, name, birthdate)
