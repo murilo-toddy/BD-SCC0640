@@ -32,6 +32,17 @@ FROM aluno a LEFT JOIN orienta o
 ON a.cpf = o.aluno;
 
 
+-- ALTERNATIVA
+-- Obter a quantidade de alunos orientados por cada professor, junto da idade média destes
+SELECT o.professor, COUNT(DISTINCT o.aluno) as qte_alunos, 
+ROUND(AVG(DATE_PART('YEAR', NOW()) - (DATE_PART('YEAR', p.nascimento)))) as idade_media
+FROM orienta o JOIN presenca_marcada pm 
+ON o.aluno = pm.aluno JOIN pessoa p 
+ON o.aluno = p.cpf
+GROUP BY o.professor;
+-- TODO adicionar mais tuplas em orienta
+
+
 -- QUERY 3
 -- Dada uma festa, verificar quantos moradores existem em uma moradia na data da festa.
 
@@ -59,8 +70,6 @@ AND f.nome = 'Indy Festa';
 
 -- QUERY 5
 -- Média da idade dos alunos que estão há mais tempo na faculdade e estão há procurar de moradia ou imóvel?
-
--- Pegar todos os alunos que estão procurando moradia ou imóvel
 SELECT ROUND(AVG(DATE_PART('YEAR', NOW()) - (DATE_PART('YEAR', p.nascimento)))) 
 FROM aluno a1 JOIN cursando c1 ON a1.cpf = c1.aluno 
 JOIN pessoa p ON a1.cpf = p.cpf
@@ -90,6 +99,18 @@ SELECT * FROM pessoa p LEFT JOIN ingresso i
 ON p.cpf = i.comprador WHERE i.festa IS NULL;
 
 -- Pessoas que moram em moradia
+SELECT c.locatario FROM contrato_aluguel c JOIN moradia m
+ON m.id = c.residencia;
+
+-- Pessoas que moram em moradia e nunca foram em festa
+SELECT c.locatario as cpf FROM contrato_aluguel c JOIN moradia m
+ON m.id = c.residencia 
+WHERE c.locatario NOT IN 
+((SELECT i.comprador FROM ingresso i) 
+UNION
+(SELECT c.locatario FROM contrato_aluguel c JOIN festa f 
+ON c.residencia = f.moradia));
+-- TODO adicionar mais dados para esta query
 
 
 
