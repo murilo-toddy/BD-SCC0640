@@ -691,7 +691,7 @@ VALUES (7, '93078701018', '61520188030', TO_DATE('23/11/2021', 'dd/mm/yyyy'), '5
 -- ESCOPO FESTA
 -- Inserção FESTA
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
-SELECT TO_TIMESTAMP('30/04/2020 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
+SELECT TO_TIMESTAMP('30/04/2019 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
        id, 50, 40, 'Vodka, Skol Beats'
 FROM residencia WHERE cep = '13571370';
 
