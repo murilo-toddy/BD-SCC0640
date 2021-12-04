@@ -1,7 +1,10 @@
-start_db:
+up:
 	docker-compose up
 
-stop_db:
+bg:
+	docker-compose up -d
+
+down:
 	docker-compose down
 
 psql:
@@ -10,5 +13,15 @@ psql:
 setup_db:
 	docker exec -it bd-projeto-db psql -U postgres -d postgres -f /db-scripts/setup-tables.sql
 
-start_app:
+app:
 	python3 src/app/main.py
+
+clear:
+	clear
+
+sleep:
+	sleep 3
+
+bootstrap: setup_db clear app
+
+all: bg sleep bootstrap
