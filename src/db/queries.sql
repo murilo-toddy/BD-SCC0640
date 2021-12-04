@@ -31,6 +31,34 @@ ORDER BY AnimaisPorCidade Q
 ON C.Cidade = Q.Cidade
 
 
+
+-- QUERY 5
+-- Média da idade dos alunos que estão há mais tempo na faculdade e estão há procurar de moradia ou imóvel?
+
+-- Pegar todos os alunos que estão procurando moradia ou imóvel
+SELECT ROUND(AVG(DATE_PART('YEAR', NOW()) - (DATE_PART('YEAR', p.nascimento)))) 
+FROM aluno a1 JOIN cursando c1 ON a1.cpf = c1.aluno 
+JOIN pessoa p ON a1.cpf = p.cpf
+WHERE (a1.procurando_moradia OR a1.procurando_imovel)
+AND c1.ano_ingresso IN
+(SELECT MIN(ano_ingresso) AS mais_velho FROM aluno a2 JOIN cursando c2 
+ON a2.cpf = c2.aluno
+WHERE a2.procurando_moradia OR a2.procurando_imovel);
+
+-- Datas de nascimento individuais
+SELECT p.nascimento FROM aluno a1 JOIN cursando c1
+ON a1.cpf = c1.aluno JOIN pessoa p
+ON a1.cpf = p.cpf
+WHERE (a1.procurando_moradia OR a1.procurando_imovel)
+AND c1.ano_ingresso IN
+(SELECT MIN(ano_ingresso) AS mais_velho FROM aluno a2 JOIN cursando c2 
+ON a2.cpf = c2.aluno
+WHERE a2.procurando_moradia OR a2.procurando_imovel);
+
+-- 
+
+
+
 -- QUERY 7
 -- Quais são os alunos que foram em todas as palestras de um determinado professor e não são orientados por nenhum ainda?
 
