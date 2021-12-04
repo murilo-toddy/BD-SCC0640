@@ -1,6 +1,28 @@
 -- QUERY 1
--- Obter quais são as pessoas de cada curso que vão mais em festas
--- TODO
+-- Obter quais são as pessoas de cada curso que vão mais em festas.
+
+-- Obter qual curso cada pessoa está cursando.
+SELECT c.curso, c.aluno FROM cursando c;
+
+--Obter o número de festas que cada aluno foi.
+SELECT p.cpf, COUNT(p.cpf)
+FROM pessoa p JOIN ingresso i
+ON p.cpf = i.comprador
+GROUP BY p.cpf;
+
+--Obter as festas que ocorreram nos últimos seis meses.
+SELECT f.id, f.nome
+FROM festa f
+WHERE DATE_PART('day', NOW() - f.data_horario) <= 180
+
+--Obter o número de festas que cada aluno foi nos últimos seis meses.
+SELECT p.cpf, COUNT(p.cpf)
+FROM pessoa p JOIN ingresso i
+ON p.cpf = i.comprador
+WHERE i.festa IN (SELECT f.id
+                  FROM festa f
+                  WHERE DATE_PART('day', NOW() - f.data_horario) <= 180)
+GROUP BY p.cpf;
 
 
 -- QUERY 2
