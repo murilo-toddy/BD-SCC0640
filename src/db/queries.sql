@@ -20,6 +20,16 @@ AND f.nome = 'Indy Festa';
 -- TODO Adicionar mais dados para essa moradia
 
 
+-- QUERY 4
+SELECT C.id C.nome_campus C.cidade Q.AnimaisPorCidade
+FROM campus C JOIN
+SELECT R1.Cidade, SUM(M1.QuantidadeAnimais) as AnimaisPorCidade
+FROM Residência R1 JOIN Moradia M1
+ON R.Residência = M.Residência
+GROUP BY R1.Cidade
+ORDER BY AnimaisPorCidade Q
+ON C.Cidade = Q.Cidade
+
 
 -- QUERY 7
 -- Quais são os alunos que foram em todas as palestras de um determinado professor e não são orientados por nenhum ainda?
