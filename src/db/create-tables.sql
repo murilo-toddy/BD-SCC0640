@@ -20,7 +20,11 @@ CREATE TABLE residencia (
     infos_adicionais VARCHAR,
 
     CONSTRAINT pk_residencia PRIMARY KEY(id),
-    CONSTRAINT cep_number CHECK(cep ~ '^[0-9]{8}$')
+    CONSTRAINT cep_number CHECK(cep ~ '^[0-9]{8}$'),
+    CONSTRAINT validate_aluguel CHECK(aluguel::NUMERIC::INT > 0),
+    CONSTRAINT validate_quartos CHECK(n_quartos > 0),
+    CONSTRAINT validate_banheiros CHECK(n_banheiros > 0),
+    CONSTRAINT validate_area CHECK(area_interna > 0 AND area_externa >= 0)
 );
 
 CREATE TABLE imovel (
@@ -29,6 +33,7 @@ CREATE TABLE imovel (
     condominio     MONEY,
     aceita_animais BOOLEAN NOT NULL,
 
+    CONSTRAINT validate_venda CHECK (valor_venda::NUMERIC::INT > 0),
     CONSTRAINT pk_imovel PRIMARY KEY(id),
     CONSTRAINT fk_imovel_residencia FOREIGN KEY(id)
                                     REFERENCES residencia(id)
@@ -42,6 +47,9 @@ CREATE TABLE moradia (
     n_animais        INT NOT NULL,
     n_total_vagas    INT NOT NULL,
 
+    CONSTRAINT validate_people CHECK (n_moradores >= 0 AND n_colegas_quarto >= 0),
+    CONSTRAINT validate_animais CHECK (n_animais >= 0),
+    CONSTRAINT validate_vagas CHECK (n_total_vagas >= 0),
     CONSTRAINT pk_moradia PRIMARY KEY (id),
     CONSTRAINT fk_moradia_residencia FOREIGN KEY (id)
                                      REFERENCES residencia(id)
@@ -57,6 +65,8 @@ CREATE TABLE festa (
     n_ingressos_total INT         NOT NULL,
     open_bar          VARCHAR,
 
+    CONSTRAINT validate_price CHECK (preço::NUMERIC::INT > 0),
+    CONSTRAINT validate_tickets CHECK (n_ingressos_total > 0),
     CONSTRAINT pk_festa PRIMARY KEY(id),
     CONSTRAINT sk_festa UNIQUE(data_horario, nome, moradia),
     CONSTRAINT fk_festa_moradia FOREIGN KEY(moradia)
@@ -115,6 +125,7 @@ CREATE TABLE aluno (
     procurando_moradia BOOLEAN,
     procurando_imovel  BOOLEAN,
 
+    CONSTRAINT validate_indicacoes CHECK (n_indicacoes >= 0),
     CONSTRAINT pk_aluno PRIMARY KEY(CPF),
     CONSTRAINT fk_aluno_pessoa FOREIGN KEY(CPF)
                                  REFERENCES pessoa(CPF)
@@ -155,6 +166,9 @@ CREATE TABLE contrato_aluguel (
     multa       MONEY NOT NULL,
     desconto    MONEY NOT NULL,
 
+    CONSTRAINT validate_prices CHECK (aluguel::NUMERIC::INT > 0 AND
+                                      multa::NUMERIC::INT >= 0 AND 
+                                      desconto::NUMERIC::INT >= 0),
     CONSTRAINT pk_contrato_aluguel PRIMARY KEY(inicio, residencia, responsavel, locatario),
     CONSTRAINT fk_contrato_aluguel_responsabilidade FOREIGN KEY(residencia, responsavel)
                                                     REFERENCES responsabilidade(residencia, responsavel)
@@ -173,6 +187,8 @@ CREATE TABLE venda (
     valor       MONEY NOT NULL,
     desconto    MONEY NOT NULL,
 
+    CONSTRAINT validate_prices CHECK (valor::NUMERIC::INT > 0 AND
+                                      desconto::NUMERIC::INT >= 0),
     CONSTRAINT pk_venda PRIMARY KEY(residencia, responsavel, comprador),
     CONSTRAINT fk_venda_responsabilidade FOREIGN KEY(residencia, responsavel)
                                         REFERENCES responsabilidade(residencia, responsavel)
