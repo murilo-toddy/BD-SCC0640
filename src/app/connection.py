@@ -8,12 +8,10 @@ class Connection:
     """
     Singleton that sets up one connection to the Postgres database.
 
-    ...
     Attributes
     ----------
-    connection : psycopg2._psycopg.connection
-    cursor : psycopg2._psycopg.cursor
-    ...
+    connection: psycopg2._psycopg.connection
+    cursor: psycopg2._psycopg.cursor
     """
 
     # Guarantees the Connection class is a Singleton
@@ -31,12 +29,10 @@ class Connection:
         """
         Gets config info for a `.ini` file.
 
-        ...
         Parameters
         ----------
-        filename : str
-        section : str
-        ...
+        filename: str
+        section: str
         """
 
         parser = ConfigParser()
@@ -91,17 +87,17 @@ class Connection:
 
         Parameters
         ----------
-        command : str
+        command: str
             SQL command to be executed.
-        args : tuple[any]
+        args: tuple[any]
             Parameters to `command`.
-        cb : function = None
+        cb: function = None
             Function that'll be called before the commit. The cursor'll be
             passed to it as argument.
 
         Returns
         -------
-        any : the return value of `cb` or `None`.
+        any: the return value of `cb` or `None`.
         """
         self.cursor.execute(command, args)
         return_value = cb(self.cursor) if cb else None

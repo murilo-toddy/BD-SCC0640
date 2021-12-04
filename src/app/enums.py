@@ -1,16 +1,17 @@
 import enum
 
 
-# makes using "string in State" possible
 class EnumMeta(enum.EnumMeta):
+    """Makes using 'string in Enum' possible."""
+
     def __contains__(cls, item):
-        return item in cls.__members__
+        return item in cls.__members__ or item in [
+            e._value_ for e in PersonPermissions._member_map_.values()
+        ]
 
 
 class State(enum.Enum, metaclass=EnumMeta):
-    """
-    Enum for all brazilian states.
-    """
+    """Enum for all brazilian states."""
 
     AC = "Acre"
     AL = "Alagoas"
@@ -39,3 +40,11 @@ class State(enum.Enum, metaclass=EnumMeta):
     SP = "São Paulo"
     SE = "Sergipe"
     TO = "Tocantins"
+
+
+class PersonPermissions(enum.Enum, metaclass=EnumMeta):
+    """Enum for all person types."""
+
+    Professor = "professor"
+    Student = "aluno"
+    Responsible = "responsavel"

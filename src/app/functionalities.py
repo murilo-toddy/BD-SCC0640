@@ -1,3 +1,4 @@
+from state import CurrentUser
 from entities.parties import Ticket
 from entities.people import Person, Professor, Student
 from entities.residences import Home, Property, Residence, Responsability
@@ -5,7 +6,6 @@ from entities.transactions import RentContract, SaleContract
 from entities.university import Talks
 from enums import State
 from models import Address
-from state import CURRENT_CPF, get_current_user_data
 from utils import (
     format,
     parse_bool,
@@ -18,9 +18,11 @@ from utils import (
     validate_float,
 )
 
+current_user = CurrentUser()
+
 
 def fetch_own_data():
-    user = get_current_user_data()
+    user = current_user.fetch_data()
     print(f"\n\nNome completo: {user['nome']}")
     print(f"CPF: {format(user['cpf'])}")
     print(f"RG: {format(user['rg'], 'rg')}")
@@ -67,7 +69,7 @@ def register_student():
 
 
 def fetch_rents_tenant():
-    data = RentContract.query_by_tenant_join_residence(CURRENT_CPF)
+    data = RentContract.query_by_tenant_join_residence(current_user.get_cpf())
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -100,7 +102,7 @@ def fetch_rents_tenant():
 
 
 def fetch_sales_buyer():
-    data = SaleContract.query_by_buyer_join_residence(CURRENT_CPF)
+    data = SaleContract.query_by_buyer_join_residence(current_user.get_cpf())
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -129,7 +131,9 @@ def fetch_sales_buyer():
 
 
 def fetch_rents_responsible():
-    data = RentContract.query_by_responsible_join_residence(CURRENT_CPF)
+    data = RentContract.query_by_responsible_join_residence(
+        current_user.get_cpf()
+    )
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -162,7 +166,9 @@ def fetch_rents_responsible():
 
 
 def fetch_sales_responsible():
-    data = SaleContract.query_by_responsible_join_residence(CURRENT_CPF)
+    data = SaleContract.query_by_responsible_join_residence(
+        current_user.get_cpf()
+    )
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -190,7 +196,9 @@ def fetch_sales_responsible():
 
 
 def fetch_responsible_residences():
-    data = Responsability.query_by_responsible_join_residence(CURRENT_CPF)
+    data = Responsability.query_by_responsible_join_residence(
+        current_user.get_cpf()
+    )
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -241,7 +249,7 @@ def register_new_residence():
     residence["extra_info"] = prompt("Informações adicionais:")
 
     residence["address"] = Address(**residence["address"])
-    residence["responsible"] = CURRENT_CPF
+    residence["responsible"] = current_user.get_cpf()
 
     type = prompt(
         "Tipo de residência (moradia x imóvel):",
@@ -285,7 +293,7 @@ def register_new_residence():
 
 
 def fetch_own_talks():
-    data = Talks.fetch_by_professor_join_campus(CURRENT_CPF)
+    data = Talks.fetch_by_professor_join_campus(current_user.get_cpf())
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -309,7 +317,7 @@ def fetch_own_talks():
 
 
 def fetch_own_tickets():
-    data = Ticket.fetch_by_buyer_join_party_city(CURRENT_CPF)
+    data = Ticket.fetch_by_buyer_join_party_city(current_user.get_cpf())
 
     if not data:
         print("\nNenhum resultado encontrado.")

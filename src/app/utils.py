@@ -25,11 +25,11 @@ def assert_regex(string: str, regex: re.Pattern, name: str = "") -> None:
 
     Parameters
     ----------
-    string : str
+    string: str
         The string to be tested.
-    regex : re.Pattern
+    regex: re.Pattern
         The pattern to test `string` against.
-    name : str (default '')
+    name: str (default '')
         The string's name to be specified in the error message.
     """
     if not regex.match(string):
@@ -42,11 +42,11 @@ def assert_instance(variable: any, _class: object, name: str = "") -> None:
 
     Parameters
     ----------
-    variable : any
+    variable: any
         The variable to be tested.
-    _class : object
+    _class: object
         The class that `variable` should be an instance of.
-    name : str (default '')
+    name: str (default '')
         The variable's name to be specified in the error message.
     """
     if not isinstance(variable, _class):
@@ -59,9 +59,9 @@ def assert_value(a: any, b: any, name: str = "") -> None:
 
     Parameters
     ----------
-    a, b : any
+    a, b: any
         The variables to be compared.
-    name : str (default '')
+    name: str (default '')
         `a`'s name to be specified in the error message.
     """
     if a != b:
@@ -81,16 +81,16 @@ def prompt(text: str, validate: callable = None) -> str:
 
     Parameters:
     -----------
-    text : str
+    text: str
         Input prompt.
-    validate : function = None
+    validate: function = None
         Validator for the input - if none is provided, all input is considered
         valid. It should receive a string to validate as parameter and return a
         bool.
 
     Returns:
     --------
-    str : the user's validated input.
+    str: the user's validated input.
     """
 
     if not text.endswith("\n"):
@@ -126,17 +126,17 @@ def prompt_menu(
 
     Parameters:
     -----------
-    options : list[str]
+    options: list[str]
         Menu optons in order. Indexing them (e.g. "1. Options ...") is not
         necessary and will be done automatically.
-    leading_text : str
+    leading_text: str
         Text that'll precede the list of options.
-    trailint_text : str
+    trailint_text: str
         Text that'll proceed the list of options an precede the user's input.
 
     Returns:
     --------
-    int : the chosen option's index (`0, ..., len(options)`).
+    int: the chosen option's index (`0, ..., len(options)`).
     """
 
     if not (options and isinstance(options, list)):

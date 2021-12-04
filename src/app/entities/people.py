@@ -4,13 +4,15 @@ from itertools import chain
 from typing import Union
 
 from connection import Connection
+from enums import PersonPermissions
 from utils import assert_instance, assert_regex, assert_value, regexes, remove_symbols
 
 
 class PersonRole(ABC):
-    @abstractmethod
-    def get_cpf(self) -> str:
-        pass
+    __permission: PersonPermissions
+
+    def get_permissions(self) -> PersonPermissions:
+        return self.__permission.value
 
     @abstractmethod
     def insert_db(self) -> tuple[bool, Exception]:
@@ -18,7 +20,7 @@ class PersonRole(ABC):
 
 
 class Student(PersonRole):
-    __value = "aluno"
+    __permission: PersonPermissions = PersonPermissions.Student
 
     def __init__(self, cpf: str, searching_home: bool, searching_property: bool):
         assert_regex(cpf, regexes.cpf, "cpf")
@@ -31,7 +33,7 @@ class Student(PersonRole):
 
     @staticmethod
     def __str__() -> str:
-        return Student.__value
+        return Student.__permission.value
 
     def get_cpf(self) -> str:
         return self.__cpf
@@ -46,10 +48,7 @@ class Student(PersonRole):
         return self.__searching_property
 
     def insert_db(self) -> tuple[bool, Exception]:
-        """
-        Inserts the student's data in the DB.
-        """
-
+        """Insert the student's data in the DB."""
         searching_home = self.__searching_home
         searching_property = self.__searching_property
         no_indications = self.__no_indications
@@ -68,7 +67,7 @@ class Student(PersonRole):
 
 
 class Professor(PersonRole):
-    __value = "professor"
+    permission: PersonPermissions = PersonPermissions.Professor
 
     def __init__(self, cpf: str, occupation_area: str):
         assert_regex(cpf, regexes.cpf, "cpf")
@@ -79,7 +78,7 @@ class Professor(PersonRole):
 
     @staticmethod
     def __str__() -> str:
-        return Professor.__value
+        return Professor.permission
 
     def get_cpf(self) -> str:
         return self.__cpf
@@ -88,10 +87,7 @@ class Professor(PersonRole):
         return self.__no_indications
 
     def insert_db(self) -> tuple[bool, Exception]:
-        """
-        Inserts the professor's data in the DB.
-        """
-
+        """Insert the professor's data in the DB."""
         # psycopg2'll sanitize the inputs (prevents SQL Injection)
         query = "INSERT INTO professor(CPF, area_atuacao) VALUES(%s, %s);"
         try:
@@ -106,7 +102,7 @@ class Professor(PersonRole):
 
 
 class Responsible(PersonRole):
-    __value = "responsavel"
+    permission: PersonPermissions = PersonPermissions.Responsible
 
     def __init__(self, cpf: str):
         assert_regex(cpf, regexes.cpf, "cpf")
@@ -116,17 +112,13 @@ class Responsible(PersonRole):
 
     @staticmethod
     def __str__() -> str:
-        return Responsible.__value
+        return Responsible.permission
 
     def get_cpf(self) -> str:
         return self.__cpf
 
     def insert_db(self) -> tuple[bool, Exception]:
-        """
-        Inserts the responsible's data in the DB.
-        """
-
-        # psycopg2'll sanitize the inputs (prevents SQL Injection)
+        """Insert the responsible's data in the DB."""
         query = "INSERT INTO responsavel(CPF) VALUES(%s);"
         try:
             self.__connection.exec_commit(query, self.__cpf)
@@ -137,6 +129,13 @@ class Responsible(PersonRole):
 
 
 class Person:
+    __connection: Connection()
+    __cpf: str
+    __rg: str
+    __name: str
+    __birthdate: datetime.date
+    __roles: list[PersonRole]
+
     @staticmethod
     def query_by_cpf_join_specializations(cpf: str):
         assert_regex(cpf, regexes.cpf, "cpf")
@@ -177,7 +176,7 @@ class Person:
         args = [cpf] * (len(roles) + 1)
 
         person = connection.exec_commit(query, *args, cb=lambda cur: cur.fetchone())
-        person['atuacao'] = roles
+        person["atuacao"] = roles
 
         return person
 
@@ -192,6 +191,18 @@ class Person:
         person = connection.exec_commit(query, cpf, cb=lambda cur: cur.fetchone())
 
         return person
+
+    @staticmethod
+    def query_permissions_by_cpf(cpf: str):
+        assert_regex(cpf, regexes.cpf, "cpf")
+
+        cpf = remove_symbols(cpf)
+        connection = Connection()
+
+        query = "SELECT atuacao from atuacao WHERE pessoa = %s"
+        rows = connection.exec_commit(query, cpf, cb=lambda cur: cur.fetchall())
+
+        return [row["atuacao"] for row in rows]
 
     def __init__(
         self,
@@ -225,6 +236,9 @@ class Person:
         self.__birthdate = birthdate
         self.__roles = roles
 
+    def get_permissions(self) -> list[PersonPermissions]:
+        return [role.get_permissions() for role in self.__roles]
+
     def get_cpf(self) -> str:
         return self.__cpf
 
@@ -245,11 +259,10 @@ class Person:
 
     def insert_db(self) -> tuple[bool, Exception]:
         """
-        Inserts the person's data in the DB, including all of it's roles in the
+        Insert the person's data in the DB, including all of it's roles in the
         necessary tables: 'pessoa', 'atuacao', 'aluno', 'professor' and
         'responsavel'.
         """
-
         cpf = self.__cpf
         rg = self.__rg
         name = self.__name
