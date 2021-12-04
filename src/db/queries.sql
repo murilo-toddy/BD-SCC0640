@@ -36,11 +36,6 @@ AND f.nome = 'Indy Festa';
 
 
 -- QUERY 5
--- Quais são os alunos que estão a mais tempo na faculdade e estão procurando moradia ou imóvel?
--- TODO
-
-
--- QUERY 5
 -- Média da idade dos alunos que estão há mais tempo na faculdade e estão há procurar de moradia ou imóvel?
 
 -- Pegar todos os alunos que estão procurando moradia ou imóvel
@@ -67,7 +62,13 @@ WHERE a2.procurando_moradia OR a2.procurando_imovel);
 
 -- QUERY 6
 -- Quais são todas as pessoas que já moraram em uma moradia e nunca foram a uma festa?
--- TODO
+
+-- Todas as pessoas que nunca foram em uma festa
+SELECT * FROM pessoa p LEFT JOIN ingresso i 
+ON p.cpf = i.comprador WHERE i.festa IS NULL;
+
+-- Pessoas que moram em moradia
+
 
 
 -- QUERY 7
