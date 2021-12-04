@@ -1,4 +1,4 @@
-from state import CurrentUser
+from connection import Connection
 from entities.parties import Ticket
 from entities.people import Person, Professor, Student
 from entities.residences import Home, Property, Residence, Responsability
@@ -6,6 +6,7 @@ from entities.transactions import RentContract, SaleContract
 from entities.university import Talks
 from enums import State
 from models import Address
+from state import CurrentUser
 from utils import (
     format,
     parse_bool,
@@ -131,9 +132,7 @@ def fetch_sales_buyer():
 
 
 def fetch_rents_responsible():
-    data = RentContract.query_by_responsible_join_residence(
-        current_user.get_cpf()
-    )
+    data = RentContract.query_by_responsible_join_residence(current_user.get_cpf())
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -166,9 +165,7 @@ def fetch_rents_responsible():
 
 
 def fetch_sales_responsible():
-    data = SaleContract.query_by_responsible_join_residence(
-        current_user.get_cpf()
-    )
+    data = SaleContract.query_by_responsible_join_residence(current_user.get_cpf())
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -196,9 +193,7 @@ def fetch_sales_responsible():
 
 
 def fetch_responsible_residences():
-    data = Responsability.query_by_responsible_join_residence(
-        current_user.get_cpf()
-    )
+    data = Responsability.query_by_responsible_join_residence(current_user.get_cpf())
 
     if not data:
         print("\nNenhum resultado encontrado.")
@@ -340,5 +335,41 @@ def fetch_own_tickets():
 
 
 def quit():
-    print("\n\nAté logo!\n")
+    print("\n\nAté logo!")
+    prompt_continue()
+    print()
+    Connection().disconnect()
     exit()
+
+
+def login(new: bool = True) -> CurrentUser:
+    def validate_login(cpf):
+        try:
+            CurrentUser(cpf)
+        except Exception:
+            return False
+        else:
+            return True
+
+    cpf = prompt(
+        "\nPara continuar, for favor, forneça o seu CPF:",
+        validate_login,
+        "O CPF é inválido ou o usuário não existe."
+    )
+
+    current_user = CurrentUser(cpf)
+
+    name = current_user.fetch_name().split(" ")[0]
+    print(
+        f"\nOlá, {name}! Tudo bem? Seja bem vind@ ao Sistema de "
+        + "Monitoramento da Vida Universitária.",
+    )
+    prompt_continue()
+
+    return current_user
+
+
+def logout():
+    print("\n\n\n\n---------------------------------------------------\n")
+    login()
+    return True

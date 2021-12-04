@@ -7,10 +7,6 @@ leading_text = (
     + "concluído, mais funcionalidade serão disponibilizadas.\n"
     + "Selecione uma das opções do menu a seguir para continuar."
 )
-trailig_text = (
-    "\n\nPara selecionar, insira apenas o número da opção e, para sair, "
-    + "insira -1. Input:"
-)
 
 menu = [
     {
@@ -86,5 +82,23 @@ menu = [
         "option": "Visualizar as suas palestras.",
         "function": functionalities.fetch_own_talks,
         "permissions": (PersonPermissions.Professor,),
+    },
+    {
+        "option": "Trocar de conta.",
+        "function": functionalities.logout,
+        "permissions": (
+            PersonPermissions.Professor,
+            PersonPermissions.Responsible,
+            PersonPermissions.Student,
+        ),
+    },
+    {
+        "option": "Sair.",
+        "function": functionalities.quit,
+        "permissions": (
+            PersonPermissions.Professor,
+            PersonPermissions.Responsible,
+            PersonPermissions.Student,
+        ),
     },
 ]

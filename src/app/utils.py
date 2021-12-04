@@ -75,24 +75,29 @@ def remove_symbols(string: str) -> str:
     return re.sub(r"[^a-zA-Z0-9]", "", string)
 
 
-def prompt(text: str, validate: callable = None) -> str:
+def prompt(
+    text: str,
+    validate: callable = None,
+    err: str = "Input inválido, tente novamente.",
+) -> str:
     """
-    Prompts user for input and only returns when the input is valid.
+    Prompt user for input and only returns when the input is valid.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     text: str
         Input prompt.
     validate: function = None
         Validator for the input - if none is provided, all input is considered
         valid. It should receive a string to validate as parameter and return a
         bool.
+    err: str = "Input inválido, tente novamente."
+        Error message in case validation fails.
 
-    Returns:
-    --------
+    Returns
+    -------
     str: the user's validated input.
     """
-
     if not text.endswith("\n"):
         text += " "
 
@@ -100,7 +105,7 @@ def prompt(text: str, validate: callable = None) -> str:
     if validate:
         is_valid = validate(r)
         while not is_valid:
-            r = input("\nInput inválido, tente novamente. " + text)
+            r = input(f"\n{err} {text}")
             is_valid = validate(r)
 
     return r
@@ -118,7 +123,6 @@ def prompt_menu(
     options: list[str],
     leading_text: str = "Selecione uma das opções do menu a seguir para continuar.\n\n",
     trailing_text: str = "\n\nPara selecionar, insira apenas o número da opção. Input:",
-    accept_negative_1: bool = False,
 ) -> int:
     """
     Prompts user to choose an option from the menu and returns the option's
@@ -153,17 +157,14 @@ def prompt_menu(
     )
 
     def validate(option: str):
-        """
-        Validates the user input for the menu.
-        """
+        """Validate the user input for the menu."""
         if option.endswith("."):
             option = option[:-1]
-        return option == "-1" or option.isdigit() and int(option) <= n_options
+        return option.isdigit() and int(option) <= n_options
 
     r = prompt(text, validate)
-    r = int(r.replace(".", ""))
 
-    return (r if r > 0 else 0) - 1
+    return int(r.replace(".", "")) - 1
 
 
 def format(target: any, type: str = "") -> str:
