@@ -1,7 +1,7 @@
 -- Inserção FESTA
 -- TODO Verificar se n_disponivel vai continuar no banco, talvez de pra remover!!
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
-SELECT TO_TIMESTAMP('30/04/2020 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
+SELECT TO_TIMESTAMP('30/04/2019 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
        id, 50, 40, 'Vodka, Skol Beats'
 FROM residencia WHERE cep = '13571370';
 
