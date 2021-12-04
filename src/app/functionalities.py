@@ -9,6 +9,7 @@ from models import Address
 from state import CurrentUser
 from utils import (
     format,
+    loop_display_data,
     parse_bool,
     parse_float,
     prompt,
@@ -76,161 +77,109 @@ def fetch_rents_tenant():
     """Fetch all of the rent contracts in which the current user is/was a tenant."""
     data = RentContract.query_by_tenant_join_residence(current_user.get_cpf())
 
-    if not data:
-        print("\nNenhum resultado encontrado.")
-        prompt_continue()
-    else:
-        print(
-            "\nNo momento ainda não é possível ver as informações de cada "
-            + "contrato com mais detalhes, mas essa funcionalidade está em "
-            + "desenvolvimento!"
-        )
+    def display_fn(d: dict, i: int):
+        type = "moradia coletiva" if d["coletividade"] else "imóvel particular"
+        print(f"\nDados da residência {i + 1}:")
+        print(f" - Tipo: {type}")
+        print(f" - Logradouro e número: {d['endereço']}")
+        print(f" - Cidade: {d['cidade']}")
+        print(f" - Estado: {format(d['estado'])}")
+        print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
+        print()
+        print(f"Dados do contrato de aluguel {i + 1}:")
+        print(f" - Responsável (nome): {d['responsavel_nome']}")
+        print(f" - Responsável (CPF): {format(d['responsavel_cpf'])}")
+        print(f" - Data de início: {format(d['inicio'])}")
+        print(f" - Data de fim: {format(d['fim'])}")
+        print(f" - Aluguel: {format(d['aluguel'])}")
 
-        for i, d in enumerate(data):
-            type = "moradia coletiva" if d["coletividade"] else "imóvel particular"
-
-            print(f"\nDados da residência {i + 1}:")
-            print(f" - Tipo: {type}")
-            print(f" - Logradouro e número: {d['endereço']}")
-            print(f" - Cidade: {d['cidade']}")
-            print(f" - Estado: {format(d['estado'])}")
-            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
-            print()
-            print(f"Dados do contrato de aluguel {i + 1}:")
-            print(f" - Responsável (nome): {d['responsavel_nome']}")
-            print(f" - Responsável (CPF): {format(d['responsavel_cpf'])}")
-            print(f" - Data de início: {format(d['inicio'])}")
-            print(f" - Data de fim: {format(d['fim'])}")
-            print(f" - Aluguel: {format(d['aluguel'])}")
-
-            prompt_continue()
+    loop_display_data(data, display_fn, "contrato")
 
 
 def fetch_sales_buyer():
     """Fetch all of the sale contracts in which the current user was the buyer."""
     data = SaleContract.query_by_buyer_join_residence(current_user.get_cpf())
 
-    if not data:
-        print("\nNenhum resultado encontrado.")
-        prompt_continue()
-    else:
-        print(
-            "\nNo momento ainda não é possível ver as informações de cada "
-            + "contrato com mais detalhes, mas essa funcionalidade está em "
-            + "desenvolvimento!"
-        )
+    def display_fn(d: dict, i: int):
+        print(f"\nDados do imóvel {i + 1}:")
+        print(f" - Logradouro e número: {d['endereço']}")
+        print(f" - Cidade: {d['cidade']}")
+        print(f" - Estado: {format(d['estado'])}")
+        print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
+        print()
+        print(f"Dados do contrato de venda {i + 1}:")
+        print(f" - Responsável (nome): {d['responsavel_nome']}")
+        print(f" - Responsável (CPF): {format(d['responsavel_cpf'])}")
+        print(f" - Data da venda: {format(d['data'])}")
+        print(f" - Valor: {format(d['valor'])}")
 
-        for i, d in enumerate(data):
-            print(f"\nDados do imóvel {i + 1}:")
-            print(f" - Logradouro e número: {d['endereço']}")
-            print(f" - Cidade: {d['cidade']}")
-            print(f" - Estado: {format(d['estado'])}")
-            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
-            print()
-            print(f"Dados do contrato de venda {i + 1}:")
-            print(f" - Responsável (nome): {d['responsavel_nome']}")
-            print(f" - Responsável (CPF): {format(d['responsavel_cpf'])}")
-            print(f" - Data da venda: {format(d['data'])}")
-            print(f" - Valor: {format(d['valor'])}")
-
-            prompt_continue()
+    loop_display_data(data, display_fn, "contrato")
 
 
 def fetch_rents_responsible():
     """Fetch all of the rent contracts in which the current user is/was the responsible."""
     data = RentContract.query_by_responsible_join_residence(current_user.get_cpf())
 
-    if not data:
-        print("\nNenhum resultado encontrado.")
-        prompt_continue()
-    else:
-        print(
-            "\nNo momento ainda não é possível ver as informações de cada "
-            + "contrato com mais detalhes, mas essa funcionalidade está em "
-            + "desenvolvimento!"
-        )
+    def display_fn(d: dict, i: int):
+        type = "moradia coletiva" if d["coletividade"] else "imóvel particular"
+        print(f"\nDados da residência {i + 1}:")
+        print(f" - Tipo: {type}")
+        print(f" - Logradouro e número: {d['endereço']}")
+        print(f" - Cidade: {d['cidade']}")
+        print(f" - Estado: {format(d['estado'])}")
+        print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
+        print()
+        print(f"Dados do contrato de aluguel {i + 1}:")
+        print(f" - Locatário (nome): {d['locatario_nome']}")
+        print(f" - Locatário (CPF): {format(d['locatario_cpf'])}")
+        print(f" - Data de início: {format(d['inicio'])}")
+        print(f" - Data de fim: {format(d['fim'])}")
+        print(f" - Aluguel: {format(d['aluguel'])}")
 
-        for i, d in enumerate(data):
-            type = "moradia coletiva" if d["coletividade"] else "imóvel particular"
-
-            print(f"\nDados da residência {i + 1}:")
-            print(f" - Tipo: {type}")
-            print(f" - Logradouro e número: {d['endereço']}")
-            print(f" - Cidade: {d['cidade']}")
-            print(f" - Estado: {format(d['estado'])}")
-            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
-            print()
-            print(f"Dados do contrato de aluguel {i + 1}:")
-            print(f" - Locatário (nome): {d['locatario_nome']}")
-            print(f" - Locatário (CPF): {format(d['locatario_cpf'])}")
-            print(f" - Data de início: {format(d['inicio'])}")
-            print(f" - Data de fim: {format(d['fim'])}")
-            print(f" - Aluguel: {format(d['aluguel'])}")
-
-            prompt_continue()
+    loop_display_data(data, display_fn, "contrato")
 
 
 def fetch_sales_responsible():
     """Fetch all of the sale contracts in which the current user is/was the responsible."""
     data = SaleContract.query_by_responsible_join_residence(current_user.get_cpf())
 
-    if not data:
-        print("\nNenhum resultado encontrado.")
-        prompt_continue()
-    else:
-        print(
-            "\nNo momento ainda não é possível ver as informações de cada "
-            + "contrato com mais detalhes, mas essa funcionalidade está em "
-            + "desenvolvimento!"
-        )
+    def display_fn(d: dict, i: int):
+        print(f"\nDados do imóvel {i + 1}:")
+        print(f" - Logradouro e número: {d['endereço']}")
+        print(f" - Cidade: {d['cidade']}")
+        print(f" - Estado: {format(d['estado'])}")
+        print()
+        print(f"Dados do contrato de venda {i + 1}:")
+        print(f" - Responsável (nome): {d['comprador_nome']}")
+        print(f" - Responsável (CPF): {format(d['comprador_cpf'])}")
+        print(f" - Data da venda: {format(d['data'])}")
+        print(f" - Valor: {format(d['valor'])}")
 
-        for i, d in enumerate(data):
-            print(f"\nDados do imóvel {i + 1}:")
-            print(f" - Logradouro e número: {d['endereço']}")
-            print(f" - Cidade: {d['cidade']}")
-            print(f" - Estado: {format(d['estado'])}")
-            print()
-            print(f"Dados do contrato de venda {i + 1}:")
-            print(f" - Responsável (nome): {d['comprador_nome']}")
-            print(f" - Responsável (CPF): {format(d['comprador_cpf'])}")
-            print(f" - Data da venda: {format(d['data'])}")
-            print(f" - Valor: {format(d['valor'])}")
-
-            prompt_continue()
+    loop_display_data(data, display_fn, "contrato")
 
 
 def fetch_responsible_residences():
     """Fetch all of the residences for which the current user is responsble."""
     data = Responsability.query_by_responsible_join_residence(current_user.get_cpf())
 
-    if not data:
-        print("\nNenhum resultado encontrado.")
-        prompt_continue()
-    else:
-        print(
-            "\nNo momento ainda não é possível ver as informações de cada "
-            + "contrato com mais detalhes, mas essa funcionalidade está em "
-            + "desenvolvimento!"
-        )
+    def display_fn(d: dict, i: int):
+        type = "moradia coletiva" if d["coletividade"] else "imóvel particular"
 
-        for i, d in enumerate(data):
-            type = "moradia coletiva" if d["coletividade"] else "imóvel particular"
+        print(f"\nDados da residência {i + 1}:")
+        print(f" - Tipo: {type}")
+        print(f" - Logradouro e número: {d['endereço']}")
+        print(f" - Cidade: {d['cidade']}")
+        print(f" - Estado: {format(d['estado'])}")
+        print(f" - Aluguel: {format(d['aluguel'])}")
 
-            print(f"\nDados da residência {i + 1}:")
-            print(f" - Tipo: {type}")
-            print(f" - Logradouro e número: {d['endereço']}")
-            print(f" - Cidade: {d['cidade']}")
-            print(f" - Estado: {format(d['estado'])}")
-            print(f" - Aluguel: {format(d['aluguel'])}")
+        if d["coletividade"]:
+            print(f" - Número de moradores: {d['n_moradores']}")
+        else:
+            print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
+            if d["permissao_venda"]:
+                print(f" - Valor de venda: {format(d['valor_venda'])}")
 
-            if d["coletividade"]:
-                print(f" - Número de moradores: {d['n_moradores']}")
-            else:
-                print(f" - Condomínio: {d['condominio'] if d['condominio'] else 'N/A'}")
-                if d["permissao_venda"]:
-                    print(f" - Valor de venda: {format(d['valor_venda'])}")
-
-            prompt_continue()
+    loop_display_data(data, display_fn, "residência")
 
 
 def register_new_residence():
@@ -300,49 +249,29 @@ def fetch_own_talks():
     """Fetch all of the talks prepared by the current user."""
     data = Talks.fetch_by_professor_join_campus(current_user.get_cpf())
 
-    if not data:
-        print("\nNenhum resultado encontrado.")
-        prompt_continue()
-    else:
-        print(
-            "\nNo momento ainda não é possível ver as informações de cada "
-            + "palestra com mais detalhes, mas essa funcionalidade está em "
-            + "desenvolvimento!"
-        )
+    def display_fn(d: dict, i: int):
+        print(f"\nDados da palestra {i + 1}:")
+        print(f" - Título: {d['nome']}")
+        print(f" - Tema: {d['tema']}")
+        print(f" - Data/Horário: {format(d['data_horario'], 'data_horario')}")
+        print(f" - Campus: {d['campus']} - {d['universidade']}")
+        print(f" - Cidade: {d['cidade']} - {d['estado']}")
 
-        for i, d in enumerate(data):
-            print(f"\nDados da palestra {i + 1}:")
-            print(f" - Título: {d['nome']}")
-            print(f" - Tema: {d['tema']}")
-            print(f" - Data/Horário: {format(d['data_horario'], 'data_horario')}")
-            print(f" - Campus: {d['campus']} - {d['universidade']}")
-            print(f" - Cidade: {d['cidade']} - {d['estado']}")
-
-            prompt_continue()
+    loop_display_data(data, display_fn, "palestra")
 
 
 def fetch_own_tickets():
     """Fetch all of the tickets bought by the current user."""
     data = Ticket.fetch_by_buyer_join_party_city(current_user.get_cpf())
 
-    if not data:
-        print("\nNenhum resultado encontrado.")
-        prompt_continue()
-    else:
-        print(
-            "\nNo momento ainda não é possível ver as informações de cada "
-            + "ingresso com mais detalhes, mas essa funcionalidade está em "
-            + "desenvolvimento!"
-        )
+    def display_fn(d: dict, i: int):
+        print(f"\nDados do ingresso/festa {i + 1}:")
+        print(f" - Nome da festa: {d['nome']}")
+        print(f" - Data/Horário: {format(d['data_horario'], 'data_horario')}")
+        print(f" - Cidade: {d['cidade']} - {d['estado']}")
+        print(f" - Preço: {format(d['preço'])}")
 
-        for i, d in enumerate(data):
-            print(f"\nDados do ingresso/festa {i + 1}:")
-            print(f" - Nome da festa: {d['nome']}")
-            print(f" - Data/Horário: {format(d['data_horario'], 'data_horario')}")
-            print(f" - Cidade: {d['cidade']} - {d['estado']}")
-            print(f" - Preço: {format(d['preço'])}")
-
-            prompt_continue()
+    loop_display_data(data, display_fn, "ingresso")
 
 
 def quit():

@@ -235,3 +235,36 @@ def validate_float(number: str) -> bool:
 def parse_float(number: str) -> float:
     """Parse a given string to float."""
     return float(number.replace(",", "."))
+
+
+def loop_display_data(data: list[any], display_fn: callable, prop: str = None) -> None:
+    """
+    If the given data has at least one item, loop thrugh the list and call the
+    display function for each one, followed by a <Continue> prompt. Otherwise,
+    display a "no results found" message.
+
+    Parameters
+    ----------
+    data: list[T]
+        A dataset.
+    display_fn: function(data_item: T, index: int) -> None
+        Function that will be called for each item in `data`. The item as well
+        as it's index will be passed as arguments.
+    prop: str
+        The property's name. If passed, a warning will be printed saying the
+        functionality is a work in proggress.
+    """
+    if not data:
+        print("\nNenhum resultado encontrado.")
+        prompt_continue()
+    else:
+        if prop:
+            print(
+                "\nNo momento ainda não é possível ver as informações de cada "
+                + f"{prop} com mais detalhes, mas essa funcionalidade está em "
+                + "desenvolvimento!"
+            )
+
+        for index, data_item in enumerate(data):
+            display_fn(data_item, index)
+            prompt_continue()
