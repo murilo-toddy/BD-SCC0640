@@ -18,10 +18,12 @@ class CurrentUser:
 
             user_exists = Person.query_by_cpf(self.__cpf)
             if not user_exists:
-                raise Exception('Não existe um usuário com esse CPF.')
+                raise Exception("Não existe um usuário com esse CPF.")
 
     def get_cpf(self):
         return self.__cpf
+
+    # fetch_ methods get data from the DB
 
     def fetch_data(self):
         return Person.query_by_cpf_join_specializations(self.__cpf)

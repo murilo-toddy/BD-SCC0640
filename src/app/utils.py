@@ -3,14 +3,13 @@ import re
 
 from enums import State
 
+# accepted boolean-like strings
 AFFIRMATIVE_RESPONSES = ["true", "y", "yes", "s", "sim"]
 NEGATIVE_RESPONSES = ["false", "n", "no", "não", "nao"]
 
 
 class regexes:
-    """
-    Various utilities regexes to validate data.
-    """
+    """Various utilities regexes to validate data."""
 
     cep = re.compile(r"^(\d{5})-?(\d{3})$")
     cpf = re.compile(r"^(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})$")
@@ -21,7 +20,7 @@ class regexes:
 
 def assert_regex(string: str, regex: re.Pattern, name: str = "") -> None:
     """
-    Raises an error if a given string does not match a given pattern.
+    Raise an error if a given string does not match a given pattern.
 
     Parameters
     ----------
@@ -38,7 +37,7 @@ def assert_regex(string: str, regex: re.Pattern, name: str = "") -> None:
 
 def assert_instance(variable: any, _class: object, name: str = "") -> None:
     """
-    Raises an error if a given variable isn't an instance of a given class.
+    Raise an error if a given variable isn't an instance of a given class.
 
     Parameters
     ----------
@@ -55,7 +54,7 @@ def assert_instance(variable: any, _class: object, name: str = "") -> None:
 
 def assert_value(a: any, b: any, name: str = "") -> None:
     """
-    Raises an error if a given variable isn't equal to another.
+    Raise an error if a given variable isn't equal to another.
 
     Parameters
     ----------
@@ -69,9 +68,7 @@ def assert_value(a: any, b: any, name: str = "") -> None:
 
 
 def remove_symbols(string: str) -> str:
-    """
-    Removes everything that's not a letter nor a number from the given string.
-    """
+    """Remove everything that's not a letter nor a number from the given string."""
     return re.sub(r"[^a-zA-Z0-9]", "", string)
 
 
@@ -112,10 +109,7 @@ def prompt(
 
 
 def prompt_continue(leading: str = "\n") -> None:
-    """
-    Prompts user to press Enter to continue.
-    """
-
+    """Prompt user to press Enter to continue."""
     input(leading + "Aperte ENTER para continuar. ")
 
 
@@ -125,11 +119,11 @@ def prompt_menu(
     trailing_text: str = "\n\nPara selecionar, insira apenas o número da opção. Input:",
 ) -> int:
     """
-    Prompts user to choose an option from the menu and returns the option's
+    Prompt user to choose an option from the menu and returns the option's
     index.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     options: list[str]
         Menu optons in order. Indexing them (e.g. "1. Options ...") is not
         necessary and will be done automatically.
@@ -138,11 +132,10 @@ def prompt_menu(
     trailint_text: str
         Text that'll proceed the list of options an precede the user's input.
 
-    Returns:
-    --------
+    Returns
+    -------
     int: the chosen option's index (`0, ..., len(options)`).
     """
-
     if not (options and isinstance(options, list)):
         return None
 
@@ -168,10 +161,7 @@ def prompt_menu(
 
 
 def format(target: any, type: str = "") -> str:
-    """
-    Formats the input according to the specified type (only required for CEP and
-    RG).
-    """
+    """Format the input according to the specified type (only required for CEP and RG)."""
     if isinstance(target, datetime.date):
         return target.strftime(
             "%d/%m/%Y" + (", %Hh%M" if type == "data_horario" else "")
@@ -208,6 +198,7 @@ def format(target: any, type: str = "") -> str:
 
 
 def validate_date(date: str) -> bool:
+    """Check if a given date is valid in the format DD/MM/YYYY."""
     if not regexes.date.match(date):
         return False
 
@@ -223,10 +214,12 @@ def validate_date(date: str) -> bool:
 
 
 def validate_bool(boolean: str) -> bool:
+    """Check if a given string can be parsed to boolean."""
     return boolean in AFFIRMATIVE_RESPONSES + NEGATIVE_RESPONSES
 
 
 def parse_bool(boolean: str) -> bool:
+    """Parse a given string to boolean."""
     if boolean.lower() in AFFIRMATIVE_RESPONSES:
         return True
 
@@ -235,8 +228,10 @@ def parse_bool(boolean: str) -> bool:
 
 
 def validate_float(number: str) -> bool:
+    """Check if a given string is a float number."""
     return number.replace(".", "", 1).isdigit() or number.replace(",", "", 1).isdigit()
 
 
 def parse_float(number: str) -> float:
+    """Parse a given string to float."""
     return float(number.replace(",", "."))

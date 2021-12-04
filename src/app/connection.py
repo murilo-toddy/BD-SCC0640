@@ -27,14 +27,13 @@ class Connection:
 
     def __config(self, filename="database.ini", section="postgresql") -> dict[str, str]:
         """
-        Gets config info for a `.ini` file.
+        Get config info for a `.ini` file.
 
         Parameters
         ----------
         filename: str
         section: str
         """
-
         parser = ConfigParser()
         parser.read(filename)
 
@@ -49,10 +48,7 @@ class Connection:
     def __connect(
         self,
     ) -> tuple[psycopg2._psycopg.connection, psycopg2.extras.DictCursor]:
-        """
-        Connects to the database.
-        """
-
+        """Connect to the database."""
         params = self.__config()
 
         # connects to the database
@@ -72,10 +68,7 @@ class Connection:
         return connection, cursor
 
     def disconnect(self) -> None:
-        """
-        Connects from the database.
-        """
-
+        """Connect from the database."""
         if self.connection:
             self.connection.close()
             if self.__debug:
@@ -83,7 +76,7 @@ class Connection:
 
     def exec_commit(self, command: str, *args, cb: callable = None) -> any:
         """
-        Executes an SQL command and commits it.
+        Execute an SQL command and commits it.
 
         Parameters
         ----------

@@ -1,10 +1,10 @@
 from connection import Connection
 from entities.parties import Ticket
-from entities.people import Person, Professor, Student
+from entities.people import Person, Student
 from entities.residences import Home, Property, Residence, Responsability
 from entities.transactions import RentContract, SaleContract
 from entities.university import Talks
-from enums import State
+from enums import PersonPermissions, State
 from models import Address
 from state import CurrentUser
 from utils import (
@@ -23,6 +23,7 @@ current_user = CurrentUser()
 
 
 def fetch_own_data():
+    """Fetch the current user's personal data from the DB."""
     user = current_user.fetch_data()
     print(f"\n\nNome completo: {user['nome']}")
     print(f"CPF: {format(user['cpf'])}")
@@ -30,15 +31,16 @@ def fetch_own_data():
     print(f"Data de nascimento: {format(user['nascimento'])}")
     print(f"Categorias: {format(user['atuacao'])}")
 
-    if Student.__str__() in user["atuacao"]:
+    if PersonPermissions.Student.value in user["atuacao"]:
         print(f"Número de indicações acumuladas: {user['n_indicacoes']}")
-    if Professor.__str__() in user["atuacao"]:
+    if PersonPermissions.Professor.value in user["atuacao"]:
         print(f"Área de atuação: {user['area_atuacao']}")
 
     prompt_continue()
 
 
 def register_student():
+    """Register a new student to the DB."""
     person = {}
     student = {}
 
@@ -71,6 +73,7 @@ def register_student():
 
 
 def fetch_rents_tenant():
+    """Fetch all of the rent contracts in which the current user is/was a tenant."""
     data = RentContract.query_by_tenant_join_residence(current_user.get_cpf())
 
     if not data:
@@ -104,6 +107,7 @@ def fetch_rents_tenant():
 
 
 def fetch_sales_buyer():
+    """Fetch all of the sale contracts in which the current user was the buyer."""
     data = SaleContract.query_by_buyer_join_residence(current_user.get_cpf())
 
     if not data:
@@ -133,6 +137,7 @@ def fetch_sales_buyer():
 
 
 def fetch_rents_responsible():
+    """Fetch all of the rent contracts in which the current user is/was the responsible."""
     data = RentContract.query_by_responsible_join_residence(current_user.get_cpf())
 
     if not data:
@@ -166,6 +171,7 @@ def fetch_rents_responsible():
 
 
 def fetch_sales_responsible():
+    """Fetch all of the sale contracts in which the current user is/was the responsible."""
     data = SaleContract.query_by_responsible_join_residence(current_user.get_cpf())
 
     if not data:
@@ -194,6 +200,7 @@ def fetch_sales_responsible():
 
 
 def fetch_responsible_residences():
+    """Fetch all of the residences for which the current user is responsble."""
     data = Responsability.query_by_responsible_join_residence(current_user.get_cpf())
 
     if not data:
@@ -227,6 +234,7 @@ def fetch_responsible_residences():
 
 
 def register_new_residence():
+    """Register a new residence to the DB and sets the current user as it's responsible."""
     residence = {"address": {}}
     specialization = {}
 
@@ -289,6 +297,7 @@ def register_new_residence():
 
 
 def fetch_own_talks():
+    """Fetch all of the talks prepared by the current user."""
     data = Talks.fetch_by_professor_join_campus(current_user.get_cpf())
 
     if not data:
@@ -313,6 +322,7 @@ def fetch_own_talks():
 
 
 def fetch_own_tickets():
+    """Fetch all of the tickets bought by the current user."""
     data = Ticket.fetch_by_buyer_join_party_city(current_user.get_cpf())
 
     if not data:

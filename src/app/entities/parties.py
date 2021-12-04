@@ -5,7 +5,7 @@ from utils import assert_instance, assert_regex, regexes
 
 class Ticket:
     @staticmethod
-    def sell(party: id, buyer: id):
+    def sell(party: id, buyer: id) -> tuple[bool, Exception]:
         assert_regex(buyer, regexes.cpf, "cpf")
 
         query = "INSERT INTO ingresso(festa, comprador) VALUES(%s, %s);"
@@ -17,7 +17,7 @@ class Ticket:
             return True, None
 
     @staticmethod
-    def fetch_by_buyer_join_party_city(buyer: id):
+    def fetch_by_buyer_join_party_city(buyer: id) -> list:
         assert_regex(buyer, regexes.cpf, "cpf")
 
         query = """
@@ -31,7 +31,7 @@ class Ticket:
 
 class Party:
     @staticmethod
-    def fetch_future_by_city_join_address(city: City):
+    def fetch_future_by_city_join_address(city: City) -> list:
         assert_instance(city, City)
 
         query = """
