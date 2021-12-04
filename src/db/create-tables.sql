@@ -1,15 +1,9 @@
-CREATE TYPE BR_STATE AS ENUM (
-    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF',
-    'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA',
-    'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS',
-    'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
-);
 
 CREATE TABLE residencia (
     id               INT          GENERATED ALWAYS AS IDENTITY,
     aluguel          MONEY        NOT NULL,
     coletividade     BOOLEAN      NOT NULL,
-    estado           BR_STATE     NOT NULL,
+    estado           CHAR(2)      NOT NULL,
     cidade           VARCHAR(50)  NOT NULL,
     cep              CHAR(8)      NOT NULL,
     endereço         VARCHAR(100) NOT NULL,
@@ -24,7 +18,13 @@ CREATE TABLE residencia (
     CONSTRAINT validate_aluguel CHECK(aluguel::NUMERIC::INT > 0),
     CONSTRAINT validate_quartos CHECK(n_quartos > 0),
     CONSTRAINT validate_banheiros CHECK(n_banheiros > 0),
-    CONSTRAINT validate_area CHECK(area_interna > 0 AND area_externa >= 0)
+    CONSTRAINT validate_area CHECK(area_interna > 0 AND area_externa >= 0),
+    CONSTRAINT validate_residencia_state CHECK(estado IN (
+            'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF',
+            'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA',
+            'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS',
+            'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+    ))
 );
 
 CREATE TABLE imovel (
@@ -99,15 +99,19 @@ CREATE TABLE ingresso (
                                  ON DELETE CASCADE
 );
 
-CREATE TYPE ATUACAO_PESSOA AS ENUM ('aluno', 'professor', 'responsavel');
 CREATE TABLE atuacao (
     pessoa  CHAR(11),
-    atuacao ATUACAO_PESSOA,
+    atuacao VARCHAR(11),
 
     CONSTRAINT pk_atuacao PRIMARY KEY(pessoa, atuacao),
     CONSTRAINT fk_atuacao_pessoa FOREIGN KEY(pessoa)
                                  REFERENCES pessoa(CPF)
-                                 ON DELETE CASCADE
+                                 ON DELETE CASCADE,
+    CONSTRAINT validate_atuacao CHECK(atuacao in (
+            'aluno',
+            'professor',
+            'responsavel'
+    ))
 );
 
 CREATE TABLE responsavel (
@@ -167,7 +171,7 @@ CREATE TABLE contrato_aluguel (
     desconto    MONEY NOT NULL,
 
     CONSTRAINT validate_prices CHECK (aluguel::NUMERIC::INT > 0 AND
-                                      multa::NUMERIC::INT >= 0 AND 
+                                      multa::NUMERIC::INT >= 0 AND
                                       desconto::NUMERIC::INT >= 0),
     CONSTRAINT pk_contrato_aluguel PRIMARY KEY(inicio, residencia, responsavel, locatario),
     CONSTRAINT fk_contrato_aluguel_responsabilidade FOREIGN KEY(residencia, responsavel)
@@ -211,22 +215,31 @@ CREATE TABLE orienta (
                                 ON DELETE CASCADE
 );
 
-CREATE TYPE CATEGORIA_UNIVERSIDADE AS ENUM ('pública', 'privada');
 CREATE TABLE campus (
-    id                     INT                    GENERATED ALWAYS AS IDENTITY,
-    CNPJ_universidade      CHAR(14)               NOT NULL,
-    nome_campus            VARCHAR(50)            NOT NULL,
-    cidade                 VARCHAR(50)            NOT NULL,
-    nome_universidade      VARCHAR(50)            NOT NULL,
-    categoria_universidade CATEGORIA_UNIVERSIDADE NOT NULL,
-    estado                 BR_STATE               NOT NULL,
-    cep                    VARCHAR(8)             NOT NULL,
-    endereço               VARCHAR(100)           NOT NULL,
+    id                     INT          GENERATED ALWAYS AS IDENTITY,
+    CNPJ_universidade      CHAR(14)     NOT NULL,
+    nome_campus            VARCHAR(50)  NOT NULL,
+    cidade                 VARCHAR(50)  NOT NULL,
+    nome_universidade      VARCHAR(50)  NOT NULL,
+    categoria_universidade CHAR(7)      NOT NULL,
+    estado                 CHAR(2)      NOT NULL,
+    cep                    VARCHAR(8)   NOT NULL,
+    endereço               VARCHAR(100) NOT NULL,
 
     CONSTRAINT pk_campus PRIMARY KEY(id),
     CONSTRAINT sk_campus UNIQUE(CNPJ_universidade, nome_campus, cidade),
     CONSTRAINT CNPJ_universidade_number CHECK(CNPJ_universidade ~ '^[0-9]{14}$'),
-    CONSTRAINT cep_number CHECK(cep ~ '^[0-9]{8}$')
+    CONSTRAINT cep_number CHECK(cep ~ '^[0-9]{8}$'),
+    CONSTRAINT validate_categoria_universidade CHECK(categoria_universidade IN (
+            'pública',
+            'privada'
+    )),
+    CONSTRAINT validate_campus_state CHECK(estado IN (
+            'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF',
+            'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA',
+            'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS',
+            'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+    ))
 );
 
 CREATE TABLE oferecimento_curso (
