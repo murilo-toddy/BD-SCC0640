@@ -1,3 +1,13 @@
+-- QUERY 1
+-- Obter quais são as pessoas de cada curso que vão mais em festas
+-- TODO
+
+-- QUERY 2
+-- Obter todos os alunos e, caso eles sejam orientados por algum professor, também mostrar os dados do professor.
+
+SELECT a.cpf, a.procurando_moradia, o.professor
+FROM aluno a LEFT JOIN orienta o
+ON a.cpf = o.aluno;
 
 -- QUERY 3
 -- Dada uma festa, verificar quantos moradores existem em uma moradia na data da festa.
@@ -16,20 +26,19 @@ SELECT COUNT(c.locatario) as qte_moradores FROM festa f JOIN contrato_aluguel c
 ON c.residencia = f.moradia 
 WHERE c.inicio < DATE(f.data_horario) AND c.fim > DATE(f.data_horario)
 AND f.nome = 'Indy Festa';
-
 -- TODO Adicionar mais dados para essa moradia
 
-
 -- QUERY 4
-SELECT C.id C.nome_campus C.cidade Q.AnimaisPorCidade
-FROM campus C JOIN
-SELECT R1.Cidade, SUM(M1.QuantidadeAnimais) as AnimaisPorCidade
-FROM Residência R1 JOIN Moradia M1
-ON R.Residência = M.Residência
-GROUP BY R1.Cidade
-ORDER BY AnimaisPorCidade Q
-ON C.Cidade = Q.Cidade
+-- Quais são os campus que, em sua cidade, possuem o maior número de animais em moradias?
+-- TODO
 
+-- QUERY 5
+-- Quais são os alunos que estão a mais tempo na faculdade e estão procurando moradia ou imóvel?
+-- TODO
+
+-- QUERY 6
+-- Quais são todas as pessoas que já moraram em uma moradia e nunca foram a uma festa?
+-- TODO
 
 
 -- QUERY 5
