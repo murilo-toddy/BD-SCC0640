@@ -37,7 +37,6 @@ FROM orienta o JOIN presenca_marcada pm
 ON o.aluno = pm.aluno JOIN pessoa p
 ON o.aluno = p.cpf
 GROUP BY o.professor;
--- TODO adicionar mais tuplas em orienta
 
 
 -- QUERY 3

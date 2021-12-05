@@ -82,46 +82,36 @@ VALUES (
 
 -- Inserção IMÓVEL
 INSERT INTO imovel (id, valor_venda, condominio, aceita_animais)
-SELECT id, '110000', '500', TRUE 
-FROM residencia WHERE cep = '13566874';
+VALUES (1, '110000', '500', TRUE);
 
 INSERT INTO imovel (id, valor_venda, condominio, aceita_animais)
-SELECT id, '37000', '340', FALSE 
-FROM residencia WHERE cep = '13573071';
+VALUES (2, '37000', '340', FALSE);
 
 INSERT INTO imovel (id, valor_venda, condominio, aceita_animais)
-SELECT id, '89000', '610', TRUE 
-FROM residencia WHERE cep = '13566700';
+VALUES (3, '89000', '610', TRUE);
 
 INSERT INTO imovel (id, valor_venda, condominio, aceita_animais)
-SELECT id, '37500', '400', FALSE 
-FROM residencia WHERE cep = '13575007';
+VALUES (4, '37500', '400', FALSE);
 
 INSERT INTO imovel (id, valor_venda, condominio, aceita_animais)
-SELECT id, '50000', '750', FALSE 
-FROM residencia WHERE cep = '13565320';
+VALUES (7, '50000', '750', FALSE);
 
 INSERT INTO imovel (id, valor_venda, condominio, aceita_animais)
-SELECT id, '50300', '1000', TRUE 
-FROM residencia WHERE cep = '13573334';
+VALUES (10, '50300', '1000', TRUE);
 
 
 -- Inserção MORADIA
 INSERT INTO moradia (id, n_moradores, n_colegas_quarto, n_animais, n_total_vagas)
-SELECT id, 5, 3, 2, 9
-FROM residencia WHERE cep = '13571370';
+VALUES (5, 5, 3, 2, 9);
 
 INSERT INTO moradia (id, n_moradores, n_colegas_quarto, n_animais, n_total_vagas)
-SELECT id, 4, 1, 1, 6
-FROM residencia WHERE cep = '13565403';
+VALUES (6, 4, 1, 1, 6);
 
 INSERT INTO moradia (id, n_moradores, n_colegas_quarto, n_animais, n_total_vagas)
-SELECT id, 7, 1, 0, 10
-FROM residencia WHERE cep = '13568776';
+VALUES (8, 7, 1, 0, 10);
 
 INSERT INTO moradia (id, n_moradores, n_colegas_quarto, n_animais, n_total_vagas)
-SELECT id, 12, 2, 2, 13
-FROM residencia WHERE cep = '13574701';
+VALUES (9, 12, 2, 2, 13);
 
 
 -- Inserção RESPONSABILIDADE
@@ -143,6 +133,9 @@ VALUES ('7', '93078701018', TRUE);
 INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
 VALUES ('10', '35017890092', FALSE);
 
+INSERT INTO responsabilidade (residencia, responsavel, permissao_venda)
+VALUES ('8', '35017890092', FALSE);
+
 
 -- Inserção CONTRATO_ALUGUEL
 INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
@@ -156,6 +149,14 @@ VALUES (TO_DATE('01/05/2020', 'dd/mm/yyyy'), 7, '93078701018', '31000160840', TO
 INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
 VALUES (TO_DATE('05/04/2018', 'dd/mm/yyyy'), 5, '74214010591', '65671541522', TO_DATE('05/04/2020', 'dd/mm/yyyy'),
         '440', '40', '0');
+
+INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
+VALUES (TO_DATE('05/12/2020', 'dd/mm/yyyy'), 8, '35017890092', '98826700087', TO_DATE('05/12/2021', 'dd/mm/yyyy'),
+        '1050', '0', '0');
+
+INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
+VALUES (TO_DATE('25/12/2012', 'dd/mm/yyyy'), 8, '35017890092', '83353310061', TO_DATE('25/12/2015', 'dd/mm/yyyy'),
+        '1050', '0', '0');
 
 
 -- Inserção VENDAS

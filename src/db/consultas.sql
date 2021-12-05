@@ -43,7 +43,7 @@ ORDER BY coalesce(SUM(n_animais), 0) + COUNT(aceita_animais) DESC;
 
 
 -- QUERY 5
-SELECT ROUND(AVG(DATE_PART('YEAR', NOW()) - (DATE_PART('YEAR', p.nascimento))))
+SELECT ROUND(AVG(DATE_PART('YEAR', NOW()) - (DATE_PART('YEAR', p.nascimento)))) AS idade_media
 FROM aluno a1 JOIN cursando c1 ON a1.cpf = c1.aluno
 JOIN pessoa p ON a1.cpf = p.cpf
 WHERE (a1.procurando_moradia OR a1.procurando_imovel)
@@ -51,7 +51,6 @@ AND c1.ano_ingresso IN
 (SELECT MIN(ano_ingresso) AS mais_velho FROM aluno a2 JOIN cursando c2
 ON a2.cpf = c2.aluno
 WHERE a2.procurando_moradia OR a2.procurando_imovel);
-
 
 
 -- QUERY 6
@@ -62,7 +61,6 @@ WHERE c.locatario NOT IN
 UNION
 (SELECT c.locatario FROM contrato_aluguel c JOIN festa f
 ON c.residencia = f.moradia));
-
 
 
 -- QUERY 7
