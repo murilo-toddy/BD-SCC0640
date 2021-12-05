@@ -703,6 +703,10 @@ INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_vendidos, n_
 VALUES (TO_TIMESTAMP('27/09/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Westside',
        9, 30, 3, 10, NULL);
 
+INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_vendidos, n_ingressos_total, open_bar)
+VALUES (TO_TIMESTAMP('15/12/2023 19:00', 'DD/MM/YYYY HH24:MI'), 'FlipLok',
+       9, 27, 0, 42, NULL);
+
 
 -- Inserção INGRESSO
 INSERT INTO ingresso (festa, comprador)
