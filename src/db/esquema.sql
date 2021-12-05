@@ -57,13 +57,14 @@ CREATE TABLE moradia (
 );
 
 CREATE TABLE festa (
-    id                INT         GENERATED ALWAYS AS IDENTITY,
-    data_horario      TIMESTAMP   NOT NULL,
-    nome              VARCHAR(50) NOT NULL,
-    moradia           INT         NOT NULL,
-    preço             MONEY       NOT NULL,
-    n_ingressos_total INT         NOT NULL,
-    open_bar          VARCHAR,
+    id                   INT         GENERATED ALWAYS AS IDENTITY,
+    data_horario         TIMESTAMP   NOT NULL,
+    nome                 VARCHAR(50) NOT NULL,
+    moradia              INT         NOT NULL,
+    preço                MONEY       NOT NULL,
+    n_ingressos_vendidos INT         NOT NULL DEFAULT 0,
+    n_ingressos_total    INT         NOT NULL,
+    open_bar             VARCHAR,
 
     CONSTRAINT validate_price CHECK (preço::NUMERIC::INT > 0),
     CONSTRAINT validate_tickets CHECK (n_ingressos_total > 0),
