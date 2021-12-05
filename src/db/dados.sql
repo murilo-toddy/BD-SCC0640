@@ -159,6 +159,7 @@ VALUES(
     TO_DATE('15/10/1986', 'DD/MM/YYYY')
 );
 
+
 -- Inserção ATUAÇÃO
 INSERT INTO atuacao(pessoa, atuacao)
 VALUES('89738378001', 'aluno');
@@ -677,7 +678,6 @@ VALUES (TO_DATE('25/12/2012', 'dd/mm/yyyy'), 8, '35017890092', '83353310061', TO
 
 
 
-
 -- Inserção VENDAS
 INSERT INTO venda (residencia, responsavel, comprador, data, valor, desconto)
 VALUES (2, '45446434064', '83353310061', TO_DATE('05/07/2021', 'dd/mm/yyyy'), '36850', '150');
@@ -686,23 +686,23 @@ INSERT INTO venda (residencia, responsavel, comprador, data, valor, desconto)
 VALUES (7, '93078701018', '61520188030', TO_DATE('23/11/2021', 'dd/mm/yyyy'), '50000', '0');
 
 
-
 -- Inserção FESTA
-INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
+INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_vendidos, n_ingressos_total, open_bar)
 VALUES (TO_TIMESTAMP('30/04/2019 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
-       5, 50, 40, 'Vodka, Skol Beats');
+       5, 50, 1, 40, 'Vodka, Skol Beats');
 
-INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
+INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_vendidos, n_ingressos_total, open_bar)
 VALUES (TO_TIMESTAMP('04/09/2020 17:00', 'DD/MM/YYYY HH24:MI'), 'Wired',
-       6, 30, 25, 'Corote');
+       6, 30, 1, 25, 'Corote');
 
-INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
+INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_vendidos, n_ingressos_total, open_bar)
 VALUES (TO_TIMESTAMP('17/06/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Festa Sync',
-       6, 25, 35, NULL);
+       6, 25, 5, 35, NULL);
 
-INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
+INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_vendidos, n_ingressos_total, open_bar)
 VALUES (TO_TIMESTAMP('27/09/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Westside',
-       9, 30, 10, NULL);
+       9, 30, 3, 10, NULL);
+
 
 -- Inserção INGRESSO
 INSERT INTO ingresso (festa, comprador)
@@ -734,6 +734,7 @@ VALUES (4, '23830223064');
 
 INSERT INTO ingresso (festa, comprador)
 VALUES (4, '61520188030');
+
 
 -- Inserção PALESTRA
 INSERT INTO palestra (ministrante, nome, campus, data_horario, tema)
