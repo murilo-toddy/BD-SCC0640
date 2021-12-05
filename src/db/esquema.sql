@@ -44,7 +44,7 @@ CREATE TABLE moradia (
     id               INT,
     n_moradores      INT NOT NULL,
     n_colegas_quarto INT NOT NULL,
-    n_animais        INT NOT NULL,
+    n_animais        INT NOT NULL DEFAULT 0,
     n_total_vagas    INT NOT NULL,
 
     CONSTRAINT validate_people CHECK (n_moradores >= 0 AND n_colegas_quarto >= 0),
@@ -258,7 +258,7 @@ CREATE TABLE cursando (
     aluno        CHAR(11),
     campus       INT,
     curso        VARCHAR(50),
-    ano_ingresso DATE,
+    ano_ingresso DATE DEFAULT CURRENT_DATE,
 
     CONSTRAINT pk_cursando PRIMARY KEY(aluno, campus, curso),
     CONSTRAINT fk_cursando_aluno FOREIGN KEY(aluno)
