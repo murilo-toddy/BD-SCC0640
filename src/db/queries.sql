@@ -1,28 +1,24 @@
 -- QUERY 1
--- Obter quais são as pessoas de cada curso que vão mais em festas.
+-- Listar a quantidade de festas que cada aluno compareceu nos últimos 6 meses, junto de seu nome e curso.
 
--- Obter qual curso cada pessoa está cursando.
-SELECT c.curso, c.aluno FROM cursando c;
+-- Obter a quantidade de festas que cada pessoa foi
+SELECT i.comprador, COUNT(i.festa) FROM ingresso i
+GROUP BY i.comprador;
 
---Obter o número de festas que cada aluno foi.
-SELECT p.cpf, COUNT(p.cpf)
-FROM pessoa p JOIN ingresso i
-ON p.cpf = i.comprador
-GROUP BY p.cpf;
-
---Obter as festas que ocorreram nos últimos seis meses.
-SELECT f.id, f.nome
-FROM festa f
+-- Obter o curso e a quantidade de festas que cada pessoa foi
+SELECT p.nome, COUNT(i.comprador) as festas, c.curso
+FROM ingresso i JOIN cursando c ON c.aluno = i.comprador
+JOIN festa f ON i.festa = f.id
+JOIN pessoa p ON i.comprador = p.cpf
 WHERE DATE_PART('day', NOW() - f.data_horario) <= 180
+GROUP BY p.nome, c.curso;
 
---Obter o número de festas que cada aluno foi nos últimos seis meses.
-SELECT p.cpf, COUNT(p.cpf)
-FROM pessoa p JOIN ingresso i
-ON p.cpf = i.comprador
-WHERE i.festa IN (SELECT f.id
-                  FROM festa f
-                  WHERE DATE_PART('day', NOW() - f.data_horario) <= 180)
-GROUP BY p.cpf;
+SELECT i.comprador, COUNT(i.comprador) as festas, c.curso
+FROM ingresso i JOIN cursando c ON c.aluno = i.comprador
+JOIN festa f ON i.festa = f.id
+JOIN pessoa p ON i.comprador = p.cpf
+WHERE DATE_PART('day', NOW() - f.data_horario) <= 180
+GROUP BY i.comprador, c.curso;
 
 
 -- QUERY 2
@@ -63,9 +59,12 @@ AND f.nome = 'Indy Festa';
 -- TODO Adicionar mais dados para essa moradia
 
 
+
 -- QUERY 4
 -- Quais são os campus que, em sua cidade, possuem o maior número de animais em moradias?
--- TODO
+
+
+
 
 
 -- QUERY 5
