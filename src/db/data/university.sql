@@ -17,7 +17,7 @@ INSERT INTO campus (CNPJ_universidade, nome_campus, cidade, nome_universidade,
 VALUES (
     '64561482000131',
     'Politécnica',
-    'São Carlos',
+    'São Paulo',
     'USP',
     'pública',
     'SP',
