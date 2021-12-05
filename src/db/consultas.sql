@@ -19,11 +19,11 @@ GROUP BY o.professor;
 
 
 -- QUERY 3
-SELECT COUNT(c.locatario) AS qte_moradores 
+SELECT f.nome, COUNT(c.locatario) AS qte_moradores 
 FROM festa AS f JOIN contrato_aluguel AS c
 ON c.residencia = f.moradia
 WHERE c.inicio < DATE(f.data_horario) AND c.fim > DATE(f.data_horario)
-AND f.nome = 'Indy Festa';
+GROUP BY f.nome;
 
 
 -- QUERY 4
@@ -40,7 +40,7 @@ LEFT JOIN moradia AS m ON m.id = r.id
 LEFT JOIN imovel AS i ON i.id = r.id AND i.aceita_animais = true
 WHERE n_animais > 0 OR aceita_animais
 GROUP BY r.cidade, c.nome_campus, c.nome_universidade
-ORDER BY coalesce(SUM(n_animais), 0) + COUNT(aceita_animais) DESC;
+ORDER BY COALESCE(SUM(n_animais), 0) + COUNT(aceita_animais) DESC;
 
 
 -- QUERY 5

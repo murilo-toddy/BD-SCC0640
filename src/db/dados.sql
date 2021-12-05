@@ -656,7 +656,7 @@ VALUES ('8', '35017890092', FALSE);
 
 -- Inserção CONTRATO_ALUGUEL
 INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
-VALUES (TO_DATE('12/03/2019', 'dd/mm/yyyy'), 6, '61520188030', '89738378001', TO_DATE('12/03/2020', 'dd/mm/yyyy'),
+VALUES (TO_DATE('12/03/2019', 'dd/mm/yyyy'), 6, '61520188030', '89738378001', TO_DATE('12/01/2021', 'dd/mm/yyyy'),
         '370', '0', '10');
 
 INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
@@ -674,6 +674,8 @@ VALUES (TO_DATE('05/12/2020', 'dd/mm/yyyy'), 8, '35017890092', '98826700087', TO
 INSERT INTO contrato_aluguel (inicio, residencia, responsavel, locatario, fim, aluguel, multa, desconto)
 VALUES (TO_DATE('25/12/2012', 'dd/mm/yyyy'), 8, '35017890092', '83353310061', TO_DATE('25/12/2015', 'dd/mm/yyyy'),
         '1050', '0', '0');
+
+
 
 
 -- Inserção VENDAS
