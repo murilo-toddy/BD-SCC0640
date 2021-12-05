@@ -164,6 +164,7 @@ class Person:
             for table, col in chain(*[[(k, c) for c in v] for k, v in columns.items()])
             if table in roles
         )
+        columns_expr = columns_expr and f", {columns_expr}"
 
         # expressions for joining with the necessary role
         # tables (if we want at least one column from them)
@@ -173,7 +174,8 @@ class Person:
 
         # build the query
         query = f"""
-            SELECT {columns_expr} P.CPF, RG, nome, nascimento FROM pessoa as P
+            SELECT P.CPF, RG, nome, nascimento {columns_expr}
+            FROM pessoa as P
             {join_expr}
             WHERE P.CPF = %s
         """
