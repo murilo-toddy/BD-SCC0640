@@ -11,7 +11,6 @@ services:
       POSTGRES_PASSWORD: 'admin'
     volumes: # data persistance
       - ./src/db/:/db-scripts/
-      # - ./db-data/:/var/lib/postgresql/data/
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4

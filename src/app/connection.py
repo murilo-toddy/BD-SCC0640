@@ -1,73 +1,98 @@
 from configparser import ConfigParser
 
 import psycopg2
+import psycopg2.extras
 
 
 class Connection:
     """
-    Sets up a connection to the Postgres database.
+    Singleton that sets up one connection to the Postgres database.
 
-    ...
     Attributes
     ----------
-    connection : psycopg2._psycopg.connection
-    cursor : psycopg2._psycopg.cursor
-    ...
+    connection: psycopg2._psycopg.connection
+    cursor: psycopg2._psycopg.cursor
     """
 
-    def __init__(self):
-        self.connection, self.cursor = self.connect()
+    # Guarantees the Connection class is a Singleton
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(Connection, cls).__new__(cls)
+
+        return cls.instance
+
+    def __init__(self, debug=False):
+        self.__debug = debug
+        self.connection, self.cursor = self.__connect()
 
     def __config(self, filename="database.ini", section="postgresql") -> dict[str, str]:
         """
-        Gets config info for a `.ini` file.
+        Get config info for a `.ini` file.
 
-        ...
         Parameters
         ----------
-        filename : str
-        section : str
-        ...
+        filename: str
+        section: str
         """
-
         parser = ConfigParser()
         parser.read(filename)
 
         if not parser.has_section(section):
             raise Exception(f"Section {section} not found in {filename}.")
 
-        # params = parser.items(section)
-        # # return {param[0]: param[1] for param in params}
-
         return dict(parser.items(section))
 
-    def connect(self) -> tuple[psycopg2._psycopg.connection, psycopg2._psycopg.cursor]:
-        """
-        Connects to the database.
-        """
-
+    def __connect(
+        self,
+    ) -> tuple[psycopg2._psycopg.connection, psycopg2.extras.DictCursor]:
+        """Connect to the database."""
         params = self.__config()
 
         # connects to the database
-        print("Connecting to the PostgreSQL database...")
+        if self.__debug:
+            print("Connecting to the PostgreSQL database...")
         connection = psycopg2.connect(**params)
 
         # create a cursor
-        cursor = connection.cursor()
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        # TODO: remove this after development
         # displays the db server's version
-        print("PostgreSQL database version:")
-        cursor.execute("SELECT version()")
-        print(cursor.fetchone())
+        if self.__debug:
+            print("PostgreSQL database version:")
+            cursor.execute("SELECT version()")
+            print(cursor.fetchone())
 
         return connection, cursor
 
     def disconnect(self) -> None:
-        """
-        Connects from the database.
-        """
-
+        """Connect from the database."""
         if self.connection:
             self.connection.close()
-            print("Connection closed")
+            if self.__debug:
+                print("Connection closed")
+
+    def exec_commit(self, command: str, *args, cb: callable = None) -> any:
+        """
+        Execute an SQL command and commits it.
+
+        Parameters
+        ----------
+        command: str
+            SQL command to be executed.
+        args: tuple[any]
+            Parameters to `command`. Passing the parameters like this instead
+            of formatting directly into the string is safer, because `psycopg2`
+            will sanitize them, which prevents SQL Injection.
+        cb: function = None
+            Function that'll be called before the commit. The cursor'll be
+            passed to it as argument.
+
+        Returns
+        -------
+        any: the return value of `cb` or `None`.
+        """
+        self.cursor.execute(command, args)
+        return_value = cb(self.cursor) if cb else None
+        self.connection.commit()
+
+        return return_value
