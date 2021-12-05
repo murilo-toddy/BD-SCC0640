@@ -15,7 +15,7 @@ class Connection:
     """
 
     # Guarantees the Connection class is a Singleton
-    def __new__(cls):
+    def __new__(cls, debug=False):
         if not hasattr(cls, "instance"):
             cls.instance = super(Connection, cls).__new__(cls)
 
