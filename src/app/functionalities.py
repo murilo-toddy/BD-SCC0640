@@ -1,11 +1,11 @@
 from connection import Connection
-from entities.parties import Ticket
+from entities.parties import Ticket, Party
 from entities.people import Person, Student
 from entities.residences import Home, Property, Residence, Responsability
 from entities.transactions import RentContract, SaleContract
 from entities.university import Talks
 from enums import PersonPermissions, State
-from models import Address
+from models import Address, City
 from state import CurrentUser
 from utils import (
     format,
@@ -266,6 +266,27 @@ def fetch_own_talks():
         print(f" - Cidade: {d['cidade']} - {d['estado']}")
 
     loop_display_data(data, display_fn, "palestra")
+
+
+def fetch_parties_in_city():
+    """Fetch all parties in the future for a given city."""
+    city = {}
+    print('\nQual a cidade cujas festas você quer ver?')
+    city["state"] = prompt("Estado (sigla):", lambda x: x in State)
+    city["city"] = prompt("Cidade:", lambda x: x)
+    city = City(**city)
+
+    data = Party.fetch_future_by_city_join_address(city)
+
+    def display_fn(d: dict, i: int):
+        print(f"\nDados da festa {i + 1}:")
+        print(f" - Nome da festa: {d['nome']}")
+        print(f" - Data/Horário: {format(d['data_horario'], 'data_horario')}")
+        print(f" - Endereço: {d['endereço']}")
+        print(f" - Open bar: {d['open_bar'] or '-'}")
+        print(f" - Preço: {format(d['preço'])}")
+
+    loop_display_data(data, display_fn, "ingresso")
 
 
 def fetch_own_tickets():

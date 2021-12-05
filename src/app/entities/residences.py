@@ -92,10 +92,7 @@ class Home(ResidenceSpecialization):
         return True
 
     def insert_db(self) -> tuple[bool, Exception]:
-        """
-        Inserts the home's data in the DB.
-        """
-
+        """Insert the home's data in the DB."""
         if self.inserted:
             return False, "Essa moradia já foi inserida."
 
@@ -132,10 +129,7 @@ class Property(ResidenceSpecialization):
         return False
 
     def insert_db(self) -> tuple[bool, Exception]:
-        """
-        Inserts the property's data in the DB.
-        """
-
+        """Insert the property's data in the DB."""
         if self.id is None or self.inserted:
             return False, "Esse imóvel já foi inserido."
 
@@ -186,10 +180,7 @@ class Residence:
         self.__connection = Connection()
 
     def insert_db(self) -> tuple[bool, Exception]:
-        """
-        Inserts the residence's data in the DB, including it's specialization.
-        """
-
+        """Insert the residence's data in the DB, including it's specialization."""
         if self.inserted:
             return False, "Essa residência já foi inserida."
 

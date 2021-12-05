@@ -37,9 +37,9 @@ class Party:
         query = """
             SELECT F.id, data_horario, nome, preço, endereço, open_bar
             FROM festa as F, residencia as R
-            WHERE F.data_horario < NOW() AND R.cidade = %s AND R.estado = %s
-            AND F.n_ingressos_total >
-            (SELECT COUNT(I.festa) FROM ingresso as I WHERE I.festa = F.id)
+            WHERE F.data_horario > NOW() AND F.moradia = R.id
+                  AND R.cidade = %s AND R.estado = %s
+                  AND F.n_ingressos_total > F.n_ingressos_vendidos
             ORDER BY data_horario ASC;
         """
         return Connection().exec_commit(
