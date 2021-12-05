@@ -1,4 +1,4 @@
-\i /db-scripts/reset-tables.sql
+\i /db-scripts/deletar.sql
 \i /db-scripts/esquema.sql
 
 \i /db-scripts/dados.sql
