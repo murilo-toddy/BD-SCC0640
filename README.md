@@ -51,20 +51,6 @@ Reseta todas as tabelas do banco, as recria e inicia a aplicação.
 
 Inicia o *Postgres* dentro do *Docker container* no *background*, reseta todas as tabelas do banco, as recria e inicia a aplicação.
 
-## PG Admin
-
-Para acessar a interface gráfica do *Postgres* (pgadmin), basta entrar entrar no endereço [http://localhost:5050/browser/](http://localhost:5050/browser/). Par a autenticação, utilize:
-
-- *Email*: admin@admin.com
-- *Password*: root
-
-Conecte ao banco de dados usando:
-
-- *Host*: localhost
-- *Database*: postgres
-- *User*: postgres
-- *Password*: admin
-
 ## Queries
 
 1. Quais são as pessoas de cada curso que vão mais em festas
