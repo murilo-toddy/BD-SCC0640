@@ -1,7 +1,7 @@
 -- QUERY 1
 -- Listar a quantidade de festas que cada aluno compareceu nos últimos 6 meses,
 -- junto de seu nome e curso
--- É varrida a tabela de festas buscando pelas que ocorreram a menos de 6 meses.
+-- É varrida a tabela de festas buscando pelas que ocorreram a menos de 6 meses
 -- Em seguida, se analisa todos os ingressos comprados para estas festas
 SELECT p.nome, COUNT(i.comprador) as festas, c.curso
 FROM ingresso AS i JOIN cursando AS c ON c.aluno = i.comprador
