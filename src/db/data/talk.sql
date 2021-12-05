@@ -26,9 +26,6 @@ FROM campus WHERE nome_universidade = 'UFPR' AND nome_campus = 'Curitiba';
 
 -- Inserção PRESENÇAS MARCADAS
 INSERT INTO presenca_marcada (aluno, palestra)
-VALUES ('89738378001', 1);
-
-INSERT INTO presenca_marcada (aluno, palestra)
 VALUES ('98975082016', 1);
 
 INSERT INTO presenca_marcada (aluno, palestra)
@@ -54,3 +51,18 @@ VALUES ('31000160840', 4);
 
 INSERT INTO presenca_marcada (aluno, palestra)
 VALUES ('65671541522', 4);
+
+INSERT INTO presenca_marcada (aluno, palestra)
+VALUES ('98975082016', 2);
+
+INSERT INTO presenca_marcada (aluno, palestra)
+VALUES ('65671541522', 3);
+
+INSERT INTO presenca_marcada (aluno, palestra)
+VALUES ('89738378001', 2);
+
+INSERT INTO presenca_marcada (aluno, palestra)
+VALUES ('89738378001', 3);
+
+INSERT INTO presenca_marcada (aluno, palestra)
+VALUES ('89738378001', 4);

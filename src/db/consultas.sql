@@ -60,12 +60,12 @@ ON m.id = c.residencia
 WHERE c.locatario NOT IN
 ((SELECT i.comprador FROM ingresso i)
 UNION
-(SELECT c.locatario FROM contrato_aluguel c JOIN festa f
+(SELECT c.locatario FROM contrato_aluguel c JOIN festa AS f
 ON c.residencia = f.moradia));
 
 
 -- QUERY 7
-SELECT a.CPF FROM aluno a LEFT JOIN orienta o
+SELECT a.CPF FROM aluno AS a LEFT JOIN orienta AS o
 ON a.cpf = o.aluno WHERE o.aluno IS NULL AND
 NOT EXISTS (
     (SELECT id FROM palestra WHERE ministrante = '74214010591')

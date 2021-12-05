@@ -156,7 +156,7 @@ SELECT '23830223064', id, 'Engenharia Mecatrônica', TO_DATE('2020', 'YYYY')
 FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
-SELECT '74214010591', id, 'Engenharia Mecatrônica', TO_DATE('2021', 'YYYY')
+SELECT '74214010591', id, 'Ciência de Computação', TO_DATE('2021', 'YYYY')
 FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
@@ -197,4 +197,7 @@ VALUES ('23830223064', '61520188030');
 
 INSERT INTO orienta (aluno, professor)
 VALUES ('31000160840', '65671541522');
+
+INSERT INTO orienta (aluno, professor)
+VALUES ('98975082016', '74214010591');
 
