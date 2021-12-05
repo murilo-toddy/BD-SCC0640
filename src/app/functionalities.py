@@ -47,9 +47,13 @@ def register_student():
 
     print("\n\nSobre as informações do aluno, responda:")
 
-    person["name"] = prompt("Nome:", lambda x: regexes.name.match(x))
-    person["cpf"] = prompt("CPF:", lambda x: regexes.cpf.match(x))
-    person["rg"] = prompt("RG:", lambda x: regexes.rg.match(x))
+    person["name"] = prompt(
+        "Nome completo:",
+        regexes.name.match,
+        err="Input inválid, tente novamente. Lembre que é necessáro colocar nome e sobrenome.",
+    )
+    person["cpf"] = prompt("CPF:", regexes.cpf.match)
+    person["rg"] = prompt("RG:", regexes.rg.match)
     person["birthdate"] = prompt("Data de nascimento (dd/mm/aaaa):", validate_date)
 
     student["cpf"] = person["cpf"]
@@ -189,7 +193,11 @@ def register_new_residence():
 
     print("\n\nSobre as informações da residência, responda:")
 
-    residence["address"]["address"] = prompt("Logradouro:", regexes.name.match)
+    residence["address"]["address"] = prompt(
+        "Logradouro:",
+        regexes.name.match,
+        err="Input inválid, tente novamente. Você deve fornece apenas o nome completo da rua, ou avenida, etc.",
+    )
     residence["address"]["address"] += f", {prompt('Número:', lambda x: x.isdigit())}"
     residence["address"]["city"] = prompt("Cidade:", lambda x: x)
     residence["address"]["state"] = prompt("Estado (sigla):", lambda x: x in State)
