@@ -46,7 +46,16 @@ menu = [
         ),
     },
     {
-        "option": "Visualizar todas as festas para  as quais você comprou ingresso.",
+        "option": "Visualizar todas as festas com ingressos disponíveis em uma determinada cidade.",
+        "function": functionalities.fetch_parties_in_city,
+        "permissions": (
+            PersonPermissions.Professor,
+            PersonPermissions.Responsible,
+            PersonPermissions.Student,
+        ),
+    },
+    {
+        "option": "Visualizar todas as festas para as quais você comprou ingresso.",
         "function": functionalities.fetch_own_tickets,
         "permissions": (
             PersonPermissions.Professor,
