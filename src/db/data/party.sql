@@ -44,6 +44,6 @@ INSERT INTO ingresso (festa, comprador)
 VALUES (4, '23830223064');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT (4, '61520188030');
+VALUES (4, '61520188030');
 
 
