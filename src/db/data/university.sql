@@ -3,7 +3,7 @@ INSERT INTO campus (CNPJ_universidade, nome_campus, cidade, nome_universidade,
                    categoria_universidade, estado, endereço, cep)
 VALUES (
     '18080557000145',
-    'EESC',
+    'CAASO',
     'São Carlos',
     'USP', 
     'pública',
@@ -17,7 +17,7 @@ INSERT INTO campus (CNPJ_universidade, nome_campus, cidade, nome_universidade,
 VALUES (
     '64561482000131',
     'Politécnica',
-    'São Carlos',
+    'São Paulo',
     'USP',
     'pública',
     'SP',
@@ -81,11 +81,11 @@ VALUES (
 -- Inserção OFERECIMENTO DE CURSO
 INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
 SELECT id, 'Ciência de Computação', 'exatas'
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
 SELECT id, 'Engenharia Mecatrônica', 'exatas'
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO oferecimento_curso (campus, nome, area_conhecimento)
 SELECT id, 'Relações Internacionais', 'humanas'
@@ -111,11 +111,11 @@ FROM campus WHERE nome_universidade = 'UNICAMP' AND nome_campus = 'Campinas';
 -- Inserção TRABALHO
 INSERT INTO trabalho (professor, campus, curso)
 SELECT '61520188030', id, 'Ciência de Computação'
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO trabalho (professor, campus, curso)
 SELECT '74214010591', id, 'Engenharia Mecatrônica'
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO trabalho (professor, campus, curso)
 SELECT '65671541522', id, 'Relações Internacionais'
@@ -141,23 +141,23 @@ FROM campus WHERE nome_universidade = 'UNICAMP' AND nome_campus = 'Campinas';
 -- Inserção CURSANDO
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '89738378001', id, 'Ciência de Computação', TO_DATE('2019', 'YYYY')
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '98975082016', id, 'Ciência de Computação', TO_DATE('2018', 'YYYY')
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '98826700087', id, 'Ciência de Computação', TO_DATE('2018', 'YYYY')
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '23830223064', id, 'Engenharia Mecatrônica', TO_DATE('2020', 'YYYY')
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '74214010591', id, 'Ciência de Computação', TO_DATE('2021', 'YYYY')
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '31000160840', id, 'Relações Internacionais', TO_DATE('2019', 'YYYY')
@@ -173,11 +173,11 @@ FROM campus WHERE nome_universidade = 'Pitágoras' AND nome_campus = 'Catuai';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '18667659061', id, 'Engenharia Mecatrônica', TO_DATE('2018', 'YYYY')
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '93622146010', id, 'Engenharia Mecatrônica', TO_DATE('2018', 'YYYY')
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO cursando (aluno, campus, curso, ano_ingresso)
 SELECT '88732940302', id, 'Relações Internacionais', TO_DATE('2018', 'YYYY')
@@ -199,7 +199,5 @@ INSERT INTO orienta (aluno, professor)
 VALUES ('31000160840', '65671541522');
 
 INSERT INTO orienta (aluno, professor)
-VALUES ('23830223064', '74214010591');
-
-
+VALUES ('98975082016', '74214010591');
 

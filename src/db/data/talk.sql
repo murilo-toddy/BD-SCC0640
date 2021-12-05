@@ -3,7 +3,7 @@ INSERT INTO palestra (ministrante, nome, campus, data_horario, tema)
 SELECT '61520188030', 'Inteligência Financeira', id,
        TO_TIMESTAMP('30/08/2020 18:00', 'DD/MM/YYYY HH24:MI'),
        'Educação financeira'
-FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'EESC';
+FROM campus WHERE nome_universidade = 'USP' AND nome_campus = 'CAASO';
 
 INSERT INTO palestra (ministrante, nome, campus, data_horario, tema)
 SELECT '74214010591', 'Saúde e Vida', id,
@@ -26,61 +26,43 @@ FROM campus WHERE nome_universidade = 'UFPR' AND nome_campus = 'Curitiba';
 
 -- Inserção PRESENÇAS MARCADAS
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '89738378001', id
-FROM palestra WHERE nome = 'Inteligência Financeira';
+VALUES ('98975082016', 1);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '98975082016', id
-FROM palestra WHERE nome = 'Inteligência Financeira';
+VALUES ('98826700087', 1);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '98826700087', id
-FROM palestra WHERE nome = 'Inteligência Financeira';
+VALUES ('74214010591', 2);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '89738378001', id
-FROM palestra WHERE nome = 'Saúde e Vida';
+VALUES ('72262491119', 2);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '72262491119', id
-FROM palestra WHERE nome = 'Saúde e Vida';
+VALUES ('74214010591', 3);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '89738378001', id
-FROM palestra WHERE nome = 'Depressão não é frescura';
+VALUES ('98975082016', 4);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '98826700087', id
-FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
+VALUES ('98826700087', 4);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '31000160840', id
-FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
+VALUES ('31000160840', 4);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '65671541522', id
-FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
+VALUES ('65671541522', 4);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '23830223064', id
-FROM palestra WHERE nome = 'Saúde e Vida';
+VALUES ('98975082016', 2);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '23830223064', id
-FROM palestra WHERE nome = 'Depressão não é frescura';
+VALUES ('65671541522', 3);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '23830223064', id
-FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
+VALUES ('89738378001', 2);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '98975082016', id
-FROM palestra WHERE nome = 'Saúde e Vida';
+VALUES ('89738378001', 3);
 
 INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '98975082016', id
-FROM palestra WHERE nome = 'Depressão não é frescura';
-
-INSERT INTO presenca_marcada (aluno, palestra)
-SELECT '98975082016', id
-FROM palestra WHERE nome = 'Ferramentas de Gestão Emocional';
+VALUES ('89738378001', 4);

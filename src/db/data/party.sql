@@ -1,64 +1,49 @@
 -- Inserção FESTA
--- TODO Verificar se n_disponivel vai continuar no banco, talvez de pra remover!!
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
-SELECT TO_TIMESTAMP('30/04/2019 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
-       id, 50, 40, 'Vodka, Skol Beats'
-FROM residencia WHERE cep = '13571370';
+VALUES (TO_TIMESTAMP('30/04/2019 20:00', 'DD/MM/YYYY HH24:MI'), 'Indy Festa',
+       5, 50, 40, 'Vodka, Skol Beats');
 
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
-SELECT TO_TIMESTAMP('04/09/2020 17:00', 'DD/MM/YYYY HH24:MI'), 'Wired',
-       id, 30, 25, 'Corote'
-FROM residencia WHERE cep = '13565403';
+VALUES (TO_TIMESTAMP('04/09/2020 17:00', 'DD/MM/YYYY HH24:MI'), 'Wired',
+       6, 30, 25, 'Corote');
 
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
-SELECT TO_TIMESTAMP('17/06/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Festa Sync',
-       id, 25, 35, NULL
-FROM residencia WHERE cep = '13565403';
+VALUES (TO_TIMESTAMP('17/06/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Festa Sync',
+       6, 25, 35, NULL);
 
 INSERT INTO festa (data_horario, nome, moradia, preço, n_ingressos_total, open_bar)
-SELECT TO_TIMESTAMP('27/09/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Westside',
-       id, 30, 10, NULL
-FROM residencia WHERE cep = '13574701';
+VALUES (TO_TIMESTAMP('27/09/2021 18:00', 'DD/MM/YYYY HH24:MI'), 'Westside',
+       9, 30, 10, NULL);
 
 -- Inserção INGRESSO
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '45446434064'
-FROM festa WHERE nome = 'Indy Festa';
+VALUES (1, '45446434064');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '61520188030'
-FROM festa WHERE nome = 'Wired';
+VALUES (2, '61520188030');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '18667659061'
-FROM festa WHERE nome = 'Wired';
+VALUES (2, '18667659061');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '98826700087'
-FROM festa WHERE nome = 'Wired';
+VALUES (2, '98826700087');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '98826700087'
-FROM festa WHERE nome = 'Festa Sync';
+VALUES (3, '98826700087');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '98826700087'
-FROM festa WHERE nome = 'Westside';
+VALUES (4, '98826700087');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '90283056029'
-FROM festa WHERE nome = 'Westside';
+VALUES (4, '90283056029');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '99812465227'
-FROM festa WHERE nome = 'Westside';
+VALUES (4, '99812465227');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '23830223064'
-FROM festa WHERE nome = 'Westside';
+VALUES (4, '23830223064');
 
 INSERT INTO ingresso (festa, comprador)
-SELECT id, '61520188030'
-FROM festa WHERE nome = 'Westside';
+SELECT (4, '61520188030');
 
 
