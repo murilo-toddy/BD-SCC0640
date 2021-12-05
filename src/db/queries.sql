@@ -11,7 +11,8 @@ FROM ingresso i JOIN cursando c ON c.aluno = i.comprador
 JOIN festa f ON i.festa = f.id
 JOIN pessoa p ON i.comprador = p.cpf
 WHERE DATE_PART('day', NOW() - f.data_horario) <= 180
-GROUP BY p.nome, c.curso;
+GROUP BY p.nome, c.curso
+ORDER BY COUNT(i.comprador) DESC;
 
 SELECT i.comprador, COUNT(i.comprador) as festas, c.curso
 FROM ingresso i JOIN cursando c ON c.aluno = i.comprador
@@ -62,7 +63,15 @@ AND f.nome = 'Indy Festa';
 
 -- QUERY 4
 -- Quais são os campus que, em sua cidade, possuem o maior número de animais em moradias?
-
+SELECT C.nome_universidade AS UNIVERSIDADE, C.nome_campus AS CAMPUS,
+        CASE WHEN SUM(n_animais) <> + COUNT(aceita_animais) AS NUMERO_ANIMAIS
+FROM residencia AS R 
+JOIN campus AS C ON C.cidade = R.cidade 
+LEFT JOIN moradia AS M ON M.id = R.id 
+LEFT JOIN imovel AS I ON I.id = R.id AND I.aceita_animais = TRUE
+WHERE n_animais > 0 OR aceita_animais
+GROUP BY R.cidade, C.nome_campus, C.nome_universidade
+ORDER BY NUMERO_ANIMAIS DESC
 
 
 
