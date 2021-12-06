@@ -15,6 +15,7 @@ class regexes:
     cpf = re.compile(r"^(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})$")
     date = re.compile(r"\d{2}/\d{2}/19\d{2}|\d{2}/\d{2}/20\d{2}")
     name = re.compile(r"^\w{2,}\s\w{2,}[\w\s]*$")
+    single_name = re.compile(r"^[\w\s]*$")
     rg = re.compile(r"^(\d{1,2})\.?(\d{3})\.?(\d{3})-?(\d{1}|X|x)$")
 
 

@@ -1,5 +1,5 @@
 from connection import Connection
-from entities.parties import Ticket, Party
+from entities.parties import Party, Ticket
 from entities.people import Person, Student
 from entities.residences import Home, Property, Residence, Responsability
 from entities.transactions import RentContract, SaleContract
@@ -23,7 +23,7 @@ from utils import (
 current_user = CurrentUser()
 
 
-def fetch_own_data():
+def fetch_own_data() -> bool:
     """Fetch the current user's personal data from the DB."""
     user = current_user.fetch_data()
     print(f"\n\nNome completo: {user['nome']}")
@@ -40,7 +40,7 @@ def fetch_own_data():
     prompt_continue()
 
 
-def register_student():
+def register_student() -> bool:
     """Register a new student to the DB."""
     person = {}
     student = {}
@@ -77,7 +77,7 @@ def register_student():
     prompt_continue()
 
 
-def fetch_rents_tenant():
+def fetch_rents_tenant() -> bool:
     """Fetch all of the rent contracts in which the current user is/was a tenant."""
     data = RentContract.query_by_tenant_join_residence(current_user.get_cpf())
 
@@ -100,7 +100,7 @@ def fetch_rents_tenant():
     loop_display_data(data, display_fn, "contrato")
 
 
-def fetch_sales_buyer():
+def fetch_sales_buyer() -> bool:
     """Fetch all of the sale contracts in which the current user was the buyer."""
     data = SaleContract.query_by_buyer_join_residence(current_user.get_cpf())
 
@@ -120,7 +120,7 @@ def fetch_sales_buyer():
     loop_display_data(data, display_fn, "contrato")
 
 
-def fetch_rents_responsible():
+def fetch_rents_responsible() -> bool:
     """Fetch all of the rent contracts in which the current user is/was the responsible."""
     data = RentContract.query_by_responsible_join_residence(current_user.get_cpf())
 
@@ -143,7 +143,7 @@ def fetch_rents_responsible():
     loop_display_data(data, display_fn, "contrato")
 
 
-def fetch_sales_responsible():
+def fetch_sales_responsible() -> bool:
     """Fetch all of the sale contracts in which the current user is/was the responsible."""
     data = SaleContract.query_by_responsible_join_residence(current_user.get_cpf())
 
@@ -162,7 +162,7 @@ def fetch_sales_responsible():
     loop_display_data(data, display_fn, "contrato")
 
 
-def fetch_responsible_residences():
+def fetch_responsible_residences() -> bool:
     """Fetch all of the residences for which the current user is responsble."""
     data = Responsability.query_by_responsible_join_residence(current_user.get_cpf())
 
@@ -186,7 +186,7 @@ def fetch_responsible_residences():
     loop_display_data(data, display_fn, "residência")
 
 
-def register_new_residence():
+def register_new_residence() -> bool:
     """Register a new residence to the DB and sets the current user as it's responsible."""
     residence = {"address": {}}
     specialization = {}
@@ -199,7 +199,7 @@ def register_new_residence():
         err="Input inválid, tente novamente. Você deve fornece apenas o nome completo da rua, ou avenida, etc.",
     )
     residence["address"]["address"] += f", {prompt('Número:', lambda x: x.isdigit())}"
-    residence["address"]["city"] = prompt("Cidade:", lambda x: x)
+    residence["address"]["city"] = prompt("Cidade:", regexes.single_name.match)
     residence["address"]["state"] = prompt("Estado (sigla):", lambda x: x in State)
     residence["address"]["cep"] = prompt("CEP:", regexes.cep.match)
     residence["rent"] = parse_float(prompt("Aluguel: R$", validate_float))
@@ -252,8 +252,10 @@ def register_new_residence():
 
     prompt_continue()
 
+    return True
 
-def fetch_own_talks():
+
+def fetch_own_talks() -> bool:
     """Fetch all of the talks prepared by the current user."""
     data = Talks.fetch_by_professor_join_campus(current_user.get_cpf())
 
@@ -268,10 +270,10 @@ def fetch_own_talks():
     loop_display_data(data, display_fn, "palestra")
 
 
-def fetch_parties_in_city():
+def fetch_parties_in_city() -> bool:
     """Fetch all parties in the future for a given city."""
     city = {}
-    print('\nQual a cidade cujas festas você quer ver?')
+    print("\nQual a cidade cujas festas você quer ver?")
     city["state"] = prompt("Estado (sigla):", lambda x: x in State)
     city["city"] = prompt("Cidade:", lambda x: x)
     city = City(**city)
@@ -289,7 +291,7 @@ def fetch_parties_in_city():
     loop_display_data(data, display_fn, "ingresso")
 
 
-def fetch_own_tickets():
+def fetch_own_tickets() -> bool:
     """Fetch all of the tickets bought by the current user."""
     data = Ticket.fetch_by_buyer_join_party_city(current_user.get_cpf())
 
@@ -303,7 +305,7 @@ def fetch_own_tickets():
     loop_display_data(data, display_fn, "ingresso")
 
 
-def quit():
+def quit() -> bool:
     print("\n\nAté logo!")
     prompt_continue()
     print()
@@ -338,7 +340,7 @@ def login(new: bool = True) -> CurrentUser:
     return current_user
 
 
-def logout():
+def logout() -> bool:
     print("\n\n\n\n---------------------------------------------------\n")
     login()
     return True

@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
 from connection import Connection
-from entities.people import Person
+from entities.people import Person, Responsible
+from enums import PersonPermissions
 from models import Address
 from utils import assert_instance, assert_regex, regexes, remove_symbols
 
@@ -59,8 +60,16 @@ class Responsability:
             )
         except Exception as error:
             return False, error
-        else:
-            return True, None
+
+        query = "INSERT INTO atuacao(pessoa, atuacao) VALUES(%s, %s);"
+        try:
+            self.__connection.exec_commit(
+                query, self.responsible, PersonPermissions.Responsible.value
+            )
+        except Exception as error:
+            return False, error
+
+        return Responsible(self.responsible).insert_db()
 
 
 class ResidenceSpecialization(ABC):
