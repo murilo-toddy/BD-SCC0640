@@ -196,7 +196,8 @@ def register_new_residence() -> bool:
     residence["address"]["address"] = prompt(
         "Logradouro:",
         regexes.name.match,
-        err="Input inválid, tente novamente. Você deve fornece apenas o nome completo da rua, ou avenida, etc.",
+        err="Input inválid, tente novamente. Você deve fornece apenas o nome "
+        + "completo da rua, ou avenida, etc.\nSem pontuação e sem número.",
     )
     residence["address"]["address"] += f", {prompt('Número:', lambda x: x.isdigit())}"
     residence["address"]["city"] = prompt("Cidade:", regexes.single_name.match)

@@ -61,15 +61,19 @@ class Responsability:
         except Exception as error:
             return False, error
 
-        query = "INSERT INTO atuacao(pessoa, atuacao) VALUES(%s, %s);"
-        try:
-            self.__connection.exec_commit(
-                query, self.responsible, PersonPermissions.Responsible.value
-            )
-        except Exception as error:
-            return False, error
+        permissions = Person.query_permissions_by_cpf(self.responsible)
+        if PersonPermissions.Responsible.value not in permissions:
+            query = "INSERT INTO atuacao(pessoa, atuacao) VALUES(%s, %s);"
+            try:
+                self.__connection.exec_commit(
+                    query, self.responsible, PersonPermissions.Responsible.value
+                )
+            except Exception as error:
+                return False, error
 
-        return Responsible(self.responsible).insert_db()
+            return Responsible(self.responsible).insert_db()
+        else:
+            return True, None
 
 
 class ResidenceSpecialization(ABC):
